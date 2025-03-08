@@ -1,5 +1,7 @@
 <?php 
-/* questa implementazione:
+/* 
+QUESTA PAGINA VIENE APERTA QUANDO UN ADMIN, DALLA PROPRIA DASHBOARD, CLICCA SU 'GESTISCI FAQ'
+questo file fa le seguenti cose:
 1- aggiunge una nuova sezione "Domande dal Forum" sotto la gestione FAQ esistente
 2- mostra solo le domande che:
     - non sono già state elevate a FAQ
@@ -48,7 +50,7 @@ function salvaXML($xml) {
     $xml->asXML($xml_file);
 }
 
-$forum_file = '../xml/forum.xml';
+$forum_file = '../xml/domande.xml';
 $forum = simplexml_load_file($forum_file);
 
 
@@ -177,11 +179,51 @@ $xml = caricaXML();
             padding: 3px 8px;
             background: #e9ecef;
         }
+        /* stile per la barra di navigazione (menu) */
+        .navbar {
+            background-color: #000; 
+            color: #fff; 
+            padding: 20px 0; 
+            text-align: center; 
+        }
+        .navbar ul {
+            list-style-type: none; 
+            margin: 0;
+            padding: 0;
+            display: inline-flex; 
+            list-style-type: disc;
+        }
+        .navbar li {
+            margin: 0 30px; 
+        }
+        .navbar a {
+            color: #fff; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 18px; 
+            transition: all 0.3s ease; 
+        }
+        .navbar a:hover {
+            background-color: #555; 
+            transform: scale(1.1); 
+            padding: 5px; 
+            border-radius: 5px; 
+        }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <ul>
+            <li><a href="admin_dashboard.php">Dashboard</a></li>
+            <li><a href="gestione_utenti.php">Modifica Utente</a></li>
+            <li><a href="gestione_crediti.php">Richieste Crediti</a></li>
+            <li><a href="gestione_utenti.php">Ban utenti</a></li>
+        </ul>
+    </div>
+    
     <div class="container">
-        <h1>Gestione FAQ</h1>
+        <h1 style="text-align: center; font-size: 200%; color: red">Gestione FAQ</h1>
+        <h3 style="text-align: center; color: red; font-size: 150%;">Qui puoi aggiungere, eliminare o modificare le FAQ</h3>
         
         <?php if (isset($messaggio)): ?>
             <div class="messaggio"><?php echo $messaggio; ?></div>

@@ -34,57 +34,38 @@ if (!isset($_SESSION['statoLogin'])) {
 </head>
 <body>
 
-<!--Titolo con pulsante Logout -->
     <header class="header">
         <h1>Dashboard Admin</h1>
-        <nav>
-            <ul>
-                <li><a href="logout.php" class="logout-link">Logout</a></li>
-            </ul>
-        </nav>
     </header>
 
-<!-- Funzionalità gestite -->
     <main class="dashboard-container">
         <div class="row">
-            <!-- Richiesta degli utenti per diventare Admin-->
             <section class="users-management">
-                <h2>Gestione Utenti</h2>
+                <h2>Modifica i dati personali degli utenti</h2>
                 <button onclick="location.href='gestione_utenti.php'" class="modify-user-button">Modifica Utente</button>
             </section>
 
-            <!-- Creazione di una FAQ-->
             <section class="faq-management">
-                <h2>Gestione FAQ</h2>
-                <button onclick="location.href='gestione_faq.php'" class="create-faq-button">Crea FAQ</button>
+                <h2>Aggiunta, eliminazione o modifica delle FAQ</h2>
+                <button onclick="location.href='gestione_faq.php'" class="create-faq-button">Gestisci FAQ</button>
             </section>
         </div>
         <div class="row">
-            <!-- Richieste acquisto numero personalizzati di crediti -->
             <section class="credits-management">
-                <h2>Gestione Crediti</h2>
-                <button onclick="location.href='gestione_crediti.php'" class="add-credits-button">Richieste Crediti</button>
+                <h2>Rispondi alle richieste di crediti</h2>
+                <button onclick="location.href='gestione_crediti.php'" class="add-credits-button">Richieste crediti</button>
             </section>
 
-            <!-- Ban o riattivazione account utente -->
             <section class="ban-management">
-                <h2>Gestione Ban Utenti</h2>
-                <button onclick="location.href='gestione_utenti.php'" class="ban-user-button">Ban Utente</button>
+                <h2>Disattiva/Attiva gli utenti</h2>
+                <button onclick="location.href='gestione_utenti.php'" class="ban-user-button">Ban utenti</button>
             </section>
+        </div>
+        
+        <!-- Pulsante di logout centrato -->
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="logout.php" class="logout-link" style="display: inline-block; padding: 10px 20px; background-color: #ff4d4d; color: white; border-radius: 5px; text-decoration: none;">Logout</a>
         </div>
     </main>
 </body>
-<script>
-        function openEditForm(username, email, nome, cognome) {
-            document.getElementById('edit-username').value = username;
-            document.getElementById('edit-email').value = email;
-            document.getElementById('edit-nome').value = nome;
-            document.getElementById('edit-cognome').value = cognome;
-            document.getElementById('popup-overlay').style.display = 'flex';
-        }
-
-        function closeEditForm() {
-            document.getElementById('popup-overlay').style.display = 'none';
-        }
-    </script>
 </html>

@@ -190,11 +190,48 @@ $crediti_approvati = array_reduce(
             width: 100%;
             margin: 10px 0;
         }
+        .navbar {
+            background-color: #000; 
+            color: #fff; 
+            padding: 20px 0; 
+            text-align: center; 
+        }
+        .navbar ul {
+            margin: 0;
+            padding: 0;
+            display: inline-flex; 
+        }
+        .navbar li {
+            margin: 0 30px; 
+        }
+        .navbar a {
+            color: #fff; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 18px; 
+            transition: all 0.3s ease; 
+        }
+        .navbar a:hover {
+            background-color: #555; 
+            transform: scale(1.1); 
+            padding: 5px; 
+            border-radius: 5px; 
+        }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <ul>
+            <li><a href="admin_dashboard.php">Dashboard</li>
+            <li><a href="gestione_utenti.php">Modifica Utente</a></li>
+            <li><a href="gestione_utenti.php">Ban utenti</a></li>
+            <li><a href="gestione_faq.php">Gestisci FAQ</a></li>
+        </ul>
+    </div>
+
     <div class="container">
-        <h1>Gestione Richieste Crediti</h1>
+        <h1 style="font-size: 200%; color: red; text-align: center;">Gestione richieste di crediti</h1>
+        <h3 style="font-size: 160%; color: red; text-align: center;">Accetta o rifiuta le richieste di crediti provenienti dagli utenti</h3>
         
         <div class="statistiche">
             <div class="stat-card">

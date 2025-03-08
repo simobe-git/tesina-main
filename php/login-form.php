@@ -29,7 +29,7 @@ if(isset($_POST['login']) && $_SERVER["REQUEST_METHOD"] === "POST"){
 
         if($tipo_utente === 'admin' && $ban != 1) { //verifico che sia un admin e che non sia bannato
             
-            header("Location: home.php");
+            header("Location: admin_dashboard.php");
             exit();
 
         } elseif($tipo_utente === 'gestore' && $ban != 1) { //verifico che sia un gestore e che non sia bannato
@@ -47,8 +47,6 @@ if(isset($_POST['login']) && $_SERVER["REQUEST_METHOD"] === "POST"){
             header("Location: login.php?error=2"); 
             exit();
         }
-
-        exit();
     } else {
         // in caso di credenziali errate
         header("Location: login.php?error=1");

@@ -48,7 +48,7 @@ nav ul li a.logout-link:hover {
 .row {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 20px; /* Spazio tra le sezioni */
     margin-bottom: 20px;
 }
 
@@ -57,8 +57,15 @@ nav ul li a.logout-link:hover {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    flex: 1 1 calc(33.333% - 20px); /* Tre sezioni per riga con uno spazio di 20px tra di loro */
+    flex: 1 1 calc(40% - 20px); /* Due sezioni per riga con uno spazio di 20px tra di loro */
     box-sizing: border-box;
+    min-height: 120px; /* Altezza minima per uniformità */
+    text-align: center; /* Centra il contenuto all'interno delle sezioni */
+    transition: transform 0.3s ease; /* Transizione per l'effetto di espansione */
+}
+
+.users-management:hover, .faq-management:hover, .credits-management:hover, .ban-management:hover {
+    transform: scale(1.05); /* Espande la sezione al passaggio del mouse */
 }
 
 h2 {
@@ -115,4 +122,21 @@ h2 {
 
 .admin-request-button.reject:hover, .credit-request-button.reject:hover, .user-management-button.ban:hover {
     background-color: #e53935;
+}
+
+/* Stile per i pulsanti */
+button {
+    background-color: #28a745; /* Verde */
+    color: white; /* Testo bianco */
+    padding: 10px 20px; /* Padding per i pulsanti */
+    border: none; /* Rimuove il bordo */
+    border-radius: 5px; /* Angoli arrotondati */
+    font-size: 16px; /* Dimensione del testo */
+    cursor: pointer; /* Cambia il cursore al passaggio del mouse */
+    transition: background-color 0.3s ease; /* Transizione per l'effetto hover */
+    margin-top: 10px; /* Spazio sopra il pulsante */
+}
+
+button:hover {
+    background-color: #218838; /* Colore più scuro al passaggio del mouse */
 }

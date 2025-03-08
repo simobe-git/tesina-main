@@ -70,17 +70,19 @@ $result = $connessione->query($query);
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
         }
         .utente-card {
             background: #f8f9fa;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            text-align: center; /* Centra il testo */
-            margin-bottom: 20px; /* Aggiungi margine inferiore */
+            text-align: center; 
+            margin-bottom: 20px; 
+            width: 100%; 
+            max-width: 300px; 
         }
         .stato-bannato { color: #dc3545; }
         .stato-attivo { color: #28a745; }
@@ -97,66 +99,122 @@ $result = $connessione->query($query);
             border: 1px solid #f5c6cb;
             border-radius: 4px;
         }
+
+        .navbar {
+            background-color: #000; 
+            color: #fff; 
+            padding: 20px 0; 
+            text-align: center; 
+        }
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: inline-flex; 
+            list-style-type: disc; /* aggiungiamo un pallino di finco le voci del menù */
+        }
+        .navbar li {
+            margin: 0 30px; 
+        }
+        .navbar a {
+            color: #fff; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 18px; 
+            transition: all 0.3s ease; 
+        }
+        .navbar a:hover {
+            background-color: #555; 
+            transform: scale(1.1); 
+            padding: 5px; 
+            border-radius: 5px; 
+        }
+
+        
+        .title-container {
+            text-align: center; 
+            margin-bottom: 20px; 
+        }
+
+        .utente-grid {
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 20px; 
+            width: 100%; 
+        }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <ul>
+            <li><a href="admin_dashboard.php">Dashboard</a></li>
+            <li><a href="gestione_utenti.php">Modifica Utente</a></li>
+            <li><a href="gestione_crediti.php">Richieste Crediti</a></li>
+            <li><a href="gestione_faq.php">Gestisci FAQ</a></li>
+        </ul>
+    </div>
+
     <div class="container">
-        <h1>Gestione Utenti</h1>
-        <br>
+        <div class="title-container">
+            <h1 style="font-size: 200%;">Gestione Utenti</h1>
+            <h3>Qui puoi modificare i dati anagrafici degli utenti</h3>
+        </div>
         
         <?php if (isset($messaggio)): ?>
             <div class="messaggio"><?php echo $messaggio; ?></div>
         <?php endif; ?>
 
-        <?php while ($utente = $result->fetch_assoc()): ?>
-            <div class="utente-card">
-                <h3><?php echo htmlspecialchars($utente['username']); ?></h3>
-                <form method="POST">
-                    <input type="hidden" name="username" value="<?php echo $utente['username']; ?>">
-                    
-                    <div class="form-group">
-                        <label>Nome:</label>
-                        <input type="text" name="nome" value="<?php echo htmlspecialchars($utente['nome']); ?>">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Cognome:</label>
-                        <input type="text" name="cognome" value="<?php echo htmlspecialchars($utente['cognome']); ?>">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Email:</label>
-                        <input type="email" name="email" value="<?php echo htmlspecialchars($utente['email']); ?>">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Stato:</label>
-                        <span class="stato-<?php echo $utente['ban']; ?>">
-                            <?php 
-                                if($utente['ban'] == 0){
-                                    echo 'Attivo';
-                                }else{
-                                    echo 'Bannato';
-                                }
-                            ?>
-                        </span>
-                    </div>
-                    <br>
-                    <button type="submit" name="modifica_dati" class="btn btn-primary">Salva Modifiche</button>
-                    
-                    <?php if ($utente['ban'] == 0): ?>
-                        <button type="submit" name="ban_utente" class="btn btn-danger"
-                                onclick="return confirm('Sei sicuro di voler bannare questo utente?')">
-                            Banna Utente
-                        </button>
-                    <?php else: ?>
-                        <button type="submit" name="attiva_utente" class="btn btn-success">
-                            Attiva Utente
-                        </button>
-                    <?php endif; ?>
-                </form>
-            </div>
-        <?php endwhile; ?>
+        <div class="utente-grid"> <!-- Contenitore per le schede utenti -->
+            <?php while ($utente = $result->fetch_assoc()): ?>
+                <div class="utente-card">
+                    <h3><?php echo htmlspecialchars($utente['username']); ?></h3>
+                    <form method="POST">
+                        <input type="hidden" name="username" value="<?php echo $utente['username']; ?>">
+                        
+                        <div class="form-group">
+                            <label>Nome:</label>
+                            <input type="text" name="nome" value="<?php echo htmlspecialchars($utente['nome']); ?>">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Cognome:</label>
+                            <input type="text" name="cognome" value="<?php echo htmlspecialchars($utente['cognome']); ?>">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Email:</label>
+                            <input type="email" name="email" value="<?php echo htmlspecialchars($utente['email']); ?>">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Stato:</label>
+                            <span class="stato-<?php echo $utente['ban']; ?>">
+                                <?php 
+                                    if($utente['ban'] == 0){
+                                        echo 'Attivo';
+                                    }else{
+                                        echo 'Bannato';
+                                    }
+                                ?>
+                            </span>
+                        </div>
+                        <br>
+                        <button type="submit" name="modifica_dati" class="btn btn-primary">Salva Modifiche</button>
+                        
+                        <?php if ($utente['ban'] == 0): ?>
+                            <button type="submit" name="ban_utente" class="btn btn-danger"
+                                    onclick="return confirm('Sei sicuro di voler bannare questo utente?')">
+                                Banna Utente
+                            </button>
+                        <?php else: ?>
+                            <button type="submit" name="attiva_utente" class="btn btn-success">
+                                Attiva Utente
+                            </button>
+                        <?php endif; ?>
+                    </form>
+                </div>
+            <?php endwhile; ?>
+        </div>
     </div>
 </body>
 </html>
