@@ -243,7 +243,7 @@ $xml = caricaXML();
         </form>
 
         <h2>FAQ Esistenti</h2>
-        <?php if ($xml): foreach ($xml->faq as $faq): ?>
+        <?php if ($xml): foreach ($xml->faq as $faq): //ciao ?>
             <div class="faq-item">
                 <form method="POST">
                     <input type="hidden" name="id_faq" value="<?php echo $faq['id']; ?>">
