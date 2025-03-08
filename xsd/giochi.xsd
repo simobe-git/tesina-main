@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="giochi">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="gioco" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="codice" type="xs:int"/>
+                            <xs:element name="titolo" type="xs:string"/>
+                            <xs:element name="prezzo_originale" type="xs:double"/>
+                            <xs:element name="prezzo_attuale" type="xs:double"/>
+                            <xs:element name="disponibile" type="xs:boolean"/>
+                            <xs:element name="categoria" type="xs:string"/>
+                            <xs:element name="min_num_giocatori" type="xs:int"/>
+                            <xs:element name="max_num_giocatori" type="xs:int"/>
+                            <xs:element name="min_eta" type="xs:string"/>
+                            <xs:element name="avg_partita" type="xs:int"/>
+                            <xs:element name="data_rilascio" type="xs:date"/>
+                            <xs:element name="nome_editore" type="xs:string"/>
+                            <xs:element name="autore" type="xs:string"/>
+                            <xs:element name="descrizione" type="xs:string"/>
+                            <xs:element name="meccaniche" type="xs:string"/>
+                            <xs:element name="ambientazione" type="xs:string"/>
+                            <xs:element name="immagine" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

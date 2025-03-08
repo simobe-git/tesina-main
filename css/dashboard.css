@@ -1,0 +1,118 @@
+/* dashboard.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.header {
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+nav ul li a.logout-link {
+    background-color: #ff4d4d;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+nav ul li a.logout-link:hover {
+    background-color: #ff1a1a;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.users-management, .faq-management, .credits-management, .ban-management {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(33.333% - 20px); /* Tre sezioni per riga con uno spazio di 20px tra di loro */
+    box-sizing: border-box;
+}
+
+h2 {
+    color: #333;
+}
+
+.admin-requests, .credit-requests, .user-management {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Riduci lo spazio tra le schede */
+    margin-top: 20px;
+}
+
+.admin-request-card, .credit-request-card, .user-card {
+    background: white;
+    padding: 10px; /* Riduci il padding */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(25% - 10px); /* Quattro schede per riga con uno spazio di 10px tra di loro */
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.admin-request-form, .credit-request-form, .user-management-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.admin-request-button, .credit-request-button, .user-management-button {
+    margin: 5px;
+    padding: 5px 10px; /* Riduci il padding dei pulsanti */
+    font-size: 14px; /* Riduci la dimensione del font */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.admin-request-button.accept, .credit-request-button.approve, .user-management-button.edit, .user-management-button.activate {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.admin-request-button.accept:hover, .credit-request-button.approve:hover, .user-management-button.edit:hover, .user-management-button.activate:hover {
+    background-color: #45a049;
+}
+
+.admin-request-button.reject, .credit-request-button.reject, .user-management-button.ban {
+    background-color: #f44336;
+    color: white;
+}
+
+.admin-request-button.reject:hover, .credit-request-button.reject:hover, .user-management-button.ban:hover {
+    background-color: #e53935;
+}

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:element name="sconti_bonus">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="sconti">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="sconto" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:choice>
+                                            <xsd:sequence>
+                                                <xsd:element name="crediti_spesi_periodo">
+                                                    <xsd:complexType>
+                                                        <xsd:sequence>
+                                                            <xsd:element name="livello" maxOccurs="unbounded">
+                                                                <xsd:complexType>
+                                                                    <xsd:sequence>
+                                                                        <xsd:element name="requisito_crediti" type="xsd:integer" minOccurs="0"/>
+                                                                        <xsd:element name="periodo_mesi" type="xsd:integer" minOccurs="0"/>
+                                                                        <xsd:element name="percentuale" type="xsd:decimal" minOccurs="0"/>
+                                                                        <xsd:element name="descrizione" type="xsd:string" minOccurs="0"/>
+                                                                    </xsd:sequence>
+                                                                </xsd:complexType>
+                                                            </xsd:element>
+                                                        </xsd:sequence>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                            </xsd:sequence>
+                                            <xsd:sequence>
+                                                <xsd:element name="reputazione">
+                                                    <xsd:complexType>
+                                                        <xsd:sequence>
+                                                            <xsd:element name="livello" maxOccurs="unbounded">
+                                                                <xsd:complexType>
+                                                                    <xsd:sequence>
+                                                                        <xsd:element name="percentuale" type="xsd:decimal"/>
+                                                                        <xsd:element name="requisito_min" type="xsd:decimal" minOccurs="0"/>
+                                                                        <xsd:element name="requisito_max" type="xsd:decimal" minOccurs="0"/>
+                                                                    </xsd:sequence>
+                                                                </xsd:complexType>
+                                                            </xsd:element>
+                                                        </xsd:sequence>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                            </xsd:sequence>
+                                            <xsd:sequence>
+                                                <xsd:element name="anzianita">
+                                                    <xsd:complexType>
+                                                        <xsd:sequence>
+                                                            <xsd:element name="livello" maxOccurs="unbounded">
+                                                                <xsd:complexType>
+                                                                    <xsd:sequence>
+                                                                        <xsd:element name="percentuale" type="xsd:decimal"/>
+                                                                        <xsd:element name="requisito_mesi" type="xsd:integer" minOccurs="0"/>
+                                                                    </xsd:sequence>
+                                                                </xsd:complexType>
+                                                            </xsd:element>
+                                                        </xsd:sequence>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                            </xsd:sequence>
+                                            <xsd:sequence>
+                                                <xsd:element name="crediti_spesi_finora">
+                                                    <xsd:complexType>
+                                                        <xsd:sequence>
+                                                            <xsd:element name="livello" maxOccurs="unbounded">
+                                                                <xsd:complexType>
+                                                                    <xsd:sequence>
+                                                                        <xsd:element name="crediti_spesi" type="xsd:integer"/>
+                                                                        <xsd:element name="percentuale" type="xsd:decimal"/>
+                                                                    </xsd:sequence>
+                                                                </xsd:complexType>
+                                                            </xsd:element>
+                                                        </xsd:sequence>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                            </xsd:sequence>
+                                            <xsd:sequence>
+                                                <xsd:element name="acquisto_specifico">
+                                                    <xsd:complexType>
+                                                        <xsd:sequence>
+                                                            <xsd:element name="livello" maxOccurs="unbounded">
+                                                                <xsd:complexType>
+                                                                    <xsd:sequence>
+                                                                        <xsd:element name="percentuale" type="xsd:decimal"/>
+                                                                        <xsd:element name="codice_gioco_richiesto" type="xsd:string"/>
+                                                                    </xsd:sequence>
+                                                                </xsd:complexType>
+                                                            </xsd:element>
+                                                        </xsd:sequence>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                            </xsd:sequence>
+                                        </xsd:choice>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="bonus">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="bonus_crediti" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="ammontare" type="xsd:integer"/>
+                                        <xsd:element name="codice_gioco" type="xsd:string"/>
+                                        <xsd:element name="data_inizio" type="xsd:date"/>
+                                        <xsd:element name="data_fine" type="xsd:date"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="id" type="xsd:string" use="required"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

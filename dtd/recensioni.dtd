@@ -1,0 +1,11 @@
+<!ELEMENT recensioni (recensione*)>
+<!ELEMENT recensione (username, codice_gioco, testo, data, giudizi)>
+<!ELEMENT username (#PCDATA)>
+<!ELEMENT codice_gioco (#PCDATA)>
+<!ELEMENT testo (#PCDATA)>
+<!ELEMENT data (#PCDATA)>
+<!ELEMENT giudizi (giudizio+)>
+<!ELEMENT giudizio (username_votante, supporto, utilita)>
+<!ELEMENT username_votante (#PCDATA)>
+<!ELEMENT supporto (#PCDATA)>
+<!ELEMENT utilita (#PCDATA)>

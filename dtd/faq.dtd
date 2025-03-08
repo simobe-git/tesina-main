@@ -1,0 +1,6 @@
+<!ELEMENT faqs (faq+)>
+<!ELEMENT faq (domanda, risposta, data_creazione, fonte)>
+<!ELEMENT domanda (#PCDATA)>
+<!ELEMENT risposta (#PCDATA)>
+<!ELEMENT data_creazione (#PCDATA)>
+<!ELEMENT fonte (#PCDATA)>

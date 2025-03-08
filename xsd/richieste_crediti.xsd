@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:element name="richiesteCrediti">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="richiesta" maxOccurs="unbounded">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="username" type="xsd:string"/>
+                            <xsd:element name="crediti" type="xsd:integer"/>
+                            <xsd:element name="data" type="xsd:date"/>
+                            <xsd:element name="status" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

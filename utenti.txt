@@ -1,0 +1,18 @@
+posso fare che al momento del login:
+- se le credenziali dell'utente non sono nel db significa che è un visitatore, e quindi si può registrare e diventare un cliente. In tal caso però $_SESSION['role'] = "visitatore" e non è presente nel file xml.
+- se un utente si logga significa che ha un account e quindi è registrato nel db: in tal caso $_SESSION['role']="cliente" e nel file xml potrò mettere lo username di questo utente e il ruolo che appunto è 'cliente'. 
+- se un utente è un admin / amministratore (e ciò lo vediamo dal file xml) imposteremo rispettivamente $_SESSION['role'] = "admin" e $_SESSION['role'] = "amministratore". Dopodichè nelle varie pagine controlliamo il ruolo dell'utente
+
+struttura del file xml:
+<utenti>
+    <utente>
+        <username>cliente1</username>
+        <ruolo>cliente</ruolo>
+    </utente>
+    <utente>
+        <username>admin1</username>
+        <ruolo>admin</ruolo>
+    </utente>
+</utenti>
+
+ecc.

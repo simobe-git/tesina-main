@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recensioni>
+    <recensione id="1">
+        <username>cliente1</username>
+        <codice_gioco>1</codice_gioco>
+        <testo>Ottimo gioco, grafica spettacolare e gameplay coinvolgente!</testo>
+        <data>2024-03-15</data>
+        <giudizi>
+            <giudizio>
+                <username_votante>cliente2</username_votante>
+                <supporto>3</supporto>
+                <utilita>5</utilita>
+            </giudizio>
+        </giudizi>
+    </recensione>
+</recensioni>

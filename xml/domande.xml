@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domande>
+    <domanda>
+        <titolo>Problema con i crediti</titolo>
+        <contenuto>Come posso ricaricare i crediti? non trovo il pulsante</contenuto>
+        <autore>mario123</autore>
+        <data>2024-03-20</data>
+        <risposta>
+            <contenuto>Devi recarti nel tuo profilo e cliccare su "Richiesta Crediti"</contenuto>
+            <autore>luigi99</autore>
+            <data>2024-03-22</data>
+            <punteggio>
+                <utilita>8</utilita>
+                <risposta>12</risposta>
+            </punteggio>
+        </risposta>
+        <risposta>
+            <contenuto>C'è un pulsante blu in alto a destra nel tuo profilo</contenuto>
+            <autore>anna22</autore>
+            <data>2024-03-23</data>
+            <punteggio>
+                <utilita>3</utilita>
+                <risposta>5</risposta>
+            </punteggio>
+        </risposta>
+    </domanda>
+
+    <domanda>
+        <titolo>Dubbio sugli sconti</titolo>
+        <contenuto>Gli sconti si possono cumulare?</contenuto>
+        <autore>paolo456</autore>
+        <data>2024-03-19</data>
+        <risposta>
+            <contenuto>Si, gli sconti sono cumulabili. Se ha diritto a più sconti, l'importo totale da scontare sarà calcolato dal sistema sommando i singoli sconti.</contenuto>
+            <autore>anna22</autore>
+            <data>2024-03-27</data>
+            <punteggio>
+                <utilita>5</utilita>
+                <risposta>5</risposta>
+            </punteggio>
+        </risposta>
+    </domanda>
+</domande>

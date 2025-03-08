@@ -1,0 +1,10 @@
+<!ELEMENT domande (domanda*)>
+<!ELEMENT domanda (titolo, contenuto, autore, data, risposta+)>
+<!ELEMENT titolo (#PCDATA)>
+<!ELEMENT contenuto (#PCDATA)>
+<!ELEMENT autore (#PCDATA)>
+<!ELEMENT data (#PCDATA)>
+<!ELEMENT risposta (contenuto, autore, data, punteggio)>
+<!ELEMENT punteggio (utilita, supporto)>
+<!ELEMENT utilita (#PCDATA)>
+<!ELEMENT supporto (#PCDATA)>

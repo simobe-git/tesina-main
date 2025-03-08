@@ -1,0 +1,10 @@
+<!ELEMENT acquisti (acquisto+)>
+<!ELEMENT acquisto (username, codice_gioco, prezzo_originale, prezzo_pagato, sconto_applicato, bonus_ottenuti, data)>
+<!ELEMENT username (#PCDATA)>
+<!ELEMENT codice_gioco (#PCDATA)>
+<!ELEMENT prezzo_originale (#PCDATA)>
+<!ELEMENT prezzo_pagato (#PCDATA)>
+<!ELEMENT sconto_applicato (#PCDATA)>
+<!ELEMENT bonus_ottenuti (#PCDATA)>
+<!ELEMENT data (#PCDATA)>
+<!ATTLIST acquisto id CDATA #REQUIRED>

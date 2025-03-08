@@ -1,0 +1,4 @@
+<!ELEMENT utenti (utente+)>
+<!ELEMENT utente (username, avatar)>
+<!ELEMENT username (#PCDATA)>
+<!ELEMENT avatar (#PCDATA)>
