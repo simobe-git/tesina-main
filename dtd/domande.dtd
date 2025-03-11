@@ -1,5 +1,6 @@
 <!ELEMENT domande (domanda*)>
-<!ELEMENT domanda (titolo, contenuto, autore, data, risposta+)>
+<!ELEMENT domanda (codice_gioco, titolo, contenuto, autore, data, risposta+)>
+<!ELEMENT codice_gioco (#PCDATA)>
 <!ELEMENT titolo (#PCDATA)>
 <!ELEMENT contenuto (#PCDATA)>
 <!ELEMENT autore (#PCDATA)>

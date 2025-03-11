@@ -5,7 +5,7 @@ require_once('funzioni_sconti_bonus.php');
 
 // verifica se l'utente non è admin o gestore
 
-if(isset($_SESSION['statoLogin']) === false) { //se l'utente non è loggato
+if(isset($_SESSION['statoLogin']) === false) { // se l'utente non è loggato
 
 }elseif(isset($_SESSION['tipo_utente'])){
 
@@ -18,8 +18,8 @@ if(isset($_SESSION['statoLogin']) === false) { //se l'utente non è loggato
 $id_gioco = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 // caricamento dei giochi dal file XML
-$xml = simplexml_load_file('../xml/giochi.xml'); // Carica il file XML
-$giochi = json_decode(json_encode($xml), true); // Converte l'XML in un array
+$xml = simplexml_load_file('../xml/giochi.xml'); // carichiamo il file XML
+$giochi = json_decode(json_encode($xml), true); // questa riga converte l'XML in un array
 
 // troviamo il gioco specifico
 $gioco = null;
@@ -37,10 +37,10 @@ if (!$gioco) {
 
 // calcola sconto e bonus
 $sconto = calcolaSconto($_SESSION['username'] ?? null, $gioco['prezzo_originale']);
-//PER ORA NO     $bonus = getBonusDisponibili($id_gioco); // Assicurati che questa funzione funzioni con i dati XML
+//PER ORA NO     $bonus = getBonusDisponibili($id_gioco); 
 
 // caricamento delle recensioni dal file XML
-$recensioniXml = simplexml_load_file('../xml/recensioni.xml'); // Carica il file XML delle recensioni
+$recensioniXml = simplexml_load_file('../xml/recensioni.xml'); // carichiamo il file XML delle recensioni
 $recensioni = []; // è un array per memorizzare le recensioni filtrate
 
 foreach ($recensioniXml->recensione as $rec) {
@@ -53,6 +53,32 @@ foreach ($recensioniXml->recensione as $rec) {
         ];
     }
 }
+
+// caricamento delle discussioni dal file XML
+$domandeXml = simplexml_load_file('../xml/domande.xml'); // carichimo il file XML delle domande
+$discussioni = [];   // è un array per memorizzare le discussioni filtrate
+
+foreach ($domandeXml->domanda as $dom) {
+    if ((int)$dom->codice_gioco === $id_gioco) {
+        $risposte = [];
+        foreach ($dom->risposta as $risposta) {
+            $risposte[] = [
+                'contenuto' => (string)$risposta->contenuto,
+                'autore' => (string)$risposta->autore,
+                'data' => (string)$risposta->data,
+            ];
+        }
+
+        $discussioni[] = [
+            'titolo' => (string)$dom->titolo,
+            'contenuto' => (string)$dom->contenuto,
+            'autore' => (string)$dom->autore,
+            'data' => (string)$dom->data,
+            'risposte' => $risposte // aggiungiamo le risposte caricate nell'xmll
+        ];
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -106,7 +132,6 @@ foreach ($recensioniXml->recensione as $rec) {
             background: linear-gradient(45deg, #45a049, #388E3C);
         }
 
-        /* bottoni delle recensioni e discussioni */
         .form-recensione button,
         .form-discussione button {
             background: linear-gradient(45deg, #FF5722, #F4511E);
@@ -121,7 +146,6 @@ foreach ($recensioniXml->recensione as $rec) {
             background: linear-gradient(45deg, #F4511E, #E64A19);
         }
 
-        /* stili per le textarea */
         .form-recensione textarea,
         .form-discussione textarea {
             width: 100%;
@@ -141,8 +165,7 @@ foreach ($recensioniXml->recensione as $rec) {
             outline: none;
             box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
         }
-
-        /* bottone di login */
+        
         .btn-login {
             background: linear-gradient(45deg, #9C27B0, #7B1FA2);
             text-decoration: none;
@@ -181,7 +204,7 @@ foreach ($recensioniXml->recensione as $rec) {
                         <p><strong>Categoria:</strong> <?php echo htmlspecialchars($gioco['categoria']); ?></p>
                         <p><strong>Giocatori:</strong> <?php echo htmlspecialchars($gioco['min_num_giocatori']); ?> - <?php echo htmlspecialchars($gioco['max_num_giocatori']); ?></p>
                         <p><strong>Età Minima:</strong> <?php echo htmlspecialchars($gioco['min_eta']); ?></p>
-                        <p><strong>Durata Partita:</strong> <?php echo htmlspecialchars($gioco['avg_partita']); ?></p>
+                        <p><strong>Durata Partita:</strong> <?php echo htmlspecialchars($gioco['avg_partita']); ?> min</p>
                         <p><strong>Pubblicazione:</strong> <?php
                                                             $date = new DateTime($gioco['data_rilascio']);  
                                                             $anno = $date->format('Y');
@@ -189,7 +212,7 @@ foreach ($recensioniXml->recensione as $rec) {
                         </p>
                         <p><strong>Editore:</strong> <?php echo htmlspecialchars($gioco['nome_editore']); ?></p>
                         <p><strong>Autore:</strong> <?php echo htmlspecialchars($gioco['autore']); ?></p>
-                        <p><strong>Meccaniche:</strong> <?php echo htmlspecialchars($gioco['meccaniche']); ?></p>
+                        <p><strong>Meccaniche:</strong> <?php echo htmlspecialchars(implode(', ', explode(',', $gioco['meccaniche']))); ?></p>
                         <p><strong>Ambientazione:</strong> <?php echo htmlspecialchars($gioco['ambientazione']); ?></p>
                     </div>
                     
@@ -278,27 +301,35 @@ foreach ($recensioniXml->recensione as $rec) {
             <!-- sezione forum -->
             <div class="forum-section">
                 <h2>Discussioni</h2>
-                <?php if (empty($discussioni) && isset($_SESSION['username'])): ?>
-                    <form method="POST" action="aggiungi_discussione.php" class="form-discussione">
-                        <input type="hidden" name="codice_gioco" value="<?php echo $id_gioco; ?>">
-                        <textarea name="testo" required placeholder="Fai una domanda..."></textarea>
-                        <button type="submit" class="btn-primary">Apri discussione</button>
-                    </form>
-                <?php elseif (empty($discussioni)): ?>
+                <?php if (empty($discussioni)): ?>
                     <p>Non ci sono ancora discussioni per questo gioco.</p>
                 <?php else: ?>
                     <div class="discussioni-container">
                         <?php foreach ($discussioni as $discussione): ?>
                             <div class="discussione">
                                 <div class="discussione-header">
-                                    <span class="discussione-autore"><?php echo $discussione->username; ?></span>
-                                    <span class="discussione-data"><?php echo date('d/m/Y', strtotime($discussione->data)); ?></span>
+                                    <span class="discussione-autore" style="color: red;"><?php echo htmlspecialchars($discussione['autore']); ?></span>, 
+                                    <span class="discussione-data"><?php echo date('d/m/Y', strtotime($discussione['data'])); ?></span>
                                 </div>
-                                <p class="discussione-testo"><?php echo $discussione->testo; ?></p>
+                                <p class="discussione-testo"><?php echo htmlspecialchars($discussione['contenuto']); ?></p>
+                                
+                                <!-- mostriamo le risposte alle domande dei forum -->
+                                <?php if (!empty($discussione['risposte'])): ?>
+                                    <div class="risposte-container">
+                                        <?php foreach ($discussione['risposte'] as $risposta): ?>
+                                            <div class="risposta">
+                                                <strong style="color: blue;"><?php echo htmlspecialchars($risposta['autore']); ?></strong>, 
+                                                <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
+                                                <p><?php echo htmlspecialchars($risposta['contenuto']); ?></p>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+                                
                                 <?php if (isset($_SESSION['username'])): ?>
                                     <button class="btn-rispondi" onclick="mostraFormRisposta(this)">Rispondi</button>
                                     <form method="POST" action="aggiungi_risposta.php" class="form-risposta" style="display: none;">
-                                        <input type="hidden" name="id_discussione" value="<?php echo $discussione->id; ?>">
+                                        <input type="hidden" name="id_discussione" value="<?php echo $discussione['id']; ?>">
                                         <textarea name="testo" required placeholder="Scrivi la tua risposta..."></textarea>
                                         <button type="submit">Invia risposta</button>
                                     </form>

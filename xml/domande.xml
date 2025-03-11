@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <domande>
     <domanda>
-        <titolo>Problema con i crediti</titolo>
-        <contenuto>Come posso ricaricare i crediti? non trovo il pulsante</contenuto>
+        <codice_gioco>1</codice_gioco>
+        <titolo>Consiglio età di gioco</titolo>
+        <contenuto>Consigliereste di giocare ad un ragazzo di 13 anni?</contenuto>
         <autore>mario123</autore>
         <data>2024-03-20</data>
         <risposta>
-            <contenuto>Devi recarti nel tuo profilo e cliccare su "Richiesta Crediti"</contenuto>
+            <contenuto>Nell'età minima viene consigliato almeno 14 anni, per cui direi di aspettare!</contenuto>
             <autore>luigi99</autore>
             <data>2024-03-22</data>
             <punteggio>
@@ -15,7 +16,7 @@
             </punteggio>
         </risposta>
         <risposta>
-            <contenuto>C'è un pulsante blu in alto a destra nel tuo profilo</contenuto>
+            <contenuto>Anche se l'età minima è 14, ci si può tranquillamente giocare prima secondo me.</contenuto>
             <autore>anna22</autore>
             <data>2024-03-23</data>
             <punteggio>
@@ -26,12 +27,13 @@
     </domanda>
 
     <domanda>
-        <titolo>Dubbio sugli sconti</titolo>
-        <contenuto>Gli sconti si possono cumulare?</contenuto>
+        <codice_gioco>2</codice_gioco>
+        <titolo>Numero di giocatori</titolo>
+        <contenuto>Cosa accade se siamo più di 6 giocatori?</contenuto>
         <autore>paolo456</autore>
         <data>2024-03-19</data>
         <risposta>
-            <contenuto>Si, gli sconti sono cumulabili. Se ha diritto a più sconti, l'importo totale da scontare sarà calcolato dal sistema sommando i singoli sconti.</contenuto>
+            <contenuto>Probabilmente i soldi da distribuire a tutti i giocatori non basteranno e, quasi sicuramente, qualche giocatore si troverà pochissime proprietà in suo possesso.</contenuto>
             <autore>anna22</autore>
             <data>2024-03-27</data>
             <punteggio>
