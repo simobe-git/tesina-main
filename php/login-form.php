@@ -34,7 +34,7 @@ if(isset($_POST['login']) && $_SERVER["REQUEST_METHOD"] === "POST"){
 
         } elseif($tipo_utente === 'gestore' && $ban != 1) { //verifico che sia un gestore e che non sia bannato
             
-            header("Location: home.php");
+            header("Location: gestore_dashboard.php");
             exit();
         
         }elseif($tipo_utente === 'cliente' && $ban != 1){ //verifico che sia un cliente e che non sia bannato

@@ -80,7 +80,7 @@
         <codice>5</codice>
         <titolo>Catan</titolo>
         <prezzo_originale>45.00</prezzo_originale>
-        <prezzo_attuale>35.00</prezzo_attuale>
+        <prezzo_attuale>45.00</prezzo_attuale>
         <disponibile>true</disponibile>
         <categoria>Gestionale</categoria>
         <min_num_giocatori>3</min_num_giocatori>
@@ -137,7 +137,7 @@
         <codice>8</codice>
         <titolo>Risiko!</titolo>
         <prezzo_originale>50.00</prezzo_originale>
-        <prezzo_attuale>40.00</prezzo_attuale>
+        <prezzo_attuale>50.00</prezzo_attuale>
         <disponibile>true</disponibile>
         <categoria>Strategia</categoria>
         <min_num_giocatori>2</min_num_giocatori>
@@ -195,7 +195,7 @@ Lo scopo del gioco è quello di catturare Mr. X cercando di incastrarlo in una z
         <codice>11</codice>
         <titolo>Azul</titolo>
         <prezzo_originale>40.00</prezzo_originale>
-        <prezzo_attuale>32.00</prezzo_attuale>
+        <prezzo_attuale>40.00</prezzo_attuale>
         <disponibile>true</disponibile>
         <categoria>Astratto</categoria>
         <min_num_giocatori>2</min_num_giocatori>
