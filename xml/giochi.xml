@@ -1,213 +1,213 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <giochi>
-    <gioco>
-        <codice>1</codice>
-        <titolo>Brass Birmingham</titolo>
-        <prezzo_originale>105.00</prezzo_originale>
-        <prezzo_attuale>40.00</prezzo_attuale>
-        <disponibile>true</disponibile>
-        <categoria>Strategia</categoria>
-        <min_num_giocatori>2</min_num_giocatori>
-        <max_num_giocatori>4</max_num_giocatori>
-        <min_eta>14+</min_eta>
-        <avg_partita>90</avg_partita>
-        <data_rilascio>2018-02-23</data_rilascio>
-        <nome_editore>Roxley</nome_editore>
-        <autore>Bravan Grown</autore>
-        <descrizione>Racconta la storia di imprenditori in competizione tra loro a Birmingham durante la rivoluzione industriale.</descrizione>
-        <meccaniche>Raccolta risorse,Scelte strategiche</meccaniche>
-        <ambientazione>Storico</ambientazione>
-        <immagine>https://cf.geekdo-images.com/UIlFaaTmaWms7F5xdEFgGA__imagepage/img/SitcV7akzI3P_dl8pPEneEpM-U4=/fit-in/900x600/filters:no_upscale():strip_icc()/pic3549793.jpg</immagine>
-    </gioco>
-    <gioco>
-        <codice>2</codice>
-        <titolo>Monopoly</titolo>
-        <prezzo_originale>30.00</prezzo_originale>
-        <prezzo_attuale>20.00</prezzo_attuale>
-        <disponibile>true</disponibile>
-        <categoria>Sociale</categoria>
-        <min_num_giocatori>2</min_num_giocatori>
-        <max_num_giocatori>6</max_num_giocatori>
-        <min_eta>8+</min_eta>
-        <avg_partita>210</avg_partita>
-        <data_rilascio>1935-01-01</data_rilascio>
-        <nome_editore>Hasbro</nome_editore>
-        <autore>Elizabeth Magie</autore>
-        <descrizione>Gioco in cui i giocatori comprano, vendono e scambiano proprietà per costruire imperi. Vince chi manda in bancarotta gli avversari.</descrizione>
-        <meccaniche>Lancio di dadi,Movimento di pedine</meccaniche>
-        <ambientazione>Storico</ambientazione>
-        <immagine>https://logowik.com/content/uploads/images/monopoly512.logowik.com.webp</immagine>
-    </gioco>
-    <gioco>
-        <codice>3</codice>
-        <titolo>Indovina Chi?</titolo>
-        <prezzo_originale>30.00</prezzo_originale>
-        <prezzo_attuale>20.00</prezzo_attuale>
-        <disponibile>true</disponibile>
-        <categoria>Deduzione</categoria>
-        <min_num_giocatori>2</min_num_giocatori>
-        <max_num_giocatori>2</max_num_giocatori>
-        <min_eta>6+</min_eta>
-        <avg_partita>20</avg_partita>
-        <data_rilascio>1980-01-01</data_rilascio>
-        <nome_editore>Hasbro/Milton Bradley</nome_editore>
-        <autore>Theo e Ora Coster</autore>
-        <descrizione>Volete diventare grandi investigatori? La deduzione è il vostro pane? <strong>Indovina chi?</strong> è il gioco che fa per voi! Sulla vostra griglia avete decine di personaggi, ognuno con proprie caratteristiche ben distinte. Dovete indovinare il personaggio della carta pescata dal vostro avversario, prima che lui indovini il vostro!</descrizione>
-        <meccaniche>Scelte strategiche</meccaniche>
-        <ambientazione>Storico</ambientazione>
-        <immagine>https://hasbrocommunity.it/images/logos/300x300/indovina_chi.jpg?v=1</immagine>
-    </gioco>
-    <gioco>
-        <codice>4</codice>
-        <titolo>Jenga</titolo>
-        <prezzo_originale>35.00</prezzo_originale>
-        <prezzo_attuale>25.00</prezzo_attuale>
-        <disponibile>true</disponibile>
-        <categoria>Costruzioni</categoria>
-        <min_num_giocatori>1</min_num_giocatori>
-        <max_num_giocatori>8</max_num_giocatori>
-        <min_eta>6+</min_eta>
-        <avg_partita>15</avg_partita>
-        <data_rilascio>2018-01-01</data_rilascio>
-        <nome_editore>Hasbro</nome_editore>
-        <autore>Leslie Scott</autore>
-        <descrizione>Jenga è un classico gioco di concentrazione e precisione che consiste nel sottrarre i mattoncini impilati stando ben attenti a non far crollare la torre. </descrizione>
-        <meccaniche>Scelte strategiche</meccaniche>
-        <ambientazione>Storico</ambientazione>
-        <immagine>https://cf.geekdo-images.com/YH5C06snaoJtDqKjwMROPw__imagepage/img/zC1J50A0Ohr0s1UR5eJhky2XxuM=/fit-in/900x600/filters:no_upscale():strip_icc()/pic5140451.jpg</immagine>
-    </gioco>
-    <gioco>
-        <codice>5</codice>
-        <titolo>Catan</titolo>
-        <prezzo_originale>45.00</prezzo_originale>
-        <prezzo_attuale>45.00</prezzo_attuale>
-        <disponibile>true</disponibile>
-        <categoria>Gestionale</categoria>
-        <min_num_giocatori>3</min_num_giocatori>
-        <max_num_giocatori>4</max_num_giocatori>
-        <min_eta>10+</min_eta>
-        <avg_partita>90</avg_partita>
-        <data_rilascio>1995-01-01</data_rilascio>
-        <nome_editore>Kosmos</nome_editore>
-        <autore>Klaus Teuber</autore>
-        <descrizione>Alcuni marinai sono sbarcati sulla costa di un'isola sconosciuta che hanno battezzato Catan. Grazie al legno che raccolgono uomini e donne costruiscono insieme le case delle prime colonie. L'isola è ricca e ci sono molte materie prime disponibili, si costruiscono le strade e le colonie diventano presto delle città.</descrizione>
-        <meccaniche>Raccolta risorse</meccaniche>
-        <ambientazione>Storico</ambientazione>
-        <immagine>https://cf.geekdo-images.com/PyUol9QxBnZQCJqZI6bmSA__imagepage/img/tDdC3V3b26mJyPSyQI-_e2_E3Ik=/fit-in/900x600/filters:no_upscale():strip_icc()/pic8632666.png</immagine>
-    </gioco>
-    <gioco>
-        <codice>6</codice>
-        <titolo>Carcassonne</titolo>
-        <prezzo_originale>40.00</prezzo_originale>
-        <prezzo_attuale>30.00</prezzo_attuale>
-        <disponibile>true</disponibile>
-        <categoria>Piazzamento tessere</categoria>
-        <min_num_giocatori>2</min_num_giocatori>
-        <max_num_giocatori>5</max_num_giocatori>
-        <min_eta>7+</min_eta>
-        <avg_partita>35</avg_partita>
-        <data_rilascio>2000-01-01</data_rilascio>
-        <nome_editore>Hans im Glück</nome_editore>
-        <autore>Klaus-Jürgen Wrede</autore>
-        <descrizione>Il gioco consiste nel creare un paesaggio medievale posizionando e accostando tra loro vari tipi di tessere, che rappresentano una parte di città, un tratto di strada, un campo, o altri tipi di paesaggio, a seconda della versione del gioco o delle espansioni disponibili.</descrizione>
-        <meccaniche>Raccolta risorse,Scelte strategiche</meccaniche>
-        <ambientazione>Storico</ambientazione>
-        <immagine>https://cf.geekdo-images.com/okM0dq_bEXnbyQTOvHfwRA__imagepage/img/axGbn7f0x6UUb07DmzX9hg5TwIo=/fit-in/900x600/filters:no_upscale():strip_icc()/pic6544250.png</immagine>
-    </gioco>
-    <gioco>
-        <codice>7</codice>
-        <titolo>Dixit</titolo>
-        <prezzo_originale>35.00</prezzo_originale>
-        <prezzo_attuale>28.00</prezzo_attuale>
-        <disponibile>true</disponibile>
-        <categoria>Narrazione</categoria>
-        <min_num_giocatori>3</min_num_giocatori>
-        <max_num_giocatori>6</max_num_giocatori>
-        <min_eta>8+</min_eta>
-        <avg_partita>30</avg_partita>
-        <data_rilascio>2008-01-01</data_rilascio>
-        <nome_editore>Libellud</nome_editore>
-        <autore>Jean-Louis Roubira</autore>
-        <descrizione>DIXIT è un gioco di carte e di narrazione che mette al centro la fantasia. Un gioco sorprendente, conviviale e divertente da giocare in famiglia e con gli amici.</descrizione>
-        <meccaniche>Movimento</meccaniche>
-        <ambientazione>Storico</ambientazione>
-        <immagine>https://cf.geekdo-images.com/J0PlHArkZDJ57H-brXW2Fw__imagepage/img/j3bmkyVXJ2tOOXQzARtHqT__vzY=/fit-in/900x600/filters:no_upscale():strip_icc()/pic6738336.jpg</immagine>
-    </gioco>
-    <gioco>
-        <codice>8</codice>
-        <titolo>Risiko!</titolo>
-        <prezzo_originale>50.00</prezzo_originale>
-        <prezzo_attuale>50.00</prezzo_attuale>
-        <disponibile>true</disponibile>
-        <categoria>Strategia</categoria>
-        <min_num_giocatori>2</min_num_giocatori>
-        <max_num_giocatori>6</max_num_giocatori>
-        <min_eta>10+</min_eta>
-        <avg_partita>120</avg_partita>
-        <data_rilascio>1968-01-01</data_rilascio>
-        <nome_editore>Hasbro</nome_editore>
-        <autore>Albert Lamorisse</autore>
-        <descrizione>RisiKo! È un gioco di strategia a turni che simula un conflitto su scala internazionale. I giocatori dovranno, combattendo uno con l'altro, conquistare più territori possibili.</descrizione>
-        <meccaniche>Scelte strategiche</meccaniche>
-        <ambientazione>Storico</ambientazione>
-        <immagine>https://cf.geekdo-images.com/FhJHH2hxyCWVe-22KB5zTQ__imagepage/img/zUik98iMyKuc63zOKhrj9k-w6jc=/fit-in/900x600/filters:no_upscale():strip_icc()/pic5669315.jpg</immagine>
-    </gioco>
-    <gioco>
-        <codice>9</codice>
-        <titolo>Cluedo</titolo>
-        <prezzo_originale>30.00</prezzo_originale>
-        <prezzo_attuale>22.00</prezzo_attuale>
-        <disponibile>true</disponibile>
-        <categoria>Investigazione</categoria>
-        <min_num_giocatori>2</min_num_giocatori>
-        <max_num_giocatori>6</max_num_giocatori>
-        <min_eta>8+</min_eta>
-        <avg_partita>45</avg_partita>
-        <data_rilascio>1949-01-01</data_rilascio>
-        <nome_editore>Hasbro</nome_editore>
-        <autore>Anthony Pratt</autore>
-        <descrizione>Cluedo, il classico gioco di crimine e mistero. Sei sospetti. Un solo assassino. Un'arma. Un luogo del crimine. E, naturalmente, un solo vincitore. Gioca a Cluedo e usa le tue capacità investigative per scoprire chi è stato, dove e con quale arma.</descrizione>
-        <meccaniche>Interazione tra giocatori</meccaniche>
-        <ambientazione>Storico</ambientazione>
-        <immagine>https://cf.geekdo-images.com/wNcbhLJGGjakYjjm1gV_kQ__imagepage/img/uiPKGlpTeBRehBOOzYK8AwV0pWY=/fit-in/900x600/filters:no_upscale():strip_icc()/pic7563466.png</immagine>
-    </gioco>
-    <gioco>
-        <codice>10</codice>
-        <titolo>Scotland Yard</titolo>
-        <prezzo_originale>35.00</prezzo_originale>
-        <prezzo_attuale>27.00</prezzo_attuale>
-        <disponibile>true</disponibile>
-        <categoria>Investigazione</categoria>
-        <min_num_giocatori>2</min_num_giocatori>
-        <max_num_giocatori>6</max_num_giocatori>
-        <min_eta>10+</min_eta>
-        <avg_partita>45</avg_partita>
-        <data_rilascio>1983-01-01</data_rilascio>
-        <nome_editore>Ravensburger</nome_editore>
-        <autore>Werner Schlegel</autore>
-        <descrizione>Il tema di Scotland Yard è quello degli inseguimenti ed investigazione tra i detective ed il fatidico Mr. X per le strade ed i vicoli del centro di Londra.
+  <gioco>
+    <codice>1</codice>
+    <titolo>Brass Birmingham</titolo>
+    <prezzo_originale>105.00</prezzo_originale>
+    <prezzo_attuale>40.00</prezzo_attuale>
+    <disponibile>true</disponibile>
+    <categoria>Strategia</categoria>
+    <min_num_giocatori>2</min_num_giocatori>
+    <max_num_giocatori>4</max_num_giocatori>
+    <min_eta>14+</min_eta>
+    <avg_partita>90</avg_partita>
+    <data_rilascio>2018-02-23</data_rilascio>
+    <nome_editore>Roxley</nome_editore>
+    <autore>Bravan Grown</autore>
+    <descrizione>Racconta la storia di imprenditori in competizione tra loro a Birmingham durante la rivoluzione industriale.</descrizione>
+    <meccaniche>Raccolta risorse,Scelte strategiche</meccaniche>
+    <ambientazione>Storico</ambientazione>
+    <immagine>https://cf.geekdo-images.com/UIlFaaTmaWms7F5xdEFgGA__imagepage/img/SitcV7akzI3P_dl8pPEneEpM-U4=/fit-in/900x600/filters:no_upscale():strip_icc()/pic3549793.jpg</immagine>
+  </gioco>
+  <gioco>
+    <codice>2</codice>
+    <titolo>Monopoly</titolo>
+    <prezzo_originale>30.00</prezzo_originale>
+    <prezzo_attuale>20.00</prezzo_attuale>
+    <disponibile>true</disponibile>
+    <categoria>Sociale</categoria>
+    <min_num_giocatori>2</min_num_giocatori>
+    <max_num_giocatori>6</max_num_giocatori>
+    <min_eta>8+</min_eta>
+    <avg_partita>210</avg_partita>
+    <data_rilascio>1935-01-01</data_rilascio>
+    <nome_editore>Hasbro</nome_editore>
+    <autore>Elizabeth Magie</autore>
+    <descrizione>Gioco in cui i giocatori comprano, vendono e scambiano proprietà per costruire imperi. Vince chi manda in bancarotta gli avversari.</descrizione>
+    <meccaniche>Lancio di dadi,Movimento di pedine</meccaniche>
+    <ambientazione>Storico</ambientazione>
+    <immagine>https://logowik.com/content/uploads/images/monopoly512.logowik.com.webp</immagine>
+  </gioco>
+  <gioco>
+    <codice>3</codice>
+    <titolo>Indovina Chi?</titolo>
+    <prezzo_originale>30.00</prezzo_originale>
+    <prezzo_attuale>20.00</prezzo_attuale>
+    <disponibile>true</disponibile>
+    <categoria>Deduzione</categoria>
+    <min_num_giocatori>2</min_num_giocatori>
+    <max_num_giocatori>2</max_num_giocatori>
+    <min_eta>6+</min_eta>
+    <avg_partita>20</avg_partita>
+    <data_rilascio>1980-01-01</data_rilascio>
+    <nome_editore>Hasbro/Milton Bradley</nome_editore>
+    <autore>Theo e Ora Coster</autore>
+    <descrizione>Volete diventare grandi investigatori? La deduzione è il vostro pane? <strong>Indovina chi?</strong> è il gioco che fa per voi! Sulla vostra griglia avete decine di personaggi, ognuno con proprie caratteristiche ben distinte. Dovete indovinare il personaggio della carta pescata dal vostro avversario, prima che lui indovini il vostro!</descrizione>
+    <meccaniche>Scelte strategiche</meccaniche>
+    <ambientazione>Storico</ambientazione>
+    <immagine>https://hasbrocommunity.it/images/logos/300x300/indovina_chi.jpg?v=1</immagine>
+  </gioco>
+  <gioco>
+    <codice>4</codice>
+    <titolo>Jenga</titolo>
+    <prezzo_originale>35.00</prezzo_originale>
+    <prezzo_attuale>25.00</prezzo_attuale>
+    <disponibile>true</disponibile>
+    <categoria>Costruzioni</categoria>
+    <min_num_giocatori>1</min_num_giocatori>
+    <max_num_giocatori>8</max_num_giocatori>
+    <min_eta>6+</min_eta>
+    <avg_partita>15</avg_partita>
+    <data_rilascio>2018-01-01</data_rilascio>
+    <nome_editore>Hasbro</nome_editore>
+    <autore>Leslie Scott</autore>
+    <descrizione>Jenga è un classico gioco di concentrazione e precisione che consiste nel sottrarre i mattoncini impilati stando ben attenti a non far crollare la torre. </descrizione>
+    <meccaniche>Scelte strategiche</meccaniche>
+    <ambientazione>Storico</ambientazione>
+    <immagine>https://cf.geekdo-images.com/YH5C06snaoJtDqKjwMROPw__imagepage/img/zC1J50A0Ohr0s1UR5eJhky2XxuM=/fit-in/900x600/filters:no_upscale():strip_icc()/pic5140451.jpg</immagine>
+  </gioco>
+  <gioco>
+    <codice>5</codice>
+    <titolo>Catan</titolo>
+    <prezzo_originale>45.00</prezzo_originale>
+    <prezzo_attuale>45.00</prezzo_attuale>
+    <disponibile>true</disponibile>
+    <categoria>Gestionale</categoria>
+    <min_num_giocatori>3</min_num_giocatori>
+    <max_num_giocatori>4</max_num_giocatori>
+    <min_eta>10+</min_eta>
+    <avg_partita>90</avg_partita>
+    <data_rilascio>1995-01-01</data_rilascio>
+    <nome_editore>Kosmos</nome_editore>
+    <autore>Klaus Teuber</autore>
+    <descrizione>Alcuni marinai sono sbarcati sulla costa di un'isola sconosciuta che hanno battezzato Catan. Grazie al legno che raccolgono uomini e donne costruiscono insieme le case delle prime colonie. L'isola è ricca e ci sono molte materie prime disponibili, si costruiscono le strade e le colonie diventano presto delle città.</descrizione>
+    <meccaniche>Raccolta risorse</meccaniche>
+    <ambientazione>Storico</ambientazione>
+    <immagine>https://cf.geekdo-images.com/PyUol9QxBnZQCJqZI6bmSA__imagepage/img/tDdC3V3b26mJyPSyQI-_e2_E3Ik=/fit-in/900x600/filters:no_upscale():strip_icc()/pic8632666.png</immagine>
+  </gioco>
+  <gioco>
+    <codice>6</codice>
+    <titolo>Carcassonne</titolo>
+    <prezzo_originale>40.00</prezzo_originale>
+    <prezzo_attuale>30.00</prezzo_attuale>
+    <disponibile>true</disponibile>
+    <categoria>Piazzamento tessere</categoria>
+    <min_num_giocatori>2</min_num_giocatori>
+    <max_num_giocatori>5</max_num_giocatori>
+    <min_eta>7+</min_eta>
+    <avg_partita>35</avg_partita>
+    <data_rilascio>2000-01-01</data_rilascio>
+    <nome_editore>Hans im Glück</nome_editore>
+    <autore>Klaus-Jürgen Wrede</autore>
+    <descrizione>Il gioco consiste nel creare un paesaggio medievale posizionando e accostando tra loro vari tipi di tessere, che rappresentano una parte di città, un tratto di strada, un campo, o altri tipi di paesaggio, a seconda della versione del gioco o delle espansioni disponibili.</descrizione>
+    <meccaniche>Raccolta risorse,Scelte strategiche</meccaniche>
+    <ambientazione>Storico</ambientazione>
+    <immagine>https://cf.geekdo-images.com/okM0dq_bEXnbyQTOvHfwRA__imagepage/img/axGbn7f0x6UUb07DmzX9hg5TwIo=/fit-in/900x600/filters:no_upscale():strip_icc()/pic6544250.png</immagine>
+  </gioco>
+  <gioco>
+    <codice>7</codice>
+    <titolo>Dixit</titolo>
+    <prezzo_originale>35.00</prezzo_originale>
+    <prezzo_attuale>28.00</prezzo_attuale>
+    <disponibile>true</disponibile>
+    <categoria>Narrazione</categoria>
+    <min_num_giocatori>3</min_num_giocatori>
+    <max_num_giocatori>6</max_num_giocatori>
+    <min_eta>8+</min_eta>
+    <avg_partita>30</avg_partita>
+    <data_rilascio>2008-01-01</data_rilascio>
+    <nome_editore>Libellud</nome_editore>
+    <autore>Jean-Louis Roubira</autore>
+    <descrizione>DIXIT è un gioco di carte e di narrazione che mette al centro la fantasia. Un gioco sorprendente, conviviale e divertente da giocare in famiglia e con gli amici.</descrizione>
+    <meccaniche>Movimento</meccaniche>
+    <ambientazione>Storico</ambientazione>
+    <immagine>https://cf.geekdo-images.com/J0PlHArkZDJ57H-brXW2Fw__imagepage/img/j3bmkyVXJ2tOOXQzARtHqT__vzY=/fit-in/900x600/filters:no_upscale():strip_icc()/pic6738336.jpg</immagine>
+  </gioco>
+  <gioco>
+    <codice>8</codice>
+    <titolo>Risiko!</titolo>
+    <prezzo_originale>50.00</prezzo_originale>
+    <prezzo_attuale>50.00</prezzo_attuale>
+    <disponibile>true</disponibile>
+    <categoria>Strategia</categoria>
+    <min_num_giocatori>2</min_num_giocatori>
+    <max_num_giocatori>6</max_num_giocatori>
+    <min_eta>10+</min_eta>
+    <avg_partita>120</avg_partita>
+    <data_rilascio>1968-01-01</data_rilascio>
+    <nome_editore>Hasbro</nome_editore>
+    <autore>Albert Lamorisse</autore>
+    <descrizione>RisiKo! È un gioco di strategia a turni che simula un conflitto su scala internazionale. I giocatori dovranno, combattendo uno con l'altro, conquistare più territori possibili.</descrizione>
+    <meccaniche>Scelte strategiche</meccaniche>
+    <ambientazione>Storico</ambientazione>
+    <immagine>https://cf.geekdo-images.com/FhJHH2hxyCWVe-22KB5zTQ__imagepage/img/zUik98iMyKuc63zOKhrj9k-w6jc=/fit-in/900x600/filters:no_upscale():strip_icc()/pic5669315.jpg</immagine>
+  </gioco>
+  <gioco>
+    <codice>9</codice>
+    <titolo>Cluedo</titolo>
+    <prezzo_originale>30.00</prezzo_originale>
+    <prezzo_attuale>22.00</prezzo_attuale>
+    <disponibile>true</disponibile>
+    <categoria>Investigazione</categoria>
+    <min_num_giocatori>2</min_num_giocatori>
+    <max_num_giocatori>6</max_num_giocatori>
+    <min_eta>8+</min_eta>
+    <avg_partita>45</avg_partita>
+    <data_rilascio>1949-01-01</data_rilascio>
+    <nome_editore>Hasbro</nome_editore>
+    <autore>Anthony Pratt</autore>
+    <descrizione>Cluedo, il classico gioco di crimine e mistero. Sei sospetti. Un solo assassino. Un'arma. Un luogo del crimine. E, naturalmente, un solo vincitore. Gioca a Cluedo e usa le tue capacità investigative per scoprire chi è stato, dove e con quale arma.</descrizione>
+    <meccaniche>Interazione tra giocatori</meccaniche>
+    <ambientazione>Storico</ambientazione>
+    <immagine>https://cf.geekdo-images.com/wNcbhLJGGjakYjjm1gV_kQ__imagepage/img/uiPKGlpTeBRehBOOzYK8AwV0pWY=/fit-in/900x600/filters:no_upscale():strip_icc()/pic7563466.png</immagine>
+  </gioco>
+  <gioco>
+    <codice>10</codice>
+    <titolo>Scotland Yard</titolo>
+    <prezzo_originale>35.00</prezzo_originale>
+    <prezzo_attuale>27.00</prezzo_attuale>
+    <disponibile>true</disponibile>
+    <categoria>Investigazione</categoria>
+    <min_num_giocatori>2</min_num_giocatori>
+    <max_num_giocatori>6</max_num_giocatori>
+    <min_eta>10+</min_eta>
+    <avg_partita>45</avg_partita>
+    <data_rilascio>1983-01-01</data_rilascio>
+    <nome_editore>Ravensburger</nome_editore>
+    <autore>Werner Schlegel</autore>
+    <descrizione>Il tema di Scotland Yard è quello degli inseguimenti ed investigazione tra i detective ed il fatidico Mr. X per le strade ed i vicoli del centro di Londra.
 Lo scopo del gioco è quello di catturare Mr. X cercando di incastrarlo in una zona della città deducendo le sue mosse ed intenzioni.</descrizione>
-        <meccaniche>Scelte strategiche</meccaniche>
-        <ambientazione>Storico</ambientazione>
-        <immagine>https://cf.geekdo-images.com/yEhaXszPTy5N4hiY469DPA__imagepage/img/L4OcSRZrrKtyDZdmxgST3oLgnIg=/fit-in/900x600/filters:no_upscale():strip_icc()/pic8377405.jpg</immagine>
-    </gioco>
-    <gioco>
-        <codice>11</codice>
-        <titolo>Azul</titolo>
-        <prezzo_originale>40.00</prezzo_originale>
-        <prezzo_attuale>40.00</prezzo_attuale>
-        <disponibile>true</disponibile>
-        <categoria>Astratto</categoria>
-        <min_num_giocatori>2</min_num_giocatori>
-        <max_num_giocatori>4</max_num_giocatori>
-        <min_eta>8+</min_eta>
-        <avg_partita>40</avg_partita>
-        <data_rilascio>2018-01-01</data_rilascio>
-        <nome_editore>Plan B Games</nome_editore>
-        <autore>Michael Kiesling</autore>
-        <descrizione>Azul è un gioco per famiglie nel quale prenderete i panni di artisti esperti nella realizzazione di mosaici. Il vostro scopo sarà quello di riuscire a posizionare le tessere di ceramica nel miglior modo possibile, cosi da massimizzare i punti e vincere la partita!</descrizione>
-        <meccaniche>Movimento</meccaniche>
-        <ambientazione>Storico</ambientazione>
-        <immagine>https://cf.geekdo-images.com/aPSHJO0d0XOpQR5X-wJonw__imagepage/img/q4uWd2nXGeEkKDR8Cc3NhXG9PEU=/fit-in/900x600/filters:no_upscale():strip_icc()/pic6973671.png</immagine>
-    </gioco>
+    <meccaniche>Scelte strategiche</meccaniche>
+    <ambientazione>Storico</ambientazione>
+    <immagine>https://cf.geekdo-images.com/yEhaXszPTy5N4hiY469DPA__imagepage/img/L4OcSRZrrKtyDZdmxgST3oLgnIg=/fit-in/900x600/filters:no_upscale():strip_icc()/pic8377405.jpg</immagine>
+  </gioco>
+  <gioco>
+    <codice>11</codice>
+    <titolo>Azul</titolo>
+    <prezzo_originale>40.00</prezzo_originale>
+    <prezzo_attuale>40.00</prezzo_attuale>
+    <disponibile>true</disponibile>
+    <categoria>Astratto</categoria>
+    <min_num_giocatori>2</min_num_giocatori>
+    <max_num_giocatori>4</max_num_giocatori>
+    <min_eta>8+</min_eta>
+    <avg_partita>40</avg_partita>
+    <data_rilascio>2018-01-01</data_rilascio>
+    <nome_editore>Plan B Games</nome_editore>
+    <autore>Michael Kiesling</autore>
+    <descrizione>Azul è un gioco per famiglie nel quale prenderete i panni di artisti esperti nella realizzazione di mosaici. Il vostro scopo sarà quello di riuscire a posizionare le tessere di ceramica nel miglior modo possibile, cosi da massimizzare i punti e vincere la partita!</descrizione>
+    <meccaniche>Movimento</meccaniche>
+    <ambientazione>Storico</ambientazione>
+    <immagine>https://cf.geekdo-images.com/aPSHJO0d0XOpQR5X-wJonw__imagepage/img/q4uWd2nXGeEkKDR8Cc3NhXG9PEU=/fit-in/900x600/filters:no_upscale():strip_icc()/pic6973671.png</immagine>
+  </gioco>
 </giochi>
