@@ -73,6 +73,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $messaggio = "Gioco non trovato";
         }
+    }elseif(isset($_POST['aggiungi_gioco'])){
+        header("Location: aggiungi_gioco.php");
+        exit();
     }
 }
 
@@ -106,6 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         .btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; }
         .btn-danger { background: #dc3545; color: white; }
+        .btn-success { background: #28a745; color: white; }
         .btn-primary { background: #007bff; color: white; }
         .messaggio {
             text-align: center;
@@ -175,6 +179,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="title-container">
             <h1 style="font-size: 200%;">Gestione Giochi</h1>
             <h3>Qui puoi modificare i dati dei giochi</h3>
+            <form method="POST">
+                <button type="submit" name="aggiungi_gioco" class="btn btn-success">Aggiungi Gioco</button>
+            </form>
         </div>
         
         <?php if (isset($messaggio)): ?>
