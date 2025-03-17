@@ -267,7 +267,7 @@ if (count($giochi) < 3) {
                                 </span>
                                 <br>
                                 <span style="font-size: 1.2em; color: #999; text-decoration: line-through; margin-left: 10px;">
-                                    Crediti Iniziali: <?php echo htmlspecialchars($gioco['prezzo_originale']); ?>
+                                    Crediti: <?php echo htmlspecialchars($gioco['prezzo_originale']); ?>
                                 </span>
                             </p>
                         <?php else: ?>

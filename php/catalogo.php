@@ -13,19 +13,18 @@ if(isset($_SESSION['statoLogin']) === false) {//se l'utente non è loggato
     }
 }
 
+// caricamento dei giochi dal file XML
+$xml = simplexml_load_file('../xml/giochi.xml'); 
+$giochi = json_decode(json_encode($xml), true); // convertiamo l'XML in un array
 
-// Caricamento dei giochi dal file XML
-$xml = simplexml_load_file('../xml/giochi.xml'); // Carica il file XML
-$giochi = json_decode(json_encode($xml), true); // Converte l'XML in un array
-
-// Controlla se l'array contiene i giochi
+// controlliamo dapprima se l'array contiene i giochi
 if (isset($giochi['gioco'])) {
-    // Se l'array è presente, accedi ai giochi
+    // se l'array è presente, accesso ai giochi
     $giochi = $giochi['gioco'];
 } else {
-    // Se non ci sono giochi, mostra un messaggio
+    // se invece non ci sono giochi, mostra un messaggio
     echo "<p>Nessun gioco trovato nel catalogo.</p>";
-    exit; // Esci dallo script
+    exit;
 }
 
 function calcolaBonus($codiceGioco) {
@@ -78,20 +77,21 @@ if (!in_array($direzione, $direzioni_permesse)) {
 $categoria = isset($_GET['categoria']) ? $_GET['categoria'] : '';
 $editore = isset($_GET['editore']) ? $_GET['editore'] : '';
 
-// Debug: Stampa il valore della categoria selezionata
+/* debug: Stampa il valore della categoria selezionata
 echo "<pre>Categoria selezionata: " . htmlspecialchars($categoria) . "</pre>";
+*/
 
-// Filtraggio dei giochi
+// filtraggio dei giochi
 if ($categoria) {
     $giochiFiltrati = array_filter($giochi, function($gioco) use ($categoria) {
         return $gioco['categoria'] === $categoria;
     });
     
-    // Debug: Stampa i giochi filtrati
+    /* debug: Stampa i giochi filtrati
     echo "<pre>Giochi filtrati per categoria: " . htmlspecialchars($categoria) . "</pre>";
-    print_r($giochiFiltrati);
+    print_r($giochiFiltrati); */
     
-    $giochi = $giochiFiltrati; // Aggiorna l'array dei giochi
+    $giochi = $giochiFiltrati; // aggiornamento array dei giochi
 }
 if ($editore) {
     $giochi = array_filter($giochi, function($gioco) use ($editore) {
@@ -99,7 +99,7 @@ if ($editore) {
     });
 }
 
-// Ordinamento dei giochi
+// ordinamento dei giochi
 usort($giochi, function($a, $b) use ($ordinamento, $direzione) {
     if ($ordinamento === 'prezzo') {
         $prezzoA = $a['prezzo_attuale'] ?? $a['prezzo_originale'];
@@ -112,27 +112,6 @@ usort($giochi, function($a, $b) use ($ordinamento, $direzione) {
     }
 });
 
-// Non è più necessario eseguire una query sul database per ottenere i giochi
-// $query = "SELECT *, 
-//           CASE 
-//             WHEN prezzo_attuale IS NOT NULL AND prezzo_attuale < prezzo_originale 
-//             THEN prezzo_attuale 
-//             ELSE prezzo_originale 
-//           END AS prezzo_effettivo 
-//           FROM gioco_tavolo
-//           WHERE 1=1";  // condizione sempre vera per concatenare la AND
-
-// $query .= " ORDER BY ";
-
-// gestione ordinamento con prezzo effettivo
-// if ($ordinamento === 'prezzo') {
-//     $query .= "prezzo_effettivo";
-// } else {
-//     $query .= $ordinamento;
-// }
-// $query .= " " . $direzione;
-
-// $risultato = $connessione->query($query);
 ?>
 
 <!DOCTYPE html>
@@ -176,7 +155,7 @@ usort($giochi, function($a, $b) use ($ordinamento, $direzione) {
                 <select class="filtro-select" id="categoria" onchange="applicaFiltri()">
                     <option value="">Tutti i generi</option>
                     <?php 
-                    // Genera le opzioni per le categorie dal file XML
+                    // quiu generiamo le opzioni per le categorie dal file XML
                     $categorie = array_unique(array_column($giochi, 'categoria'));
                     foreach ($categorie as $categoriaOpzione): ?>
                         <option value="<?php echo htmlspecialchars($categoriaOpzione); ?>"
@@ -192,7 +171,7 @@ usort($giochi, function($a, $b) use ($ordinamento, $direzione) {
                 <select class="filtro-select" id="editore" onchange="applicaFiltri()">
                     <option value="">Tutti gli editori</option>
                     <?php 
-                    // Genera le opzioni per gli editori dal file XML
+                    // generiamo le opzioni per gli editori dal file XML
                     $editori = array_unique(array_column($giochi, 'nome_editore'));
                     foreach ($editori as $editoreOpzione): ?>
                         <option value="<?php echo htmlspecialchars($editoreOpzione); ?>"
@@ -205,24 +184,22 @@ usort($giochi, function($a, $b) use ($ordinamento, $direzione) {
         </div>
     </div>
 
-    <!-- griglia dei videogiochi -->
+    <!-- griglia dei giochi da tavolo -->
     <div class="product-grid" style="margin-top: 3em;">
         <?php
-        // Mostra i giochi filtrati
+        // mostriamo i giochi filtrati
         if (empty($giochi)) {
             echo "<p>Nessun gioco trovato nel catalogo.</p>";
         } else {
             foreach ($giochi as $gioco) {
-                // Assicurati che le chiavi esistano prima di accedervi
                 $titolo = $gioco['titolo'] ?? 'Titolo non disponibile';
                 $descrizione = $gioco['descrizione'] ?? 'Descrizione non disponibile';
                 $prezzo_originale = $gioco['prezzo_originale'] ?? 'N/A';
                 $prezzo_attuale = $gioco['prezzo_attuale'] ?? 'N/A';
 
-                // Calcola sconto
                 $prezzo_base = $prezzo_attuale !== 'N/A' ? $prezzo_attuale : $prezzo_originale;
                 $sconto = calcolaSconto($_SESSION['username'] ?? null, $prezzo_base);
-                $prezzo_finale = $sconto['prezzo_finale'] ?? $prezzo_base; // Assicurati che $sconto esista
+                $prezzo_finale = $sconto['prezzo_finale'] ?? $prezzo_base; 
 
                 ?>
                 <div class="product-item">
@@ -235,32 +212,21 @@ usort($giochi, function($a, $b) use ($ordinamento, $direzione) {
                     
                     <div class="prezzi">
                         <div class="prezzo-container">
-                            <!-- Mostra prezzo scontato con bonus -->
+                            
                             <?php if (isset($sconto['percentuale']) && $sconto['percentuale'] > 0): ?>
                                 <div class="prezzo-originale"><?php echo $prezzo_originale; ?> crediti</div>
                                 <div class="prezzo-scontato">
-                                    <?php echo $prezzo_finale; ?> crediti
+                                <span style="font-size: 1.4em; color: #2ecc71; font-weight: bold;"><?php echo $prezzo_finale; ?> crediti</span>
                                     <span class="sconto-info">(-<?php echo $sconto['percentuale']; ?>%)</span>
                                 </div>
                                 <div class="sconto-motivo"><?php echo $sconto['motivo'] ?? ''; ?></div>
-                            <?php else: ?>
-                                <div class="prezzo-scontato"><?php echo $prezzo_attuale; ?> crediti</div>
+                            <?php else: //nessuno sconto, mostriamo solo il prezzo dei giochi    ?> 
+                                <span style="font-size: 1.4em; color: #2ecc71; font-weight: bold;"><?php echo $prezzo_finale; ?> crediti</span>
                             <?php endif; ?>
                         </div>
                     </div>
 
-                    <a href="dettaglio_gioco.php?id=<?php echo $gioco['codice']; ?>" 
-                       style="display: block; 
-                              width: 90%; 
-                              margin: 10px auto; 
-                              padding: 10px; 
-                              background-color: #007bff; 
-                              color: white; 
-                              text-align: center; 
-                              text-decoration: none; 
-                              border-radius: 5px;">
-                        Acquista
-                    </a>
+                    <button class="btn-acquista" onclick="location.href='dettaglio_gioco.php?id=<?php echo $gioco['codice']; ?>'">Visualizza Dettagli</button>
                 </div>
                 <?php 
             }
@@ -275,6 +241,22 @@ usort($giochi, function($a, $b) use ($ordinamento, $direzione) {
         menuHamburger.addEventListener('click', () => {
             linkNav.classList.toggle('attivo');
         });
+
+        // funzione per l'orrdinamento dei giochi in base ai criteri esistenti (categorie ed editori esistenti)
+        function applicaFiltri() {
+            const ordinamento = document.getElementById('ordinamento').value;
+            const direzione = document.getElementById('direzione').value;
+            const categoria = document.getElementById('categoria').value;
+            const editore = document.getElementById('editore').value;
+
+            const url = new URL(window.location.href);
+            url.searchParams.set('ordinamento', ordinamento);
+            url.searchParams.set('direzione', direzione);
+            url.searchParams.set('categoria', categoria);
+            url.searchParams.set('editore', editore);
+            
+            window.location.href = url.toString();
+        }
     </script>
 </body>
 </html>
