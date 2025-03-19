@@ -1,8 +1,4 @@
 <?xml version="1.0"?>
-<!--
-Nel seguente file vengono riportati tutti gli utenti caricati dal file di install
-successivamente ad ogni registrazione sarà aggiunto un nuovo utente
- -->
 <utenti>
   <utente>
     <username>admin1</username>
@@ -15,7 +11,7 @@ successivamente ad ogni registrazione sarà aggiunto un nuovo utente
   <utente>
     <username>cliente1</username>
     <avatar>default_avatar.jpg</avatar>
-  </utente>
+  <ruolo>richiesta_admin</ruolo></utente>
   <utente>
     <username>cliente2</username>
     <avatar>default_avatar.jpg</avatar>

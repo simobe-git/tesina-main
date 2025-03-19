@@ -6,12 +6,10 @@ require_once('connessione.php');
 if (!isset($_SESSION['statoLogin'])) {
     header("Location: login.php");
     exit();
-
-}elseif($_SESSION['tipo_utente'] !== 'cliente'){
+} elseif ($_SESSION['tipo_utente'] !== 'cliente') {
     header("Location: home.php");
     exit();
 }
-
 
 if (!isset($_SESSION['username'])) {
     header('Location: login.php');
@@ -23,59 +21,49 @@ function formattaData($data) {
     return date('d/m/Y', strtotime($data));
 }
 
-// funzione per ottenere i dettagli di un gioco
-function getDettagliGioco($connessione, $codice_gioco) {
-    $query = "SELECT titolo, categoria, nome_editore FROM gioco_tavolo WHERE codice = ?";
-    $stmt = $connessione->prepare($query);
-    $stmt->bind_param("i", $codice_gioco);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_assoc();
-}
-
-// all'inizio del file, dopo session_start()
-error_log("Inizio caricamento storico acquisti per utente: " . $_SESSION['username']);
-
-$xml_file = '../xml/acquisti.xml';
-error_log("Percorso file XML: " . realpath($xml_file));
-
-$acquisti = [];
-
-if (file_exists($xml_file)) {
-    error_log("File XML esiste");
-    $xml = simplexml_load_file($xml_file);
-    if ($xml === false) {
-        error_log("Errore nel caricamento del file XML");
-    } else {
-        error_log("File XML caricato. Numero totale acquisti: " . count($xml->acquisto));
-        foreach ($xml->acquisto as $acquisto) {
-            error_log("Controllo acquisto - Username nel XML: " . (string)$acquisto->username . " vs Session: " . $_SESSION['username']);
-            if ((string)$acquisto->username === $_SESSION['username']) {
-                $dettagli_gioco = getDettagliGioco($connessione, (int)$acquisto->codice_gioco);
-                if ($dettagli_gioco) {
-                    error_log("Aggiunto acquisto per gioco: " . $dettagli_gioco['titolo']);
-                    $acquisti[] = [
-                        'id' => (string)$acquisto['id'],
-                        'gioco' => $dettagli_gioco['titolo'],
-                        'categoria' => $dettagli_gioco['categoria'],
-                        'editore' => $dettagli_gioco['nome_editore'],
-                        'prezzo_originale' => (float)$acquisto->prezzo_originale,
-                        'prezzo_pagato' => (float)$acquisto->prezzo_pagato,
-                        'sconto' => isset($acquisto->sconto_applicato) ? (float)$acquisto->sconto_applicato : 0,
-                        'bonus' => isset($acquisto->bonus_applicato) ? (int)$acquisto->bonus_applicato : 0,
-                        'data' => (string)$acquisto->data
-                    ];
-                } else {
-                    error_log("Dettagli gioco non trovati per codice: " . (int)$acquisto->codice_gioco);
-                }
+// funzione per ottenere i dettagli di un gioco dal file XML
+function getDettagliGioco($codice_gioco) {
+    $xml_file = '../xml/giochi.xml';
+    if (file_exists($xml_file)) {
+        $xml = simplexml_load_file($xml_file);
+        foreach ($xml->gioco as $gioco) {
+            if ((string)$gioco->codice === (string)$codice_gioco) {
+                return [
+                    'titolo' => (string)$gioco->titolo,
+                    'categoria' => (string)$gioco->categoria,
+                    'nome_editore' => (string)$gioco->nome_editore,
+                ];
             }
         }
     }
-} else {
-    error_log("File XML non trovato: " . $xml_file);
+    return null; // Se il gioco non viene trovato
 }
 
-error_log("Numero totale acquisti trovati per l'utente: " . count($acquisti));
+// all'inizio del file, dopo session_start()
+$xml_file = '../xml/acquisti.xml';
+$acquisti = [];
+
+if (file_exists($xml_file)) {
+    $xml = simplexml_load_file($xml_file);
+    foreach ($xml->acquisto as $acquisto) {
+        if ((string)$acquisto->username === $_SESSION['username']) {
+            $dettagli_gioco = getDettagliGioco((int)$acquisto->codice_gioco);
+            if ($dettagli_gioco) {
+                $acquisti[] = [
+                    'id' => (string)$acquisto['id'],
+                    'gioco' => $dettagli_gioco['titolo'],
+                    'categoria' => $dettagli_gioco['categoria'],
+                    'editore' => $dettagli_gioco['nome_editore'],
+                    'prezzo_originale' => (float)$acquisto->prezzo_originale,
+                    'prezzo_pagato' => (float)$acquisto->prezzo_pagato,
+                    'sconto' => isset($acquisto->sconto_applicato) ? (float)$acquisto->sconto_applicato : 0,
+                    'bonus' => isset($acquisto->bonus_applicato) ? (int)$acquisto->bonus_applicato : 0,
+                    'data' => (string)$acquisto->data
+                ];
+            }
+        }
+    }
+}
 
 // calcolo delle statistiche
 $totale_speso = array_sum(array_column($acquisti, 'prezzo_pagato'));
@@ -207,7 +195,6 @@ $totale_bonus = array_sum(array_column($acquisti, 'bonus'));
             </div>
         </div>
 
-        <!-- Filtri sulla tabella-->
         <div class="filtri">
             <label for="filtro-gioco">Gioco:</label>
             <input type="text" id="filtro-gioco" placeholder="Cerca gioco...">
@@ -218,7 +205,6 @@ $totale_bonus = array_sum(array_column($acquisti, 'bonus'));
         </div>
 
         <?php if (!empty($acquisti)): ?>
-            <!--Tabella mostra tutti gli acquisti-->
             <table class="acquisti-tabella" id="acquisti-tabella">
                 <thead>
                     <tr>
@@ -241,7 +227,7 @@ $totale_bonus = array_sum(array_column($acquisti, 'bonus'));
                             <td><?php echo number_format($acquisto['prezzo_originale'], 2); ?></td>
                             <td><?php echo number_format($acquisto['prezzo_pagato'], 2); ?></td>
                             <td>
-                                <!-- Mostra se si ha o meno uno sconto -->
+                                <!-- mostriamo se si ha o meno uno sconto -->
                                 <?php if ($acquisto['sconto'] > 0): ?>
                                     <span class="sconto-badge">
                                         -<?php echo $acquisto['sconto']; ?>%
@@ -250,10 +236,10 @@ $totale_bonus = array_sum(array_column($acquisti, 'bonus'));
                                     <p>Nessuno sconto applicato</p>
                                 <?php endif; ?>
 
-                                <!-- Mostra se si ha o meno un bonus -->
+                                <!-- mostriamo se si ha o meno un bonus -->
                                 <?php if ($acquisto['bonus'] > 0): ?>
                                     <span class="bonus-badge">
-                                        +<?php echo $acquisto['bonus']; ?> crediti <!--Per ogni bonus si ricevono dei credti-->
+                                        +<?php echo $acquisto['bonus']; ?> crediti <!--per ogni bonus si ricevono dei credti-->
                                     </span>
                                 <?php else: ?>
                                     <p>Nessun bonus</p>
@@ -279,7 +265,7 @@ $totale_bonus = array_sum(array_column($acquisti, 'bonus'));
             navLinks.classList.toggle('active');
         });
 
-        // Filtri di ricerca
+        // filtri di ricerca
         const filtroGioco = document.getElementById('filtro-gioco');
         const filtroCategoria = document.getElementById('filtro-categoria');
         const filtroEditore = document.getElementById('filtro-editore');
