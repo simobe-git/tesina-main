@@ -24,6 +24,47 @@
                 <risposta>5</risposta>
             </punteggio>
         </risposta>
+        <risposta>
+            <contenuto>No, bisogna rispettare l'età!</contenuto>
+            <autore>giuseppeee</autore>
+            <data>2024-03-29</data>
+            <punteggio>
+                <utilita>3</utilita>
+                <risposta>5</risposta>
+            </punteggio>
+        </risposta>
+    </domanda>
+    <domanda>
+        <codice_gioco>1</codice_gioco>
+        <titolo>Vi è piaciuto il gioco?</titolo>
+        <contenuto>Sono indeciso se comprarlo o no: vi è piaciuto? cosa vi ha soddisfatto e cosa non? voglio chiarirmi le idee per decidere se acquistarlo</contenuto>
+        <autore>peppe01</autore>
+        <data>2024-03-19</data>
+        <risposta>
+            <contenuto>Secondo me non vale i soldi spesi, vai su altro!</contenuto>
+            <autore>luigi99</autore>
+            <data>2024-03-21</data>
+            <punteggio>
+                <utilita>8</utilita>
+                <risposta>12</risposta>
+            </punteggio>
+        </risposta>
+    </domanda>
+    <domanda>
+        <codice_gioco>1</codice_gioco>
+        <titolo>Vi è piaciuto il gioco?</titolo>
+        <contenuto>Sono indeciso se comprarlo o no: vi è piaciuto? cosa vi ha soddisfatto e cosa non? voglio chiarirmi le idee per decidere se acquistarlo</contenuto>
+        <autore>peppe01</autore>
+        <data>2024-03-19</data>
+        <risposta>
+            <contenuto>Secondo me non vale i soldi spesi, vai su altro!</contenuto>
+            <autore>luigi99</autore>
+            <data>2024-03-21</data>
+            <punteggio>
+                <utilita>8</utilita>
+                <risposta>12</risposta>
+            </punteggio>
+        </risposta>
     </domanda>
 
     <domanda>

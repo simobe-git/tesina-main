@@ -11,14 +11,13 @@ if (!isset($_SESSION['statoLogin'])) {
     exit();
 }
 
-// Carica dati giochi da file xml
+// caricamento dati giochi da file xml
 $xml = simplexml_load_file('../xml/giochi.xml');
 
-// Si ipotizza di aggiungere i dati di un nuovo gioco
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     if (isset($_POST['aggiungi_gioco'])) {
-        // Crea un nuovo elemento gioco
+        // creazione nuovo elemento gioco
         $nuovo_gioco = $xml->addChild('gioco');
         $nuovo_gioco->addChild('codice', $_POST['codice']);
         $nuovo_gioco->addChild('titolo', $_POST['titolo']);
@@ -38,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $nuovo_gioco->addChild('ambientazione', $_POST['ambientazione']);
         $nuovo_gioco->addChild('immagine', $_POST['immagine']);
 
-        // Salva il file XML aggiornato
+        // salvataggio file XML aggiornato
         $dom = new DOMDocument('1.0');
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;

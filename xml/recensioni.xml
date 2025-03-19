@@ -13,4 +13,17 @@
             </giudizio>
         </giudizi>
     </recensione>
+    <recensione id="1">
+        <username>cliente22</username>
+        <codice_gioco>1</codice_gioco>
+        <testo>Bello, ma non lo consiglierei</testo>
+        <data>2024-03-18</data>
+        <giudizi>
+            <giudizio>
+                <username_votante>cliente2</username_votante>
+                <supporto>3</supporto>
+                <utilita>5</utilita>
+            </giudizio>
+        </giudizi>
+    </recensione>
 </recensioni>

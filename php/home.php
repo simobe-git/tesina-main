@@ -14,33 +14,33 @@ if (isset($_SESSION['username'])) {
     }
 }
 
-// Caricamento dei giochi dal file XML
-$xml = simplexml_load_file('../xml/giochi.xml'); // Carica il file XML
+// caricamento dei giochi dal file XML
+$xml = simplexml_load_file('../xml/giochi.xml'); // caricamento file XML
 
 if ($xml === false) {
     die("Errore nel caricamento del file XML.");
 }
 
 $giochi = json_decode(json_encode($xml), true); // Converte l'XML in un array
-// Controlla se l'array contiene i giochi
+// controlliamo se l'array contiene i giochi
 if (isset($giochi['gioco'])) {
-    // Se l'array è presente, accedi ai giochi
+    // se l'array è presente, accediamo ai giochi
     $giochi = $giochi['gioco'];
 } else {
-    // Se non ci sono giochi, mostra un messaggio
+    // se non ci sono giochi, mostra un messaggio
     echo "<p>Nessun gioco trovato nel catalogo.</p>";
-    exit; // Esci dallo script
+    exit; 
 }
 
 
-// Seleziona 3 giochi casuali
+// selezioniamo 3 giochi casuali
 if (count($giochi) < 3) {
-    $giochiCasuali = $giochi; // Seleziona tutti i giochi se sono meno di 3
+    $giochiCasuali = $giochi;
 } else {
-    $indiciCasuali = array_rand($giochi, 3); // Seleziona 3 indici casuali
-    $giochiCasuali = []; // Inizializza l'array per i giochi casuali
+    $indiciCasuali = array_rand($giochi, 3); // seleziona 3 indici casuali
+    $giochiCasuali = []; // nizializzazione array per i giochi casuali
     foreach ($indiciCasuali as $indice) {
-        $giochiCasuali[] = $giochi[$indice]; // Accedi ai dati associati agli indici
+        $giochiCasuali[] = $giochi[$indice]; // accediamo ai dati associati agli indici
     }
 }
 

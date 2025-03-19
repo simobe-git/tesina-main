@@ -1,7 +1,7 @@
 <?php
 $current_page = basename($_SERVER['PHP_SELF']);
 
-// Array contenente le voci di menu per ogni ruolo
+// array contenente le voci di menu per ogni ruolo
 $menu_base = [
     'home.php' => 'Home',
     'catalogo.php' => 'Catalogo',
@@ -35,8 +35,8 @@ $menu_gestore = [
 ];
 
 
-// Determiniamo quale menu mostrare
-$menu_items = $menu_base; // Default: menu base
+// determiniamo quale menu mostrare
+$menu_items = $menu_base; // per efault: menu base
 if (isset($_SESSION['statoLogin'])) {
     if (isset($_SESSION['tipo_utente'])) {
         
@@ -57,14 +57,14 @@ if (isset($_SESSION['statoLogin'])) {
     </div>
     <ul class="nav-links">
         <?php
-        // Mostra le voci di menu, escludendo la pagina corrente
+        // mostriamo le voci di menu, escludendo la pagina corrente
         foreach ($menu_items as $page => $label) {
             if ($page !== $current_page) {
                 echo "<li><a href=\"$page\">$label</a></li>";
             }
         }
 
-        // Aggiungi opzioni comuni basate sullo stato di login
+        // aggiungimo opzioni comuni basate sullo stato di login
         if (isset($_SESSION['statoLogin'])) {
             echo "<li><a href=\"logout.php\">Logout</a></li>";
         } else {

@@ -185,6 +185,77 @@ foreach ($domandeXml->domanda as $dom) {
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+
+        .forum-section {
+            margin-top: 20px; 
+        }
+
+        .discussione {
+            background-color: #f0f8ff; 
+            border: 1px solid #b0e0e6; 
+            border-radius: 8px; 
+            padding: 15px; 
+            margin-bottom: 15px; 
+        }
+
+        .risposta {
+            background-color: #e6ffe6; 
+            border: 1px solid #c1e1c1; 
+            border-radius: 8px; 
+            padding: 10px; 
+            margin-top: 10px; 
+        }
+
+        .risposta-header {
+            display: flex; 
+            justify-content: space-between; 
+            font-weight: bold; 
+            color: blue; 
+            margin-bottom: 5px; 
+        }
+
+        .risposta-data {
+            font-weight: bold; 
+            color: #333; 
+        }
+
+        .risposta-testo {
+            margin-top: 5px; 
+        }
+
+        .discussione-header {
+            font-weight: bold; 
+            margin-bottom: 5px; 
+        }
+
+        .btn-rispondi {
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 8px 12px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-top: 10px;
+        }
+
+        .btn-rispondi:hover {
+            background-color: #0056b3; 
+        }
+
+        .btn-mostra-altro {
+            background-color: #e0e0e0; 
+            color: black; 
+            border: none; 
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px; 
+        }
+
+        .btn-mostra-altro:hover {
+            background-color: #c0c0c0; 
+        }
+
     </style>
 </head>
 <body>
@@ -249,7 +320,7 @@ foreach ($domandeXml->domanda as $dom) {
                         
                         <?php if (isset($_SESSION['username'])): ?>
                             <form method="POST" action="carrello.php">
-                                <input type="hidden" name="codice_gioco" value="<?php echo $id_gioco; ?>">
+                                <input type="hidden" name="codice_gioco" value="<?php echo $gioco['codice']; ?>">
                                 <button type="submit" name="aggiungi" class="btn-primary btn-carrello">Aggiungi al Carrello</button>
                             </form>
                         <?php else: ?>
@@ -269,7 +340,7 @@ foreach ($domandeXml->domanda as $dom) {
                         <button type="submit" class="btn-primary">Pubblica recensione</button>
                     </form>
                 <?php endif; ?>
-
+                
                 <div class="recensioni-container">
                     <?php
                     if (empty($recensioni)){ // facciamo controllo che non ci siano recensioni
@@ -277,12 +348,13 @@ foreach ($domandeXml->domanda as $dom) {
                     } else {
                         $count = 0;
                         foreach ($recensioni as $recensione): 
-                            if ($count < 3): // mostriamo solo le prime 3 recensioni
+                            if ($count < 2): // mostriamo solo le prime 2 recensioni
                     ?>
                         <div class="recensione">
                             <div class="recensione-header">
                                 <span class="recensione-autore"><?php echo htmlspecialchars($recensione['username']); ?></span>
                                 <span class="recensione-data"><?php echo date('d/m/Y', strtotime($recensione['data'])); ?></span>
+                                <button class="btn-valuta" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Valuta</button>
                             </div>
                             <p class="recensione-testo"><?php echo htmlspecialchars($recensione['testo']); ?></p>
                         </div>
@@ -290,9 +362,27 @@ foreach ($domandeXml->domanda as $dom) {
                             endif;
                             $count++;
                         endforeach; 
-                        if ($count > 3): // mostriamo il pulsante di ampliamento solo se ci sono più di 3 recensioni
+                        if ($count > 2):   // mostriamo il pulsante di ampliamento solo se ci sono più di 2 recensioni
                     ?>
                         <button class="btn-mostra-altro" onclick="mostraAltreRecensioni()">Mostra altre recensioni</button>
+                        <div class="recensioni-nascoste" style="display: none;">
+                            <?php 
+                            foreach ($recensioni as $index => $recensione): 
+                                if ($index >= 2):   // mostriamo solo le recensioni nascoste (dalla terza in poi)
+                            ?>
+                                <div class="recensione">
+                                    <div class="recensione-header">
+                                        <span class="recensione-autore"><?php echo htmlspecialchars($recensione['username']); ?></span>
+                                        <span class="recensione-data"><?php echo date('d/m/Y', strtotime($recensione['data'])); ?></span>
+                                        <button class="btn-valuta" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Valuta</button>
+                                    </div>
+                                    <p class="recensione-testo"><?php echo htmlspecialchars($recensione['testo']); ?></p>
+                                </div>
+                            <?php 
+                                endif;
+                            endforeach; 
+                            ?>
+                        </div>
                     <?php endif; ?>
                     <?php } ?>
                 </div>
@@ -305,37 +395,123 @@ foreach ($domandeXml->domanda as $dom) {
                     <p>Non ci sono ancora discussioni per questo gioco.</p>
                 <?php else: ?>
                     <div class="discussioni-container">
-                        <?php foreach ($discussioni as $discussione): ?>
+                        <?php 
+                        $count = 0; // contatore per le domande
+                        foreach ($discussioni as $discussione): 
+                            if ($count < 2): // mostriamo solo le prime 2 domande
+                        ?>
                             <div class="discussione">
-                                <div class="discussione-header">
-                                    <span class="discussione-autore" style="color: red;"><?php echo htmlspecialchars($discussione['autore']); ?></span>, 
-                                    <span class="discussione-data"><?php echo date('d/m/Y', strtotime($discussione['data'])); ?></span>
+                                <div class="discussione-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <span class="discussione-autore" style="color: red;"><?php echo htmlspecialchars($discussione['autore']); ?></span>, 
+                                        <span class="discussione-data"><?php echo date('d/m/Y', strtotime($discussione['data'])); ?></span>
+                                    </div>
+                                    <button class="btn-segnala" style="background-color: #FF9800; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Segnala</button>
                                 </div>
                                 <p class="discussione-testo"><?php echo htmlspecialchars($discussione['contenuto']); ?></p>
                                 
                                 <!-- mostriamo le risposte alle domande dei forum -->
                                 <?php if (!empty($discussione['risposte'])): ?>
                                     <div class="risposte-container">
-                                        <?php foreach ($discussione['risposte'] as $risposta): ?>
+                                        <?php 
+                                        $hiddenCount = 0; // contatore per le risposte
+                                        foreach ($discussione['risposte'] as $risposta): 
+                                            if ($hiddenCount < 2): // mostriamo solo le prime 2 risposte
+                                        ?>
                                             <div class="risposta">
-                                                <strong style="color: blue;"><?php echo htmlspecialchars($risposta['autore']); ?></strong>, 
-                                                <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
-                                                <p><?php echo htmlspecialchars($risposta['contenuto']); ?></p>
+                                                <div class="risposta-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                                    <div>
+                                                        <strong><?php echo htmlspecialchars($risposta['autore']); ?></strong>
+                                                        <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
+                                                    </div>
+                                                    <button class="btn-valuta" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Valuta</button>
+                                                </div>
+                                                <p class="risposta-testo"><?php echo htmlspecialchars($risposta['contenuto']); ?></p>
                                             </div>
-                                        <?php endforeach; ?>
+                                        <?php 
+                                            endif;
+                                            $hiddenCount++;
+                                        endforeach; 
+                                        ?>
+                                        
+                                        <?php if ($hiddenCount > 2): // se ci sono più di 2 risposte, mostriamo pulsante ?>
+                                            <button class="btn-mostra-altro" onclick="mostraAltreRisposte(this)">Mostra altre risposte</button>
+                                            <div class="risposte-nascoste" style="display: none;">
+                                                <?php 
+                                                $hiddenCount = 0; // reset del contatore per le risposte nascoste
+                                                foreach ($discussione['risposte'] as $risposta): 
+                                                    if ($hiddenCount >= 2): // mostriamo solo le risposte nascoste
+                                                ?>
+                                                    <div class="risposta">
+                                                        <div class="risposta-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                                            <div>
+                                                                <strong><?php echo htmlspecialchars($risposta['autore']); ?></strong>
+                                                                <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
+                                                            </div>
+                                                            <button class="btn-valuta" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Valuta</button>
+                                                        </div>
+                                                        <p class="risposta-testo"><?php echo htmlspecialchars($risposta['contenuto']); ?></p>
+                                                    </div>
+                                                <?php 
+                                                    endif;
+                                                    $hiddenCount++;
+                                                endforeach; 
+                                                ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 <?php endif; ?>
-                                
-                                <?php if (isset($_SESSION['username'])): ?>
-                                    <button class="btn-rispondi" onclick="mostraFormRisposta(this)">Rispondi</button>
-                                    <form method="POST" action="aggiungi_risposta.php" class="form-risposta" style="display: none;">
-                                        <input type="hidden" name="id_discussione" value="<?php echo $discussione['id']; ?>">
-                                        <textarea name="testo" required placeholder="Scrivi la tua risposta..."></textarea>
-                                        <button type="submit">Invia risposta</button>
-                                    </form>
-                                <?php endif; ?>
                             </div>
-                        <?php endforeach; ?>
+                        <?php 
+                            endif;
+                            $count++;
+                        endforeach; 
+                        if ($count > 2): // se ci sono più di 2 domande, mostriamo pulsante
+                        ?>
+                            <button class="btn-mostra-altro" onclick="mostraAltreDomande(this)">Mostra altre domande</button>
+                            <div class="domande-nascoste" style="display: none;">
+                                <?php 
+                                foreach ($discussioni as $index => $discussione): 
+                                    if ($index >= 2): // mostriamo solo le domande nascoste (dalla terza in poi)
+                                ?>
+                                    <div class="discussione">
+                                        <div class="discussione-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <div>
+                                                <span class="discussione-autore" style="color: red;"><?php echo htmlspecialchars($discussione['autore']); ?></span>, 
+                                                <span class="discussione-data"><?php echo date('d/m/Y', strtotime($discussione['data'])); ?></span>
+                                            </div>
+                                            <button class="btn-segnala" style="background-color: #FF9800; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Segnala</button>
+                                        </div>
+                                        <p class="discussione-testo"><?php echo htmlspecialchars($discussione['contenuto']); ?></p>
+                                        
+                                        <!-- mostriamo le risposte alle domande dei forum -->
+                                        <?php if (!empty($discussione['risposte'])): ?>
+                                            <div class="risposte-container">
+                                                <?php 
+                                                foreach ($discussione['risposte'] as $risposta): 
+                                                ?>
+                                                    <div class="risposta">
+                                                        <div class="risposta-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                                            <div>
+                                                                <strong><?php echo htmlspecialchars($risposta['autore']); ?></strong>
+                                                                <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
+                                                            </div>
+                                                            <button class="btn-valuta" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Valuta</button>
+                                                        </div>
+                                                        <p class="risposta-testo"><?php echo htmlspecialchars($risposta['contenuto']); ?></p>
+                                                    </div>
+                                                <?php 
+                                                endforeach; 
+                                                ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php 
+                                    endif;
+                                endforeach; 
+                                ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
             </div>
@@ -344,22 +520,14 @@ foreach ($domandeXml->domanda as $dom) {
 
     <script>
         function mostraAltreRecensioni() {
-            const recensioniContainer = document.querySelector('.recensioni-container');
-            const recensioniNascoste = document.querySelectorAll('.recensione.nascosta');
-            const btnMostraAltro = document.querySelector('.btn-mostra-altro');
-            
-            // mostriamo le prossime 3 recensioni
-            let count = 0;
-            recensioniNascoste.forEach(recensione => {
-                if (count < 3) {
-                    recensione.classList.remove('nascosta');
-                    count++;
-                }
-            });
-            
-            // nascondiamo il pulsante se non ci sono più recensioni da mostrare
-            if (document.querySelectorAll('.recensione.nascosta').length === 0) {
-                btnMostraAltro.style.display = 'none';
+            const recensioniNascoste = document.querySelector('.recensioni-nascoste'); // troviamo la sezione delle recensioni nascoste
+            const btnMostraAltro = document.querySelector('.btn-mostra-altro'); // e troviamo il pulsante
+            if (recensioniNascoste.style.display === "none") {
+                recensioniNascoste.style.display = "block"; // mostriamo le recensioni
+                btnMostraAltro.innerHTML = "Nascondi altre recensioni"; // cambio testo del pulsante dopo aver cliccato "mostra altre recensioni"
+            } else {
+                recensioniNascoste.style.display = "none"; // nascondiamo le recensioni
+                btnMostraAltro.innerHTML = "Mostra altre recensioni";   // e in tal caso ripristiniamo il testo del pulsante
             }
         }
 
@@ -367,6 +535,29 @@ foreach ($domandeXml->domanda as $dom) {
             const form = button.nextElementSibling;
             form.style.display = form.style.display === 'none' ? 'block' : 'none';
         }
+
+        function mostraAltreRisposte(button) {
+            const risposteNascoste = button.nextElementSibling; // troviamo il contenitore delle risposte nascoste
+            if (risposteNascoste.style.display === "none") {
+                risposteNascoste.style.display = "block"; // mostriamo le risposte
+                button.innerHTML = "Nascondi altre risposte"; // cambiamo il testo del pulsante dopo aver cliccato su "mostra altre risposte"
+            } else {
+                risposteNascoste.style.display = "none"; // nascondiamo le risposte
+                button.innerHTML = "Mostra altre risposte"; // e ripristiniamo il testo del pulsante
+            }
+        }
+
+        function mostraAltreDomande(button) {
+            const domandeNascoste = button.nextElementSibling; // troviamo la sezione delle domande nascoste
+            if (domandeNascoste.style.display === "none") {
+                domandeNascoste.style.display = "block"; // mostriamo domande
+                button.innerHTML = "Nascondi altre domande"; // cambiamo il testo del pulsante dopo aver cliccato "mostra altee domande"
+            } else {
+                domandeNascoste.style.display = "none"; // nascondiamo le domande
+                button.innerHTML = "Mostra altre domande"; // ripristiniamo il testo iniziale del pulsante
+            }
+        }
+// implementare funzioni che gestiscono la segnalazione degli utenti e la valutazione di recensioni e risposte nelle discussioni
     </script>
 </body>
 </html>

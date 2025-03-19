@@ -61,8 +61,6 @@ if (!isset($_SESSION['statoLogin'])) {
                 <button onclick="location.href='gestione_utenti.php'" class="ban-user-button">Ban utenti</button>
             </section>
         </div>
-        
-        <!-- Pulsante di logout centrato -->
         <div style="text-align: center; margin-top: 20px;">
             <a href="logout.php" class="logout-link" style="display: inline-block; padding: 10px 20px; background-color: #ff4d4d; color: white; border-radius: 5px; text-decoration: none;">Logout</a>
         </div>
