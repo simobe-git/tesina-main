@@ -70,9 +70,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['aggiungi_bonus'])) {
     }
 }
 
-// recuperiamo la lista dei videogiochi dal db
-$query_giochi = "SELECT codice, nome FROM videogiochi ORDER BY nome";
-$risultato_giochi = $connessione->query($query_giochi);
+// carichiamo i giochi dal file XML
+$giochi = simplexml_load_file('../xml/giochi.xml');
+$risultato_giochi = [];
+foreach ($giochi->gioco as $gioco) {
+    $risultato_giochi[] = [
+        'codice' => (string)$gioco->codice,
+        'titolo' => (string)$gioco->titolo
+    ];
+}
 
 // carichiamo sconti e bonus esistenti
 $sconti_bonus = [];
@@ -152,10 +158,47 @@ if (file_exists('../xml/sconti_bonus.xml')) {
             background: #f8f9fa;
             border-radius: 4px;
         }
+        .navbar {
+            background-color: #000; 
+            color: #fff; 
+            padding: 20px 0; 
+            text-align: center; 
+        }
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: inline-flex; 
+            list-style-type: disc; /* aggiungiamo un pallino di finco le voci del menù */
+        }
+        .navbar li {
+            margin: 0 30px; 
+        }
+        .navbar a {
+            color: #fff; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 18px; 
+            transition: all 0.3s ease; 
+        }
+        .navbar a:hover {
+            background-color: #555; 
+            transform: scale(1.1); 
+            padding: 5px; 
+            border-radius: 5px; 
+        }
     </style>
 </head>
 <body>
-    <?php include('menu.php'); ?>
+   
+    <div class="navbar">
+        <ul>
+            <li><a href="gestore_dashboard.php">Dashboard</a></li>
+            <li><a href="gestione_utenti.php">Modifica Sconti e Bonus</a></li>
+            <li><a href="#">Visualizza Utenti</a></li>
+            <li><a href="#">Gestione Forum</a></li>
+        </ul>
+    </div>
     
     <div class="container">
         <h1>Gestione Sconti e Bonus</h1>
@@ -211,8 +254,8 @@ if (file_exists('../xml/sconti_bonus.xml')) {
                 <div class="form-group">
                     <label for="codice_gioco_bonus">Gioco</label>
                     <select id="codice_gioco_bonus" name="codice_gioco" required>
-                        <?php while ($gioco = $risultato_giochi->fetch_assoc()): ?>
-                            <option value="<?php echo $gioco['codice']; ?>"><?php echo htmlspecialchars($gioco['nome']); ?></option>
+                        <?php while ($gioco): ?>
+                            <option value="<?php echo $gioco['codice']; ?>"><?php echo htmlspecialchars($gioco['titolo']); ?></option>
                         <?php endwhile; ?>
                     </select>
                 </div>
