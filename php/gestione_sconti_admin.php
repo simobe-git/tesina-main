@@ -195,7 +195,7 @@ if (file_exists('../xml/sconti_bonus.xml')) {
         <ul>
             <li><a href="gestore_dashboard.php">Dashboard</a></li>
             <li><a href="gestione_utenti.php">Modifica Sconti e Bonus</a></li>
-            <li><a href="#">Visualizza Utenti</a></li>
+            <li><a href="visualizza_utenti.php">Visualizza Utenti</a></li>
             <li><a href="#">Gestione Forum</a></li>
         </ul>
     </div>

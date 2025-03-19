@@ -44,7 +44,7 @@ if (!isset($_SESSION['statoLogin'])) {
         <div class="row">
             <section class="credits-management">
                 <h2>Visualizza Utenti</h2>
-                <button onclick="location.href=''" class="add-credits-button">Visualizza Utenti</button>
+                <button onclick="location.href='visualizza_utenti.php'" class="add-credits-button">Visualizza Utenti</button>
             </section>
 
             <section class="ban-management">
