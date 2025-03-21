@@ -4,7 +4,7 @@ Questo file contiene le informazioni necessarie per una migliore conoscenza dell
 
 Il progetto è stato caricato sul profilo github di entrambi i membri del gruppo, a cui si può accedere seguendo i seguenti indirizzi:
 - https://github.com/simobe-git/tesina-main
-- 
+- https://github.com/ICON39/tesina-main
 
 Traccia:
 Gestione di un negozio virtuale che vende giochi da tavolo. Nel sistem è presente un catalogo di giochi da tavolo, descritto con testo, immagini e prezzo, che tutti possono consultare.
