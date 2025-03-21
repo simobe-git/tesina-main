@@ -23,11 +23,9 @@ if ($risultato && $risultato->num_rows > 0) {
 } else {
     $utenti = null; // Nessun utente trovato
 }
-
-
-
-
 ?>
+
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -92,6 +90,8 @@ if ($risultato && $risultato->num_rows > 0) {
             gap: 20px; 
             width: 100%; 
         }
+        .btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; }
+        .btn-primary { background: #007bff; color: white; }
     </style>
 </head>
 <body>
@@ -117,10 +117,15 @@ if ($risultato && $risultato->num_rows > 0) {
 
                         <h3>Nome: <?php echo htmlspecialchars($utente['nome']); ?></h3>
                         <h3>Cognome: <?php echo htmlspecialchars($utente['cognome']); ?></h3>
+                        <h3>Username: <?php echo htmlspecialchars($utente['username']); ?></h3>
                         <h3>Email: <?php echo htmlspecialchars($utente['email']); ?></h3>
                         <h3>Crediti: <?php echo htmlspecialchars($utente['crediti']); ?></h3>
                         <h3>Data Registrazione:<?php echo htmlspecialchars($utente['data_registrazione']); ?></h3>
                         <h3>Ban: <?php echo $utente['ban'] == 1 ? 'Sì' : 'No'; ?></h3>
+                        <form action="visualizza_profilo.php" method="POST">
+                            <input type="hidden" name="username" value="<?php echo htmlspecialchars($utente['username']); ?>">
+                            <button type="submit" class="btn btn-primary">Invia</button>
+                        </form>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
