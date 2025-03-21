@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('connessione.php');
-// require_once('funzioni_sconti_bonus.php'); PER ORA NO
+require_once('funzioni_sconti_bonus.php');
 
 
 // verifica se l'utente è loggato e se è un cliente
