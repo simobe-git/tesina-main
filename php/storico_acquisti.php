@@ -57,7 +57,7 @@ if (file_exists($xml_file)) {
                     'prezzo_originale' => (float)$acquisto->prezzo_originale,
                     'prezzo_pagato' => (float)$acquisto->prezzo_pagato,
                     'sconto' => isset($acquisto->sconto_applicato) ? (float)$acquisto->sconto_applicato : 0,
-                    'bonus' => isset($acquisto->bonus_applicato) ? (int)$acquisto->bonus_applicato : 0,
+                    'bonus' => isset($acquisto->bonus_ottenuti) ? (int)$acquisto->bonus_ottenuti : 0,
                     'data' => (string)$acquisto->data
                 ];
             }

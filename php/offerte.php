@@ -184,9 +184,9 @@ usort($giochiInOfferta, function($a, $b) use ($ordinamento, $direzione) {
                     
                     <div style="display: flex; flex-direction: column; align-items: center; height: 90px; justify-content: center;">
                         <div style="display: flex; flex-direction: column; align-items: center;">
-                            <span style="font-size: 1.4em; color: #2ecc71; font-weight: bold;"><?php echo $gioco['prezzo_originale']; ?> crediti</span>
+                            <span style="font-size: 1.4em; color: #2ecc71; font-weight: bold;"><?php echo $gioco['prezzo_attuale']; ?> crediti</span>
                             <br />
-                            <span style="font-size: 1.2em; color: #999; text-decoration: line-through;"><?php echo $gioco['prezzo_attuale']; ?> crediti</span>
+                            <span style="font-size: 1.2em; color: #999; text-decoration: line-through;"><?php echo $gioco['prezzo_originale']; ?> crediti</span>
                         </div>
                     </div>
                     

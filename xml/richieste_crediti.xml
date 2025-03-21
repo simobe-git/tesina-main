@@ -157,4 +157,53 @@
     <status>approvata</status>
     <prezzo>14.99</prezzo>
   </richiesta>
+  <richiesta>
+    <username>cliente1</username>
+    <crediti>50</crediti>
+    <data>2025-03-21</data>
+    <status>approvata</status>
+    <prezzo>14.99</prezzo>
+  </richiesta>
+  <richiesta>
+    <username>cliente1</username>
+    <crediti>50</crediti>
+    <data>2025-03-21</data>
+    <status>approvata</status>
+    <prezzo>14.99</prezzo>
+  </richiesta>
+  <richiesta>
+    <username>cliente1</username>
+    <crediti>50</crediti>
+    <data>2025-03-21</data>
+    <status>approvata</status>
+    <prezzo>14.99</prezzo>
+  </richiesta>
+  <richiesta>
+    <username>cliente1</username>
+    <crediti>50</crediti>
+    <data>2025-03-21</data>
+    <status>approvata</status>
+    <prezzo>14.99</prezzo>
+  </richiesta>
+  <richiesta>
+    <username>cliente1</username>
+    <crediti>50</crediti>
+    <data>2025-03-21</data>
+    <status>approvata</status>
+    <prezzo>14.99</prezzo>
+  </richiesta>
+  <richiesta>
+    <username>cliente1</username>
+    <crediti>50</crediti>
+    <data>2025-03-21</data>
+    <status>approvata</status>
+    <prezzo>14.99</prezzo>
+  </richiesta>
+  <richiesta>
+    <username>cliente1</username>
+    <crediti>100</crediti>
+    <data>2025-03-21</data>
+    <status>approvata</status>
+    <prezzo>25.99</prezzo>
+  </richiesta>
 </richiesteCrediti>

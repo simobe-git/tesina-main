@@ -90,4 +90,28 @@
     <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-02-20</data>
   </acquisto>
+  <acquisto id="67dd57807cd5a">
+    <username>cliente1</username>
+    <codice_gioco>2</codice_gioco>
+    <prezzo_originale>30</prezzo_originale>
+    <prezzo_pagato>20</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-21</data>
+  </acquisto>
+  <acquisto id="67dd5935d933b">
+    <username>cliente1</username>
+    <codice_gioco>4</codice_gioco>
+    <prezzo_originale>35</prezzo_originale>
+    <prezzo_pagato>25</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-21</data>
+  </acquisto>
+  <acquisto id="67dd5949b4792">
+    <username>cliente1</username>
+    <codice_gioco>5</codice_gioco>
+    <prezzo_originale>45</prezzo_originale>
+    <prezzo_pagato>45</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-21</data>
+  </acquisto>
 </acquisti>

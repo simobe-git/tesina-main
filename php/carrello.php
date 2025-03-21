@@ -49,84 +49,86 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (file_exists($xml_file)) {
             $xml = simplexml_load_file($xml_file);
             if ($xml === false) {
-                echo "Errore nel caricamento del file XML.";
+                echo "Errore nel caricamento del file XML.<br>";
                 foreach(libxml_get_errors() as $error) {
                     echo "<br>", $error->message;
                 }
+                exit();
             }
-            $totale = 0;
+        } else {
+            echo "Il file XML non esiste.";
+            exit();
+        }
+        
+        // caricamento del file XML degli acquisti
+        $xml_file_acquisti = '../xml/acquisti.xml';
+        if (file_exists($xml_file_acquisti)) {
+            $xml_acquisti = simplexml_load_file($xml_file_acquisti);
+        } else {
+            // se il file non esiste, ne creiamo nuovo
+            $xml_acquisti = new SimpleXMLElement('<acquisti></acquisti>');
+        }
 
-            // calcolo del totale
+        // recuperiamo il numero di crediti dell'utente dl db
+        $query_crediti = "SELECT crediti FROM utenti WHERE username = ?";
+        $stmt = $connessione->prepare($query_crediti);
+        $stmt->bind_param("s", $_SESSION['username']);
+        $stmt->execute();
+        $crediti_disponibili = $stmt->get_result()->fetch_assoc()['crediti'];
+
+        $totale = 0;
+
+        // calcolo del totale
+        foreach ($_SESSION['carrello'] as $codice_gioco) {
+            $found = false; // variabile per controllare se il gioco è stato trovato
+            foreach ($xml->gioco as $gioco) {
+                if ((int)$gioco->codice === (int)$codice_gioco) {
+                    $found = true; // gioco trovato
+                    $sconto = calcolaSconto($_SESSION['username'], (float)$gioco->prezzo_attuale);
+                    $prezzo_scontato = (float)$gioco->prezzo_attuale * (1 - $sconto['percentuale'] / 100);
+                    $totale += $prezzo_scontato;
+                }
+            }
+        }
+
+        // controlliamo se l'utente ha abbastanza crediti
+        if ($totale > $crediti_disponibili) {
+            echo "Non hai abbastanza crediti per completare l'acquisto.";
+        } else {
+            // si procede con l'acquisto
             foreach ($_SESSION['carrello'] as $codice_gioco) {
                 foreach ($xml->gioco as $gioco) {
                     if ((int)$gioco->codice === (int)$codice_gioco) {
-                        $sconto = calcolaSconto($_SESSION['username'], (float)$gioco->prezzo_attuale);
-                        $prezzo_scontato = (float)$gioco->prezzo_attuale * (1 - $sconto['percentuale'] / 100);
-                        $totale += $prezzo_scontato;
+                        // registrazione dell'acquisto nel file xml
+                        $acquisto = $xml_acquisti->addChild('acquisto');
+                        $acquisto->addAttribute('id', uniqid());
+                        $acquisto->addChild('username', $_SESSION['username']);
+                        $acquisto->addChild('codice_gioco', $codice_gioco);
+                        $acquisto->addChild('prezzo_originale', (float)$gioco->prezzo_originale);
+                        $acquisto->addChild('prezzo_pagato', $prezzo_scontato);
+                        $acquisto->addChild('sconto_applicato', $sconto['percentuale']);
+                        $acquisto->addChild('data', date('Y-m-d'));
                     }
                 }
             }
 
-            // recuperiamo il numero di crediti dell'utente
-            $query_crediti = "SELECT crediti FROM utenti WHERE username = ?";
-            $stmt = $connessione->prepare($query_crediti);
-            $stmt->bind_param("s", $_SESSION['username']);
+            // andiamo a sottrarre i crediti usati per l'acquisto
+            $nuovi_crediti = $crediti_disponibili - $totale;
+            $update_crediti = "UPDATE utenti SET crediti = ? WHERE username = ?";
+            $stmt = $connessione->prepare($update_crediti);
+            $stmt->bind_param("is", $nuovi_crediti, $_SESSION['username']);
             $stmt->execute();
-            $crediti_disponibili = $stmt->get_result()->fetch_assoc()['crediti'];
 
-            if ($crediti_disponibili >= $totale) {
-                $connessione->begin_transaction();
-                try {
-                    // aggiorniamo i crediti dell'utente
-                    $nuovi_crediti = $crediti_disponibili - $totale;
-                    $query_update = "UPDATE utenti SET crediti = ? WHERE username = ?";
-                    $stmt = $connessione->prepare($query_update);
-                    $stmt->bind_param("ds", $nuovi_crediti, $_SESSION['username']);
-                    $stmt->execute();
+            // salvataggio del file XML degli acquisti
+            $dom = new DOMDocument('1.0');
+            $dom->preserveWhiteSpace = false;
+            $dom->formatOutput = true;
+            $dom->loadXML($xml_acquisti->asXML());
+            $dom->save($xml_file_acquisti);
 
-                    // registriamo gli acquisti in un file XML
-                    $xml_file = '../xml/acquisti.xml';
-                    if (!file_exists($xml_file)) {
-                        $xml = new SimpleXMLElement('<?xml version="1.0"?><acquisti></acquisti>');
-                    } else {
-                        $xml = simplexml_load_file($xml_file);
-                    }
-
-                    foreach ($_SESSION['carrello'] as $codice_gioco) {
-                        foreach ($xml->gioco as $gioco) {
-                            if ((int)$gioco->codice === (int)$codice_gioco) {
-                                $acquisto = $xml->addChild('acquisto');
-                                $acquisto->addAttribute('id', uniqid());
-                                $acquisto->addChild('username', $_SESSION['username']);
-                                $acquisto->addChild('codice_gioco', $codice_gioco);
-                                $acquisto->addChild('prezzo_originale', $gioco->prezzo_originale);
-                                $acquisto->addChild('prezzo_pagato', $prezzo_scontato);
-                                $acquisto->addChild('sconto_applicato', $sconto['percentuale']);
-                                $acquisto->addChild('data', date('Y-m-d'));
-                            }
-                        }
-                    }
-
-                    // formattazione con DOMDocument
-                    $dom = new DOMDocument('1.0');
-                    $dom->preserveWhiteSpace = false;
-                    $dom->formatOutput = true;
-                    $dom->loadXML($xml->asXML());
-                    $dom->save($xml_file);
-
-                    // svuotiamo il carrello
-                    $_SESSION['carrello'] = array();
-                    $connessione->commit();
-                    $messaggio_successo = "Acquisto completato con successo!";
-                } catch (Exception $e) {
-                    $connessione->rollback();
-                    $errore = "Errore durante l'acquisto: " . $e->getMessage();
-                }
-            } else {
-                $errore = "Crediti insufficienti per completare l'acquisto <a href='profilo.php'>Ricarica ora</a>";
-            }
-        } else {
-            $errore = "Il file dei giochi non è stato trovato.";
+            // svuotiamo il carrello
+            $_SESSION['carrello'] = array();
+            echo "Acquisto completato con successo!";
         }
     }
 }
@@ -315,7 +317,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="azioni-finali">
                 <a href="catalogo.php" class="btn-continua-shopping">Continua ad acquistare</a>
-                <form method="POST" style="display: inline;">
+                <form method="POST" action="carrello.php" style="display: inline;">
                     <button type="submit" name="acquista" class="btn-acquista">Completa l'acquisto</button>
                 </form>
             </div>
