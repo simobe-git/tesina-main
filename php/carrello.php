@@ -129,6 +129,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // svuotiamo il carrello
             $_SESSION['carrello'] = array();
             echo "Acquisto completato con successo!";
+            
+            //visualizzazione acquisti avvenuti
+            header("Location: storico_acquisti.php");
+            exit();
         }
     }
 }

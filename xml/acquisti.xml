@@ -114,4 +114,68 @@
     <sconto_applicato>0</sconto_applicato>
     <data>2025-03-21</data>
   </acquisto>
+  <acquisto id="67e13b6c3d832">
+    <username>cliente1</username>
+    <codice_gioco>11</codice_gioco>
+    <prezzo_originale>40</prezzo_originale>
+    <prezzo_pagato>40</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-24</data>
+  </acquisto>
+  <acquisto id="67e13bd26c216">
+    <username>cliente1</username>
+    <codice_gioco>11</codice_gioco>
+    <prezzo_originale>40</prezzo_originale>
+    <prezzo_pagato>40</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-24</data>
+  </acquisto>
+  <acquisto id="67e13c208eb82">
+    <username>cliente1</username>
+    <codice_gioco>3</codice_gioco>
+    <prezzo_originale>30</prezzo_originale>
+    <prezzo_pagato>22</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-24</data>
+  </acquisto>
+  <acquisto id="67e13c208eb9b">
+    <username>cliente1</username>
+    <codice_gioco>9</codice_gioco>
+    <prezzo_originale>30</prezzo_originale>
+    <prezzo_pagato>22</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-24</data>
+  </acquisto>
+  <acquisto id="67e13c439721f">
+    <username>cliente1</username>
+    <codice_gioco>3</codice_gioco>
+    <prezzo_originale>30</prezzo_originale>
+    <prezzo_pagato>20</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-24</data>
+  </acquisto>
+  <acquisto id="67e13c4397234">
+    <username>cliente1</username>
+    <codice_gioco>2</codice_gioco>
+    <prezzo_originale>30</prezzo_originale>
+    <prezzo_pagato>20</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-24</data>
+  </acquisto>
+  <acquisto id="67e13c8dd355b">
+    <username>cliente1</username>
+    <codice_gioco>8</codice_gioco>
+    <prezzo_originale>50</prezzo_originale>
+    <prezzo_pagato>50</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-24</data>
+  </acquisto>
+  <acquisto id="67e13cc8d7248">
+    <username>cliente1</username>
+    <codice_gioco>1</codice_gioco>
+    <prezzo_originale>105</prezzo_originale>
+    <prezzo_pagato>40</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-24</data>
+  </acquisto>
 </acquisti>
