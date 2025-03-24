@@ -65,6 +65,11 @@ if (file_exists($xml_file)) {
     }
 }
 
+// Ordina gli acquisti dal più recente al meno recente
+usort($acquisti, function($a, $b) { //Questa funzione ordina l'array $acquisti in base a un criterio definito da una funzione anonima(prende due elementi dell'array ($a e $b) e li confronta)
+    return strtotime($b['data']) - strtotime($a['data']); //Converte la stringa della data in un timestamp e confronta le date -> La differenza posiziona l'elemento più recente prima di quello meno recente
+});
+
 // calcolo delle statistiche
 $totale_speso = array_sum(array_column($acquisti, 'prezzo_pagato'));
 $totale_risparmiato = array_sum(array_map(function($a) {
