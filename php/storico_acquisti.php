@@ -45,7 +45,7 @@ $acquisti = [];
 
 if (file_exists($xml_file)) {
     $xml = simplexml_load_file($xml_file);
-    foreach ($xml->acquisto as $acquisto) {
+    foreach ($xml->acquisto as $index => $acquisto) { // Usa $index per mantenere l'ordine naturale
         if ((string)$acquisto->username === $_SESSION['username']) {
             $dettagli_gioco = getDettagliGioco((int)$acquisto->codice_gioco);
             if ($dettagli_gioco) {
@@ -58,17 +58,16 @@ if (file_exists($xml_file)) {
                     'prezzo_pagato' => (float)$acquisto->prezzo_pagato,
                     'sconto' => isset($acquisto->sconto_applicato) ? (float)$acquisto->sconto_applicato : 0,
                     'bonus' => isset($acquisto->bonus_ottenuti) ? (int)$acquisto->bonus_ottenuti : 0,
-                    'data' => (string)$acquisto->data
+                    'data' => (string)$acquisto->data,
                 ];
             }
         }
     }
+    // Ordina gli acquisti per data e ora decrescente
+    usort($acquisti, function($a, $b) {
+        return strtotime($b['data']) - strtotime($a['data']);
+    });
 }
-
-// Ordina gli acquisti dal più recente al meno recente
-usort($acquisti, function($a, $b) { //Questa funzione ordina l'array $acquisti in base a un criterio definito da una funzione anonima(prende due elementi dell'array ($a e $b) e li confronta)
-    return strtotime($b['data']) - strtotime($a['data']); //Converte la stringa della data in un timestamp e confronta le date -> La differenza posiziona l'elemento più recente prima di quello meno recente
-});
 
 // calcolo delle statistiche
 $totale_speso = array_sum(array_column($acquisti, 'prezzo_pagato'));

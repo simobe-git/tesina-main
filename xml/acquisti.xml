@@ -178,4 +178,28 @@
     <sconto_applicato>0</sconto_applicato>
     <data>2025-03-24</data>
   </acquisto>
+  <acquisto id="67e1424c86754">
+    <username>cliente4</username>
+    <codice_gioco>4</codice_gioco>
+    <prezzo_originale>35</prezzo_originale>
+    <prezzo_pagato>25</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-24 12:30:20</data>
+  </acquisto>
+  <acquisto id="67e142f14252e">
+    <username>cliente4</username>
+    <codice_gioco>5</codice_gioco>
+    <prezzo_originale>45</prezzo_originale>
+    <prezzo_pagato>45</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-24 12:33:05</data>
+  </acquisto>
+  <acquisto id="67e142f9c301a">
+    <username>cliente4</username>
+    <codice_gioco>8</codice_gioco>
+    <prezzo_originale>50</prezzo_originale>
+    <prezzo_pagato>50</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-24 12:33:13</data>
+  </acquisto>
 </acquisti>
