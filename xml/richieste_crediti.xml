@@ -206,4 +206,25 @@
     <status>approvata</status>
     <prezzo>25.99</prezzo>
   </richiesta>
+  <richiesta>
+    <username>cliente1</username>
+    <crediti>30</crediti>
+    <data>2025-03-25</data>
+    <status>approvata</status>
+    <prezzo>9.99</prezzo>
+  </richiesta>
+  <richiesta>
+    <username>cliente1</username>
+    <crediti>200</crediti>
+    <data>2025-03-25</data>
+    <status>approvata</status>
+    <prezzo>45.99</prezzo>
+  </richiesta>
+  <richiesta>
+    <username>cliente1</username>
+    <crediti>200</crediti>
+    <data>2025-03-25</data>
+    <status>approvata</status>
+    <prezzo>45.99</prezzo>
+  </richiesta>
 </richiesteCrediti>
