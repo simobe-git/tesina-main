@@ -63,10 +63,11 @@ if (file_exists($xml_file)) {
             }
         }
     }
-    // Ordina gli acquisti per data e ora decrescente
+    // ordina gli acquisti per data e ora decrescente
     usort($acquisti, function($a, $b) {
-        return strtotime($b['data']) - strtotime($a['data']);
+        return strtotime($b['data']) - strtotime($a['data']); // converte la stringa della data in un timestamp e confronta le date -> La differenza posiziona l'elemento più recente prima di quello meno recente
     });
+    // questa funzione ordina l'array $acquisti in base a un criterio definito da una funzione anonima, la quale prende due elementi dell'array $a e $b e li confronta
 }
 
 // calcolo delle statistiche

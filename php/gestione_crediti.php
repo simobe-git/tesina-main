@@ -248,7 +248,7 @@ $crediti_approvati = array_reduce(
             <h2>Filtri</h2>
             <form method="GET">
                 <select name="filtro_stato" onchange="this.form.submit()">
-                    <option value="tutti">Tutti</option>
+                    <option value="tutti">Tutte</option>
                     <option value="in attesa">In attesa</option>
                     <option value="approvata">Approvata</option>
                     <option value="rifiutata">Rifiutata</option>
@@ -300,8 +300,6 @@ $crediti_approvati = array_reduce(
             </div>
         <?php endforeach; ?>
     </div>
-
-    <a href="admin_dashboard.php">Torna alla Dashboard</a>
 </body>
 </html>
 
