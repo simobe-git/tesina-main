@@ -26,13 +26,16 @@ $stmt->execute();
 $result = $stmt->get_result();
 $crediti_attuali = $result->fetch_assoc()['crediti'];
 
-// array delle offerte disponibili
-$offerte_crediti = [
-    ['crediti' => 30, 'prezzo' => 9.99],
-    ['crediti' => 50, 'prezzo' => 14.99],
-    ['crediti' => 100, 'prezzo' => 25.99],
-    ['crediti' => 200, 'prezzo' => 45.99]
-];
+// Prendiamo le offerte di crediti dal file xml e le mettiamo in un array
+$offerte_crediti = [];
+$xml = simplexml_load_file('../xml/pacchetti_crediti.xml');
+foreach ($xml->children() as $offerta) {
+    $offerte_crediti[] = [
+        'codice' => (int) $offerta->codice,
+        'crediti' => (int) $offerta->crediti,
+        'prezzo' => (float) $offerta->prezzo
+    ];
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acquista_crediti'])) {
     $indice_offerta = $_POST['offerta'];
