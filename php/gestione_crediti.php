@@ -69,11 +69,12 @@ if (file_exists($xml_file)) {
             continue;
         }
         
+        /*
         if ($filtro_data === 'oggi' && date('Y-m-d', strtotime($richiesta->data)) !== date('Y-m-d')) {
             continue;
         } elseif ($filtro_data === 'settimana' && strtotime($richiesta->data) < strtotime('-1 week')) {
             continue;
-        }
+        }*/
         
         $richieste[] = [
             'username' => (string)$richiesta->username,
@@ -86,8 +87,9 @@ if (file_exists($xml_file)) {
     }
 }
 
+//mostra le richieste dalla meno recente alla più recente
 usort($richieste, function($a, $b) {
-    return strtotime($b['data']) - strtotime($a['data']);
+    return strtotime($a['data']) - strtotime($b['data']);
 });
 
 $totale_richieste = count($richieste);
@@ -251,11 +253,13 @@ $crediti_approvati = array_reduce(
                     <option value="approvata">Approvata</option>
                     <option value="rifiutata">Rifiutata</option>
                 </select>
+                <!--
                 <select name="filtro_data" onchange="this.form.submit()">
                     <option value="tutti">Tutti</option>
                     <option value="oggi">Oggi</option>
                     <option value="settimana">Settimana</option>
                 </select>
+                -->
             </form>
         </div>
         
