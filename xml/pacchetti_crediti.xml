@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pacchetti>
+    <pacchetto>
+        <codice>1</codice>
+        <crediti>30</crediti>
+        <prezzo>9.99</prezzo>
+    </pacchetto>
+    <pacchetto>
+        <codice>2</codice>
+        <crediti>50</crediti>
+        <prezzo>14.99</prezzo>
+    </pacchetto>
+    <pacchetto>
+        <codice>3</codice>
+        <crediti>100</crediti>
+        <prezzo>25.99</prezzo>
+    </pacchetto>
+    <pacchetto>
+        <codice>4</codice>
+        <crediti>200</crediti>
+        <prezzo>45.99</prezzo>
+    </pacchetto>
+</pacchetti>
