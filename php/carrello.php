@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $acquisto->addChild('prezzo_originale', (float)$gioco->prezzo_originale);
                         $acquisto->addChild('prezzo_pagato', $prezzo_scontato);
                         $acquisto->addChild('sconto_applicato', $sconto['percentuale']);
-                        $acquisto->addChild('data', date('Y-m-d'));
+                        $acquisto->addChild('data', date('Y-m-d H:i:s'));
                     }
                 }
             }
@@ -129,6 +129,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // svuotiamo il carrello
             $_SESSION['carrello'] = array();
             echo "Acquisto completato con successo!";
+            
+            //visualizzazione acquisti avvenuti
+            header("Location: storico_acquisti.php");
+            exit();
         }
     }
 }
