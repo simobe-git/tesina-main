@@ -259,7 +259,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php include('menu.php'); ?>
 
     <div class="container">
-        <h1 style="text-align: center;">Il tuo Carrello</h1>
+        <?php 
+        $totale = 0;
+        $ha_prodotti = !empty($_SESSION['carrello']);
+        
+        if($ha_prodotti){ ?>
+        <h1 style="text-align: center;">Il tuo Carrello</h1> <?php } ?>
 
         <?php if (isset($messaggio_successo)): ?>
             <div class="messaggio successo"><?php echo $messaggio_successo; ?></div>
@@ -269,9 +274,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="messaggio errore"><?php echo $errore; ?></div>
         <?php endif; ?>
 
-        <?php 
-        $totale = 0;
-        $ha_prodotti = !empty($_SESSION['carrello']);
+        <?php
         
         if ($ha_prodotti):
             foreach ($_SESSION['carrello'] as $codice_gioco):
@@ -309,7 +312,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         if (!$ha_prodotti): ?>
             <div class="carrello-vuoto">
-                <h2 style="text-align: center;">Il tuo carrello è vuoto</h2><br />
+                <h2 style="text-align: center; font-size: 180%;">Il tuo carrello è vuoto</h2><br />
                 <p style="font-size: 120%; text-align: center;">Aggiungi alcuni giochi dal nostro catalogo per iniziare lo shopping!</p><br />
                 <a href="catalogo.php" class="btn-catalogo">Vai al Catalogo</a>
             </div>

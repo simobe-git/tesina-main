@@ -179,9 +179,9 @@ $totale_bonus = array_sum(array_column($acquisti, 'bonus'));
     <?php include('menu.php'); ?>
 
     <div class="container">
-        <h1>Storico Acquisti</h1>
+        <h1 style="margin-top: -1ex;">Storico Acquisti</h1>
 
-        <div class="statistiche">
+        <div class="statistiche" style="margin-top: 3ex;">
             <div class="stat-card">
                 <h3>Totale Speso</h3>
                 <div class="stat-valore">€<?php echo number_format($totale_speso, 2); ?></div>

@@ -256,6 +256,18 @@ foreach ($domandeXml->domanda as $dom) {
             background-color: #c0c0c0; 
         }
 
+        .prezzo-originale {
+            text-decoration: line-through;
+            color: gray;
+            font-size: 1.5rem;
+        }
+
+        .prezzo-scontato {
+            color: green;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
@@ -290,8 +302,10 @@ foreach ($domandeXml->domanda as $dom) {
                     <!-- variazione di prezzo con sconto -->
                     <div class="prezzi-acquisto">
                         <?php if ($sconto['percentuale'] > 0): ?>
-                            <div class="prezzo-originale"><?php echo htmlspecialchars($gioco['prezzo_originale']); ?> crediti</div>
-                            <div class="prezzo-scontato">
+                            <div class="prezzo-originale" style="text-decoration: line-through; color: gray; font-size: 1.5rem;">
+                                <?php echo htmlspecialchars($gioco['prezzo_originale']); ?> crediti
+                            </div>
+                            <div class="prezzo-scontato" style="color: green; font-size: 1.8rem; font-weight: bold;">
                                 <?php echo $sconto['prezzo_finale']; ?> crediti
                                 <span class="sconto-info">(-<?php echo $sconto['percentuale']; ?>%)</span>
                             </div>
@@ -299,8 +313,12 @@ foreach ($domandeXml->domanda as $dom) {
 
                         <!-- gioco in offerta (mostriamo la variazione di prezzo)-->
                         <?php elseif($gioco['prezzo_originale'] != $gioco['prezzo_attuale']): ?>
-                            <div class="prezzo-originale"><?php echo htmlspecialchars($gioco['prezzo_originale']); ?> crediti</div>
-                            <div class="prezzo-scontato"> <?php echo htmlspecialchars($gioco['prezzo_attuale']); ?> crediti</div>
+                            <div class="prezzo-originale" style="text-decoration: line-through; color: gray; font-size: 1.2rem;">
+                                <?php echo htmlspecialchars($gioco['prezzo_originale']); ?> crediti
+                            </div>
+                            <div class="prezzo-scontato" style="color: #2ecc71; font-size: 1.5rem; font-weight: bold;">
+                                <?php echo htmlspecialchars($gioco['prezzo_attuale']); ?> crediti
+                            </div>
                         <?php endif; ?>
                         
                         <?php if (!empty($bonus)): ?>
@@ -324,7 +342,7 @@ foreach ($domandeXml->domanda as $dom) {
                                 <button type="submit" name="aggiungi" class="btn-primary btn-carrello">Aggiungi al Carrello</button>
                             </form>
                         <?php else: ?>
-                            <a href="login.php" class="btn-primary btn-login">Accedi per acquistare</a>
+                            <a href="login.php" class="btn-primary btn-login" style="margin-top: 1ex;">Accedi per acquistare</a>
                         <?php endif; ?>
                     </div>
                 </div>

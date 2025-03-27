@@ -112,10 +112,10 @@ usort($giochiInOfferta, function($a, $b) use ($ordinamento, $direzione) {
     <?php include('menu.php'); ?>
 
     <header class="shop-header">
-        <h1>Tutti gli Articoli in Offerta</h1>
+    <h1 style="margin-top: 6ex;">Tutti i Giochi da Tavolo in offerta</h1>
     </header>
 
-    <div class="filtri-sezione">
+    <div class="filtri-sezione" style="margin-top: 2em;">
         <div class="filtri-wrapper">
             <div class="filtro-box">
                 <span class="filtro-label">Ordina per:</span>
@@ -169,7 +169,7 @@ usort($giochiInOfferta, function($a, $b) use ($ordinamento, $direzione) {
     </div>
 
     <!-- griglia dei giochi da tavolo -->
-    <div class="product-grid">
+    <div class="product-grid" style="margin-top: 2em;">
         <?php
         if (!empty($giochiInOfferta)) {
             foreach ($giochiInOfferta as $gioco) {
