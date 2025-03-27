@@ -23,6 +23,11 @@ if (!isset($_SESSION['statoLogin'])) {
     <title>Dashboard</title>
     <link rel="stylesheet" href="../css/dashboard.css">
 </head>
+<style>
+    .header{
+        background-color: tomato;
+    }
+</style>
 <body>
 
     <header class="header">
@@ -55,7 +60,7 @@ if (!isset($_SESSION['statoLogin'])) {
         
         <!-- Pulsante di logout centrato -->
         <div style="text-align: center; margin-top: 20px;">
-            <a href="logout.php" class="logout-link" style="display: inline-block; padding: 10px 20px; background-color: #ff4d4d; color: white; border-radius: 5px; text-decoration: none;">Logout</a>
+            <a href="logout.php" class="logout-link" style="display: inline-block; padding: 10px 20px; background-color: tomato; color: white; border-radius: 5px; text-decoration: none;">Logout</a>
         </div>
     </main>
 </body>

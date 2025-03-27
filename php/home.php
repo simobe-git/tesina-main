@@ -2,6 +2,13 @@
 require_once("connessione.php");
 
 session_start();
+if(isset($_SESSION['tipo_utente'])){
+    if($_SESSION['tipo_utente'] == 'gestore' || $_SESSION['tipo_utente'] == 'admin' ){
+        header("Location: login.php");
+        exit;
+    }
+}
+
 $numCrediti = 0;
 if (isset($_SESSION['username'])) {
     $query = "SELECT crediti FROM utenti WHERE username = ?";

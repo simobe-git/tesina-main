@@ -1,8 +1,17 @@
 <?php 
 
 session_start();
-if(isset($_SESSION['statoLogin'])){
-    header('Location: home.php');
+
+// controlliamo se l'utente è già loggato
+if (isset($_SESSION['statoLogin'])) {
+    // reindirizzaiamo in base al tipo di utente
+    if ($_SESSION['tipo_utente'] === 'admin') {
+        header('Location: admin_dashboard.php');
+    } elseif ($_SESSION['tipo_utente'] === 'gestore') {
+        header('Location: gestore_dashboard.php');
+    } elseif ($_SESSION['tipo_utente'] === 'cliente') {
+        header('Location: home.php');
+    }
     exit();
 }
 ?>
@@ -24,7 +33,7 @@ if(isset($_SESSION['statoLogin'])){
             <h2>SIGN <span class="highlight">IN</span></h2>
             <form action="login-form.php" method="POST">
                 
-                <!-- Messaggi di errore se credenziali sbagliati o utente bannato -->
+                <!--    messaggi di errore se credenziali sbagliate o utente bannato -->
                 <?php if(isset($_GET['error']) && ($_GET['error'] == '1')){ ?>
                     <div class="error-message">Email o password non validi</div>
 

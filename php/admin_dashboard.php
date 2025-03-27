@@ -42,23 +42,23 @@ if (!isset($_SESSION['statoLogin'])) {
         <div class="row">
             <section class="users-management">
                 <h2>Modifica i dati personali degli utenti</h2>
-                <button onclick="location.href='gestione_utenti.php'" class="modify-user-button">Modifica Utente</button>
+                <button onclick="location.href='gestione_utenti.php'" class="modify-user-button" style="background-color: darkcyan;">Modifica Utente</button>
             </section>
 
             <section class="faq-management">
                 <h2>Aggiunta, eliminazione o modifica delle FAQ</h2>
-                <button onclick="location.href='gestione_faq.php'" class="create-faq-button">Gestisci FAQ</button>
+                <button onclick="location.href='gestione_faq.php'" class="create-faq-button" style="background-color: darkcyan;">Gestisci FAQ</button>
             </section>
         </div>
         <div class="row">
             <section class="credits-management">
                 <h2>Rispondi alle richieste di crediti</h2>
-                <button onclick="location.href='gestione_crediti.php'" class="add-credits-button">Richieste crediti</button>
+                <button onclick="location.href='gestione_crediti.php'" class="add-credits-button" style="background-color: darkcyan;">Richieste crediti</button>
             </section>
 
             <section class="ban-management">
                 <h2>Disattiva/Attiva gli utenti</h2>
-                <button onclick="location.href='gestione_utenti.php'" class="ban-user-button">Ban utenti</button>
+                <button onclick="location.href='gestione_utenti.php'" class="ban-user-button" style="background-color: darkcyan;">Ban utenti</button>
             </section>
         </div>
         <div style="text-align: center; margin-top: 20px;">
