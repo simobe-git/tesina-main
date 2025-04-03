@@ -6,13 +6,10 @@ include('connessione.php');
 if (!isset($_SESSION['statoLogin'])) {
     header("Location: login.php");
     exit();
-
-}elseif($_SESSION['tipo_utente'] !== 'gestore'){
+} elseif ($_SESSION['tipo_utente'] !== 'gestore') {
     header("Location: home.php");
     exit();
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -24,44 +21,44 @@ if (!isset($_SESSION['statoLogin'])) {
     <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 <style>
-    .header{
+    .header {
         background-color: tomato;
     }
 </style>
 <body>
 
-    <header class="header">
-        <h1>Dashboard Gestore</h1>
-    </header>
+<header class="header">
+    <h1>Dashboard Gestore</h1>
+</header>
 
-    <main class="dashboard-container">
-        <div class="row">
-            <section class="users-management">
-                <h2>Modifica Giochi e Offerte nel Catalogo</h2>
-                <button onclick="location.href='gestione_catalogo.php'" class="modify-user-button">Gestione Giochi</button>
-            </section>
+<main class="dashboard-container">
+    <div class="row">
+        <section class="users-management">
+            <h2>Modifica Giochi e Offerte nel Catalogo</h2>
+            <button onclick="location.href='gestione_catalogo.php'" class="modify-user-button">Gestione Giochi</button>
+        </section>
 
-            <section class="faq-management">
-                <h2>Modifica Sconti e Bonus</h2>
-                <button onclick="location.href='gestione_sconti_admin.php'" class="create-faq-button">Gestione Sconti o Bonus</button>
-            </section>
-        </div>
-        <div class="row">
-            <section class="credits-management">
-                <h2>Visualizza Utenti</h2>
-                <button onclick="location.href='visualizza_utenti.php'" class="add-credits-button">Visualizza Utenti</button>
-            </section>
+        <section class="faq-management">
+            <h2>Modifica Sconti e Bonus</h2>
+            <button onclick="location.href='gestione_sconti_admin.php'" class="create-faq-button">Gestione Sconti o Bonus</button>
+        </section>
+    </div>
+    <div class="row">
+        <section class="credits-management">
+            <h2>Visualizza Utenti</h2>
+            <button onclick="location.href='visualizza_utenti.php'" class="add-credits-button">Visualizza Utenti</button>
+        </section>
 
-            <section class="ban-management">
-                <h2>Gestione Forum</h2>
-                <button onclick="location.href=''" class="ban-user-button">Gestione dei Forum</button>
-            </section>
-        </div>
-        
-        <!-- Pulsante di logout centrato -->
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="logout.php" class="logout-link" style="display: inline-block; padding: 10px 20px; background-color: tomato; color: white; border-radius: 5px; text-decoration: none;">Logout</a>
-        </div>
-    </main>
+        <section class="ban-management">
+            <h2>Gestione Forum</h2>
+            <button onclick="location.href=''" class="ban-user-button">Gestione dei Forum</button>
+        </section>
+    </div>
+    
+    <!-- Pulsante di logout centrato -->
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="logout.php" class="logout-link" style="display: inline-block; padding: 10px 20px; background-color: tomato; color: white; border-radius: 5px; text-decoration: none;">Logout</a>
+    </div>
+</main>
 </body>
 </html>

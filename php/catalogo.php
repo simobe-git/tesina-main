@@ -1,9 +1,22 @@
 <?php
 session_start();
 require_once('funzioni_sconti_bonus.php');
+require_once('connessione.php'); 
 
+// recuperiamo il numero di crediti dell'utente per mostrarlo a schermo
+$numCrediti = 0; 
+if (isset($_SESSION['username'])) {
+    $query = "SELECT crediti FROM utenti WHERE username = ?";
+    $stmt = $connessione->prepare($query);
+    $stmt->bind_param("s", $_SESSION['username']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $numCrediti = $row['crediti'];
+    }
+}
 
-if(isset($_SESSION['statoLogin']) === false) {//se l'utente non è loggato
+if(isset($_SESSION['statoLogin']) === false) {  //se l'utente non è loggato
 
 }elseif(isset($_SESSION['tipo_utente'])){
 
@@ -77,9 +90,6 @@ if (!in_array($direzione, $direzioni_permesse)) {
 $categoria = isset($_GET['categoria']) ? $_GET['categoria'] : '';
 $editore = isset($_GET['editore']) ? $_GET['editore'] : '';
 
-/* debug: Stampa il valore della categoria selezionata
-echo "<pre>Categoria selezionata: " . htmlspecialchars($categoria) . "</pre>";
-*/
 
 // filtraggio dei giochi
 if ($categoria) {
@@ -87,9 +97,6 @@ if ($categoria) {
         return $gioco['categoria'] === $categoria;
     });
     
-    /* debug: Stampa i giochi filtrati
-    echo "<pre>Giochi filtrati per categoria: " . htmlspecialchars($categoria) . "</pre>";
-    print_r($giochiFiltrati); */
     
     $giochi = $giochiFiltrati; // aggiornamento array dei giochi
 }
@@ -122,11 +129,17 @@ usort($giochi, function($a, $b) use ($ordinamento, $direzione) {
     <title>Catalogo Giochi da Tavolo</title>
     <link rel="stylesheet" href="../css/giochi.css">
     <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- per icona crediti -->
     <script src="../js/filtri.js"></script>
 </head>
 <body>
     <?php include('menu.php'); ?>
-
+    
+    <div class="crediti-virtuali" style="position: absolute; top: 80px; right: 20px; background: rgba(0, 0, 0, 0.8); padding: 10px; border-radius: 5px; display: flex; align-items: center;">
+        <i class="fas fa-coins" style="color: #ffd700; font-size: 24px; margin-right: 5px; margin-left: 1ex;"></i>
+        <span style="color: white; margin-left: 1ex; font-size: 1.2em; margin-right: 2ex;"><?php echo number_format($numCrediti, 0); ?></span>
+    </div>
+    
     <header class="intestazione-negozio">
         <h1 style="margin-top: 6ex;">Catalogo dei Giochi da Tavolo</h1>
     </header>

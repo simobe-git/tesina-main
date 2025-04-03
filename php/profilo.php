@@ -32,40 +32,35 @@ $reputazione = getReputazioneUtente($_SESSION['username']);
 
 // gestione della richiesta crediti
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['richiedi_crediti'])) {
-    $importo = filter_var($_POST['importo'], FILTER_VALIDATE_FLOAT);
-    
-    if ($importo > 0) {
-        // caricamento del file XML esistente
-        if (!file_exists($xml_file)) {
-            $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><richiesteCrediti></richiesteCrediti>');
-        } else {
-            $xml = simplexml_load_file($xml_file);
-        }
-        
-        // aggiungiamo la nuova richiesta
-        $richiesta = $xml->addChild('richiesta');
-        $richiesta->addChild('username', $_SESSION['username']);
-        $richiesta->addChild('crediti', $importo);
-        $richiesta->addChild('data', date('Y-m-d'));
-        $richiesta->addChild('status', 'in attesa');
-        
-        /*
-        formattazione con DOMDocument nel salvataggio dei dati nel file XML viene aggiunta poiché 
-        quando si specificava una richiesta di crediti personalizzata veniva formattatta in un unica riga
-        */
-        $dom = new DOMDocument('1.0');  //nuovo DOMDocument() permette di creare, modificare, leggere e salvare file XML in modo strutturato con PHP 
-        $dom->preserveWhiteSpace = false;   // quando il file viene caricato elimina gli spazi bianchi
-        $dom->formatOutput = true;  // senza questo scrive tutto su una riga sola 
-        $dom->loadXML($xml->asXML());   // converte SimpleXMLElement in un una stringa XML che viene poi caricata come oggetto DOMDocument applicando le regole di formattazione precedenti
-                        
-        // Salvataggio nel file XML
-        if ($dom->save($xml_file)) {
-            $messaggio_successo = "Richiesta crediti inviata con successo! L'amministratore la esaminerà presto.";
-        } else {
-            $errore = "Errore nell'invio della richiesta. Riprova più tardi.";
-        }
+    $importo = $_POST['importo'];
+    $motivazione = $_POST['motivazione'] ?? '';
+
+    // salviamo la richiesta nel file XML contenente le richieste
+    $xml_file = '../xml/richieste_crediti.xml';
+    if (file_exists($xml_file)) {
+        $xml = simplexml_load_file($xml_file);
     } else {
-        $errore = "L'importo deve essere maggiore di zero.";
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><richiesteCrediti></richiesteCrediti>');
+    }
+
+    $richiesta = $xml->addChild('richiesta');
+    $richiesta->addChild('username', $_SESSION['username']);
+    $richiesta->addChild('crediti', $importo);
+    $richiesta->addChild('data', date('Y-m-d'));
+    $richiesta->addChild('status', 'in attesa');
+    $richiesta->addChild('note', $motivazione);
+
+    // formattazione con DOMDocument
+    $dom = new DOMDocument('1.0');
+    $dom->preserveWhiteSpace = false;
+    $dom->formatOutput = true;
+    $dom->loadXML($xml->asXML());
+
+    // salvataggio del file
+    if ($dom->save($xml_file)) {
+        $messaggio_successo = "Richiesta di crediti inviata con successo!";
+    } else {
+        $errore = "Si è verificato un errore durante l'invio della richiesta.";
     }
 }
 
@@ -143,28 +138,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cambia_avatar'])) {
 // recupera l'avatar attuale
 $avatar_attuale = getAvatarUtente($_SESSION['username']);
 
-// aggiorno stato utente a admin
+// gestione della richiesta per diventare gestore
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['richesta_admin'])) {
-    
-    // carica file xml degli avatar modificando il ruolo dell'utente in richiesta_admin
-    $xml_file = '../xml/avatar.xml';
-    $xml = simplexml_load_file($xml_file);
-    $aggiornato = false;
+    $username = $_SESSION['username'];
+    $data_richiesta = date('Y-m-d H:i:s');
 
-    //trova utente nel file xml e cambia il ruolo in richiesta_admin
-    foreach ($xml->utente as $utente) {
-        if ((string)$utente->username === $_SESSION['username']) {
-            $utente->ruolo = 'richiesta_admin';
-            $aggiornato = true;
-            break;
-        }
+    // caricamento file XML delle richieste gestore
+    $xml_file_gestore = '../xml/richieste_gestore.xml';
+    if (file_exists($xml_file_gestore)) {
+        $xml_gestore = simplexml_load_file($xml_file_gestore);
+    } else {
+        $xml_gestore = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><richiesteGestore></richiesteGestore>');
     }
 
-    // verifica se l'aggiornamento è andato a buon fine
-    if($aggiornato){
-        $xml->asXML($xml_file);
-    }else{
-        $errore = "Errore nell'aggiornamento del ruolo.";
+    // aggiungi la richiesta
+    $richiesta = $xml_gestore->addChild('richiesta');
+    $richiesta->addChild('username', $username);
+    $richiesta->addChild('data', $data_richiesta);
+
+    // salva il file XML
+    $dom = new DOMDocument('1.0');
+    $dom->preserveWhiteSpace = false;
+    $dom->formatOutput = true;
+    $dom->loadXML($xml_gestore->asXML());
+
+    if ($dom->save($xml_file_gestore)) {
+        $messaggio_successo = "Richiesta per diventare gestore inviata con successo!";
+    } else {
+        $errore = "Si è verificato un errore durante l'invio della richiesta.";
     }
 }
 
@@ -529,13 +530,13 @@ if (isset($_POST['storico_acquisti'])) {
                     <!-- Pulsante per richiesta diventare admin con minimo 9 di reputazione base e pesata-->
                     <div class="reputazione-item">
                         <?php if($reputazione['base'] >= 6 && $reputazione['pesata'] >= 6){ //modificare i valori e mettere a 9?>
-                            <h3>Richiesta Admin</h3>
+                            <h3>Richiesta per diventare un Gestore</h3>
                             <form method="post" action="profilo.php">
-                                <button type="submit" name="richesta_admin" class="btn-richiedi">Invia</button>
+                                <button type="submit" name="richesta_admin" class="btn-richiedi">Invia richiesta</button>
                             </form>
                         <?php } else{ ?>
-                            <h3>Richiesta Admin</h3>
-                            <p>Il punteggio di reputazione base e pesata deve essere minimo 9</p>
+                            <h3>Richiesta per diventare un Gestore</h3>
+                            <p>Non puoi richiedere di diventare un Gestore perchè il punteggio di reputazione base e pesata deve essere minimo 9</p>
                         <?php } ?>
                     </div>
                 </div>

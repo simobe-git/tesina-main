@@ -4,7 +4,9 @@
     <username>cliente1</username>
     <crediti>100</crediti>
     <data>2024-10-16</data>
-    <status>in attesa</status>
+    <status>rifiutata</status>
+    <note/>
+    <data_risposta>2025-04-02 19:45:21</data_risposta>
   </richiesta>
   <richiesta>
     <username>cliente2</username>
@@ -227,4 +229,11 @@
     <status>approvata</status>
     <prezzo>45.99</prezzo>
   </richiesta>
+  <richiesta>
+    <username>cliente1</username>
+    <crediti>36</crediti>
+    <data>2025-04-02</data>
+    <status>approvata</status>
+    <note/>
+  <data_risposta>2025-04-02 20:01:51</data_risposta></richiesta>
 </richiesteCrediti>

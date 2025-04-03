@@ -3,6 +3,18 @@ session_start();
 require_once('connessione.php');
 require_once('funzioni_sconti_bonus.php');
 
+// recuperiamo il numero di crediti dell'utente per mostrarlo a schermo
+$numCrediti = 0;
+if (isset($_SESSION['username'])) {
+    $query = "SELECT crediti FROM utenti WHERE username = ?";
+    $stmt = $connessione->prepare($query);
+    $stmt->bind_param("s", $_SESSION['username']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $numCrediti = $row['crediti'];
+    }
+}
 
 // verifica se l'utente è loggato e se è un cliente
 if (!isset($_SESSION['statoLogin'])) {
@@ -146,6 +158,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Il tuo Carrello</title>
     <link rel="stylesheet" href="../css/menu.css">
     <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> 
+
     <style>
         .container {
             max-width: 1000px;
@@ -253,6 +267,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .btn-catalogo:hover {
             background-color: #218838; 
         }
+
+        .crediti-amount {
+            font-size: 1.2em; 
+            color: #ffffff; 
+            margin-right: 2ex;
+        }
     </style>
 </head>
 <body>
@@ -329,6 +349,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </form>
             </div>
         <?php endif; ?>
+    </div>
+
+    <div class="crediti-virtuali" style="position: absolute; top: 80px; right: 20px; background: rgba(0, 0, 0, 0.8); padding: 10px; border-radius: 5px; display: flex; align-items: center;">
+        <i class="fas fa-coins" style="color: #ffd700; font-size: 24px; margin-right: 5px; margin-left: 1ex;"></i>
+        <div class="crediti-info">
+            <span class="crediti-amount"><?php echo number_format($numCrediti, 0); ?></span>
+        </div>
     </div>
 </body>
 </html>

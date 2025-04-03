@@ -1,0 +1,4 @@
+<!ELEMENT richiesteGestore (richiesta+)>
+<!ELEMENT richiesta (username, data)>
+<!ELEMENT username (#PCDATA)>
+<!ELEMENT data (#PCDATA)>

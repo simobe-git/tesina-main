@@ -202,4 +202,12 @@
     <sconto_applicato>0</sconto_applicato>
     <data>2025-03-24 12:33:13</data>
   </acquisto>
+  <acquisto id="67e6925ded6b4">
+    <username>cliente1</username>
+    <codice_gioco>8</codice_gioco>
+    <prezzo_originale>50</prezzo_originale>
+    <prezzo_pagato>50</prezzo_pagato>
+    <sconto_applicato>0</sconto_applicato>
+    <data>2025-03-28 13:13:17</data>
+  </acquisto>
 </acquisti>

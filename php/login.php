@@ -33,12 +33,11 @@ if (isset($_SESSION['statoLogin'])) {
             <h2>SIGN <span class="highlight">IN</span></h2>
             <form action="login-form.php" method="POST">
                 
-                <!--    messaggi di errore se credenziali sbagliate o utente bannato -->
+                <!-- Messaggi di errore -->
                 <?php if(isset($_GET['error']) && ($_GET['error'] == '1')){ ?>
                     <div class="error-message">Email o password non validi</div>
-
-                <?php }elseif(isset($_GET['error']) && ($_GET['error'] == '2')){ ?>
-                    <div class="error-message">Il tuo account è stato bannato</div>
+                <?php } elseif(isset($_GET['error']) && ($_GET['error'] == '2')){ ?>
+                    <div class="error-message" style="font-size: 130%;">Il tuo account è stato bannato, non puoi più accedere. Crea un nuovo account cliccando <a  style="text-decoration: none;" href="registration.php">qui</a></div>
                 <?php } ?>
 
                 <div class="form-group">

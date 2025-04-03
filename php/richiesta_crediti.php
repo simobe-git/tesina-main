@@ -51,33 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acquista_crediti'])) 
             // aggiorniamo i crediti attuali per la visualizzazione
             $crediti_attuali += $offerta['crediti'];
             
-            // aggiungiamo la richiesta al file XML
-            $xml_file = '../xml/richieste_crediti.xml';
-            if (file_exists($xml_file)) {
-                $xml = simplexml_load_file($xml_file);
-            } else {
-                $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><richiesteCrediti></richiesteCrediti>');
-            }
-            
-            $richiesta = $xml->addChild('richiesta');
-            $richiesta->addChild('username', $_SESSION['username']);
-            $richiesta->addChild('crediti', $offerta['crediti']);
-            $richiesta->addChild('data', date('Y-m-d'));
-            $richiesta->addChild('status', 'approvata');
-            $richiesta->addChild('prezzo', $offerta['prezzo']);
-
-            // Formattazione con DOMDocument (spiegazione dettagliata file carrello.php)
-            $dom = new DOMDocument('1.0');
-            $dom->preserveWhiteSpace = false;
-            $dom->formatOutput = true;
-            $dom->loadXML($xml->asXML());
-
-            //salvataggio del file e set messaggio di successo
-            if($dom->save($xml_file)){
-                $messaggio_successo = "Hai acquistato con successo {$offerta['crediti']} crediti!";
-            } else {
-                $errore = "Si è verificato un errore durante l'acquisto dei crediti.";
-            }
+            // in questo caso non salviamo la richiesta nel file XML, poiché i crediti sono stati aggiunti direttamente
+            // senza passare dall'admin
+            $messaggio_successo = "Hai acquistato con successo {$offerta['crediti']} crediti!";
         } else {
             $errore = "Si è verificato un errore durante l'acquisto dei crediti.";
         }
@@ -185,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acquista_crediti'])) 
         <?php if (isset($messaggio_successo)): ?>
             <div class="messaggio successo"><?php echo $messaggio_successo; ?></div>
             <a href="profilo.php" class="btn-acquista">Torna al profilo</a>
-        <?php elseif(isset($messaggio_successo)): ?>
+        <?php elseif(isset($errore)): ?>
             <div class="messaggio errore"><?php echo $errore; ?></div>
         <?php endif; ?>
 

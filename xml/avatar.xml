@@ -11,7 +11,7 @@
   <utente>
     <username>cliente1</username>
     <avatar>default_avatar.jpg</avatar>
-  <ruolo>richiesta_admin</ruolo></utente>
+  </utente>
   <utente>
     <username>cliente2</username>
     <avatar>default_avatar.jpg</avatar>

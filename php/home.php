@@ -61,6 +61,7 @@ if (count($giochi) < 3) {
     <title>Negozio di Videogiochi</title>
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
         .crediti-virtuali {
@@ -233,11 +234,10 @@ if (count($giochi) < 3) {
 
     <section class="hero-section">
         <?php if(isset($_SESSION['username']) && $_SESSION['tipo_utente'] === 'cliente'): ?>
-            <div class="crediti-virtuali">
-                <img src="../isset/coin.png" alt="Crediti">
+            <div class="crediti-virtuali" style="position: absolute; top: 20px; right: 20px; background: rgba(0, 0, 0, 0.8); padding: 10px; border-radius: 5px; display: flex; align-items: center;">
+                <i class="fas fa-coins" style="color: #ffd700; font-size: 24px; margin-left: 1ex; margin-right: 5px;"></i>
                 <div class="crediti-info">
-                    <span class="crediti-label">I tuoi Crediti:</span>
-                    <span class="crediti-amount"><?php echo number_format($numCrediti, 0); ?></span>
+                    <span class="crediti-amount" style="margin-right: 2ex;"><?php echo number_format($numCrediti, 0); ?></span>
                 </div>
             </div>
         <?php endif; ?>

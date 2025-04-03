@@ -11,11 +11,19 @@ body {
     color: white;
     padding: 15px;
     text-align: center;
+    position: relative;
+}
+
+nav {
+    position: absolute;
+    top: 5ex;
+    right: 3ex;
 }
 
 nav ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 nav ul li {
@@ -52,19 +60,19 @@ nav ul li a.logout-link:hover {
     margin-bottom: 20px;
 }
 
-.users-management, .faq-management, .credits-management, .ban-management {
+.users-management, .faq-management, .credits-management, .gestione-gestori, .ban-management {
     background: white;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    flex: 1 1 calc(40% - 20px);  /* due sezioni per riga con uno spazio di 20px tra di loro */
+    flex: 1 1 calc(50% - 20px);  /* modificato per occupare il 50% della larghezza */
     box-sizing: border-box;
     min-height: 120px; 
     text-align: center; 
     transition: transform 0.3s ease; 
 }
 
-.users-management:hover, .faq-management:hover, .credits-management:hover, .ban-management:hover {
+.users-management:hover, .faq-management:hover, .credits-management:hover, .gestione-gestori:hover, .ban-management:hover {
     transform: scale(1.05); /
 }
 
@@ -138,4 +146,52 @@ button {
 
 button:hover {
     background-color: #218838;
+}
+
+.gestione-gestori-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+table {  /* la usiamo in 'gestione_richiestaGestore' per far visualizzare tutte le richieste arrivate */
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px; 
+    text-align: center; 
+    font-size: 1.1em; 
+}
+
+th {
+    background-color: #f2f2f2; 
+}
+
+td {
+    border: none;
+}
+
+/* le usiamo in 'gestione_richiestaGestore.php' per far vedere i clienti e i gestori */
+.table-requests {
+    background-color: #d3d3d3; /* sfondo grigio chiaro per la tabella delle richieste per diventare gestori */
+}
+
+.table-gestori {
+    background-color: #d4edda; /* sfondo verde chiaro per la tabella dei gestori da declassare a clienti */
+}
+
+th, td {
+    flex: 1; 
+}
+
+.table-requests thead tr th{
+    background-color: #d3d3d3; 
+}
+
+.table-gestori thead tr th{
+    background-color: #d4edda; 
 }

@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $xml = caricaXML();
     
     if (isset($_POST['aggiungi_faq'])) {
-        // Controlla se la domanda esiste già
+        // controlliamo se la domanda esiste già
         $domanda_esistente = false;
         foreach ($xml->faq as $faq) {
             if ((string)$faq->domanda === $_POST['domanda']) {
@@ -189,17 +189,20 @@ if (isset($messaggio)): ?>
     <style>
         .container { max-width: 800px; margin: 0 auto; padding: 20px; }
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; }
-        .form-group textarea { width: 100%; min-height: 100px; padding: 8px; }
-        .btn { padding: 8px 15px; margin-right: 5px; cursor: pointer; }
-        .btn-primary { background: #007bff; color: white; border: none; }
-        .btn-danger { background: #dc3545; color: white; border: none; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 1.2em; }
+        .form-group textarea { width: 100%; min-height: 100px; padding: 8px; font-size: 1em; }
+        .btn { padding: 8px 15px; margin-right: 5px; cursor: pointer; border-radius: 5px; }
+        .btn-primary { background: #007bff; color: white; border: none; transition: background-color 0.3s; }
+        .btn-primary:hover { background: #0056b3; }
+        .btn-danger { background: #dc3545; color: white; border: none; transition: background-color 0.3s; }
+        .btn-danger:hover { background: #c82333; }
         .faq-item {
             background: #f8f9fa;
             padding: 15px;
             margin-bottom: 15px;
             border-radius: 4px;
             border: 1px solid #ddd;
+            font-size: 1.1em;
         }
         .faq-item h3 {
             color: #007bff;
@@ -224,6 +227,7 @@ if (isset($messaggio)): ?>
             padding: 15px;
             margin-bottom: 15px;
             border-radius: 8px;
+            font-size: 1.1em;
         }
         
         .risposta-item {
@@ -242,7 +246,7 @@ if (isset($messaggio)): ?>
         }
         /* stile per la barra di navigazione (menu) */
         .navbar {
-            background-color: #000; 
+            background-color: green; 
             color: #fff; 
             padding: 20px 0; 
             text-align: center; 
@@ -261,7 +265,7 @@ if (isset($messaggio)): ?>
             color: #fff; 
             text-decoration: none; 
             font-weight: bold; 
-            font-size: 18px; 
+            font-size: 20px; 
             transition: all 0.3s ease; 
         }
         .navbar a:hover {
@@ -276,10 +280,14 @@ if (isset($messaggio)): ?>
     <div class="navbar">
         <ul>
             <li><a href="admin_dashboard.php">Dashboard</a></li>
-            <li><a href="gestione_utenti.php">Modifica Utente</a></li>
+            <li><a href="gestione_utenti.php">Modifica utenti</a></li>
             <li><a href="gestione_crediti.php">Richieste Crediti</a></li>
-            <li><a href="gestione_utenti.php">Ban utenti</a></li>
+            <li><a href="gestione_richiestaGestore.php">Richieste utenti</a></li>
         </ul>
+    </div>
+    
+    <div style="text-align: right; margin-right: 2%; margin-top: 20px;">
+        <a href="logout.php" class="logout-link" style="display: inline-block; padding: 12px 25px; background-color: #ff4d4d; color: white; border-radius: 5px; text-decoration: none; font-size: 1.2em;">Logout</a>
     </div>
     
     <div class="container">
@@ -299,7 +307,7 @@ if (isset($messaggio)): ?>
             <button type="submit" name="aggiungi_faq" class="btn btn-primary">Aggiungi FAQ</button>
         </form>
 
-        <h2>FAQ Esistenti</h2>
+        <h2 style="margin-top: 2ex; text-align: center; font-size: 200%;">FAQ Esistenti</h2>
         <?php if ($xml): foreach ($xml->faq as $faq): ?>
             <div class="faq-item">
                 <h3><?php echo htmlspecialchars($faq->domanda); ?></h3>

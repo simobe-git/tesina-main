@@ -158,7 +158,7 @@ body {
 .crediti-amount {
     color: #ffd700;
     font-size: 1em;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .hero-section::before {

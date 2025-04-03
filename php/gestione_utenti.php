@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
 
 
-    // BAN UTENTE
+    // ban utente
     if (isset($_POST['ban_utente'])) { 
 
         $query = "UPDATE utenti SET ban = 1 WHERE username = ?";
@@ -26,10 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("s", $username);
         if ($stmt->execute()) {
             $messaggio = "Utente bannato con successo";
+        } else {
+            $messaggio = "Errore nel bannare l'utente: " . $stmt->error;
         }
     }
     
-    // ATTIVA UTENTE
+    // attiva utente
     elseif (isset($_POST['attiva_utente'])) { 
 
         $query = "UPDATE utenti SET ban = 0 WHERE username = ?";
@@ -41,16 +43,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     elseif (isset($_POST['modifica_dati'])) {
-
         $nome = $_POST['nome'];
         $cognome = $_POST['cognome'];
         $email = $_POST['email'];
-        
+
+        // eseguiamo l'aggiornamento nel database dopo i dati modificati dall'admin
         $query = "UPDATE utenti SET nome = ?, cognome = ?, email = ? WHERE username = ?";
         $stmt = $connessione->prepare($query);
         $stmt->bind_param("ssss", $nome, $cognome, $email, $username);
+
         if ($stmt->execute()) {
             $messaggio = "Dati utente aggiornati con successo";
+        } else {
+            $messaggio = "Errore nell'aggiornamento dei dati: " . $stmt->error;
         }
     }
 }
@@ -77,16 +82,20 @@ $result = $connessione->query($query);
         .utente-card {
             background: #f8f9fa;
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             text-align: center; 
             margin-bottom: 20px; 
             width: 100%; 
-            max-width: 300px; 
+            max-width: 350px;
+            transition: transform 0.2s;
+        }
+        .utente-card:hover {
+            transform: scale(1.02);
         }
         .stato-bannato { color: #dc3545; }
-        .stato-attivo { color: #28a745; }
-        .btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; }
+        .stato-attivo { color: #28a745; font-weight: bold; }
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; }
         .btn-danger { background: #dc3545; color: white; }
         .btn-success { background: #28a745; color: white; }
         .btn-primary { background: #007bff; color: white; }
@@ -101,7 +110,7 @@ $result = $connessione->query($query);
         }
 
         .navbar {
-            background-color: #000; 
+            background-color: green; 
             color: #fff; 
             padding: 20px 0; 
             text-align: center; 
@@ -111,7 +120,7 @@ $result = $connessione->query($query);
             margin: 0;
             padding: 0;
             display: inline-flex; 
-            list-style-type: disc; /* aggiungiamo un pallino di finco le voci del menù */
+            list-style-type: disc;
         }
         .navbar li {
             margin: 0 30px; 
@@ -120,7 +129,7 @@ $result = $connessione->query($query);
             color: #fff; 
             text-decoration: none; 
             font-weight: bold; 
-            font-size: 18px; 
+            font-size: 20px; 
             transition: all 0.3s ease; 
         }
         .navbar a:hover {
@@ -138,9 +147,35 @@ $result = $connessione->query($query);
 
         .utente-grid {
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 20px; 
             width: 100%; 
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-top: 5px;
+        }
+        
+        .username {
+            color: red;
+            font-size: 1.2em;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .stato-label {
+            font-weight: bold;
+            font-size: 1.1em;
         }
     </style>
 </head>
@@ -148,26 +183,30 @@ $result = $connessione->query($query);
     <div class="navbar">
         <ul>
             <li><a href="admin_dashboard.php">Dashboard</a></li>
-            <li><a href="gestione_utenti.php">Modifica Utente</a></li>
             <li><a href="gestione_crediti.php">Richieste Crediti</a></li>
             <li><a href="gestione_faq.php">Gestisci FAQ</a></li>
+            <li><a href="gestione_richiestaGestore.php">Gestisci richieste</a></li>
         </ul>
     </div>
-
+    
+    <div style="text-align: right; margin-right: 2%; margin-top: 20px;">
+        <a href="logout.php" class="logout-link" style="display: inline-block; padding: 12px 25px; background-color: #ff4d4d; color: white; border-radius: 5px; text-decoration: none; font-size: 1.2em;">Logout</a>
+    </div>
+    
     <div class="container">
         <div class="title-container">
-            <h1 style="font-size: 200%;">Gestione Utenti</h1>
-            <h3>Qui puoi modificare i dati anagrafici degli utenti</h3>
+            <h1 style="font-size: 200%; color: red; margin-top: -1ex;">Gestione Utenti</h1>
+            <h2 style="color: red;">Qui puoi modificare i dati anagrafici o attivare/disattivare gli utenti</h2>
         </div>
         
         <?php if (isset($messaggio)): ?>
             <div class="messaggio"><?php echo $messaggio; ?></div>
         <?php endif; ?>
 
-        <div class="utente-grid"> <!-- Contenitore per le schede utenti -->
+        <div class="utente-grid"> <!-- contenitore per le schede utenti -->
             <?php while ($utente = $result->fetch_assoc()): ?>
                 <div class="utente-card">
-                    <h3><?php echo htmlspecialchars($utente['username']); ?></h3>
+                    <h3 class="username"><?php echo htmlspecialchars($utente['username']); ?></h3>
                     <form method="POST">
                         <input type="hidden" name="username" value="<?php echo $utente['username']; ?>">
                         
@@ -187,13 +226,13 @@ $result = $connessione->query($query);
                         </div>
                         
                         <div class="form-group">
-                            <label>Stato:</label>
+                            <label class="stato-label">Stato:</label>
                             <span class="stato-<?php echo $utente['ban']; ?>">
                                 <?php 
                                     if($utente['ban'] == 0){
-                                        echo 'Attivo';
+                                        echo '<span class="stato-attivo">Attivo</span>';
                                     }else{
-                                        echo 'Bannato';
+                                        echo '<span class="stato-bannato">Bannato</span>';
                                     }
                                 ?>
                             </span>

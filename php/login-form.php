@@ -22,6 +22,12 @@ if(isset($_POST['login']) && $_SERVER["REQUEST_METHOD"] === "POST"){
         $tipo_utente = $row['tipo_utente'];
         $ban = $row['ban'];
 
+        // Controllo se l'utente è bannato
+        if ($ban == 1) {
+            header("Location: login.php?error=2"); // Reindirizza con errore di bannato
+            exit();
+        }
+
         $_SESSION['username'] = $username;
         $_SESSION['tipo_utente'] = $tipo_utente;
 

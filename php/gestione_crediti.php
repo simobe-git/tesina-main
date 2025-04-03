@@ -87,11 +87,16 @@ if (file_exists($xml_file)) {
     }
 }
 
-//mostra le richieste dalla meno recente alla più recente
+// mostra le richieste dalla meno recente alla più recente
 usort($richieste, function($a, $b) {
     return strtotime($a['data']) - strtotime($b['data']);
 });
 
+// inizializziamo le variabili per il controllo della visualizzazione
+$mostra_richieste_in_attesa = true; // impostiamo il valore predefinito
+$mostra_crediti_approvati = true; 
+
+// mostriamo le statistiche in base al filtro selezionato
 $totale_richieste = count($richieste);
 $richieste_in_attesa = count(array_filter($richieste, fn($r) => $r['status'] === 'in attesa'));
 $crediti_approvati = array_reduce(
@@ -99,6 +104,25 @@ $crediti_approvati = array_reduce(
     fn($sum, $r) => $sum + $r['crediti'],
     0
 );
+
+// Determina il titolo delle statistiche in base al filtro
+if ($filtro_stato === 'in attesa') {
+    $titolo_statistiche = "Totale richieste in attesa di risposta: $totale_richieste";
+    $mostra_crediti_approvati = false; // non mostrariamo i crediti approvati perchè è inutili mostrarli nella sezione delle richieste in attesa
+    $mostra_richieste_in_attesa = false; // non mostrariamo la scritta delle richieste in attesa perchè inutile nelle richieste in attesa
+} elseif ($filtro_stato === 'rifiutata') {
+    $titolo_statistiche = "Totale richieste rifiutate: $totale_richieste";
+    $mostra_richieste_in_attesa = false; // non mostrariamo le richieste in attesa perchè inutile nele richieste rigiutate
+    $mostra_crediti_approvati = false; // non mostriamo i crediti approvati perchè inutile nelle richieste rifiutate
+} elseif ($filtro_stato === 'approvata') {
+    $titolo_statistiche = "Totale richieste accettate: $totale_richieste";
+    $mostra_richieste_in_attesa = false; // in questo caso non mostriamo le richieste in attesa perchè inutile avendo filtrato per richieste accettate
+    $mostra_crediti_approvati = true; // mosyriamo i crediti approvati
+} else {
+    $titolo_statistiche = "Totale richieste: $totale_richieste";
+    $mostra_richieste_in_attesa = true; // mostriamo le richieste in attesa
+    $mostra_crediti_approvati = true; // mostriamo i crediti approvati
+}
 ?>
 
 <!DOCTYPE html>
@@ -120,6 +144,8 @@ $crediti_approvati = array_reduce(
             display: grid;
             grid-template-columns: 1fr auto;
             gap: 15px;
+            text-align: center;
+            font-size: 1.2em;
         }
         .richiesta-info {
             display: grid;
@@ -127,8 +153,8 @@ $crediti_approvati = array_reduce(
         }
         .richiesta-azioni {
             display: flex;
+            justify-content: center;
             gap: 10px;
-            align-items: center;
         }
         .btn {
             padding: 8px 16px;
@@ -152,6 +178,7 @@ $crediti_approvati = array_reduce(
             border-radius: 4px;
             background: #d4edda;
             color: #155724;
+            font-size: 130%;
         }
         .statistiche {
             display: grid;
@@ -167,6 +194,7 @@ $crediti_approvati = array_reduce(
             text-align: center;
         }
         .filtri {
+            text-align: center;
             margin-bottom: 20px;
             padding: 15px;
             background: #f8f9fa;
@@ -193,10 +221,10 @@ $crediti_approvati = array_reduce(
             margin: 10px 0;
         }
         .navbar {
-            background-color: #000; 
+            background-color: green; 
             color: #fff; 
-            padding: 20px 0; 
-            text-align: center; 
+            padding: 25px 0; 
+            text-align: center;
         }
         .navbar ul {
             margin: 0;
@@ -210,7 +238,7 @@ $crediti_approvati = array_reduce(
             color: #fff; 
             text-decoration: none; 
             font-weight: bold; 
-            font-size: 18px; 
+            font-size: 20px; 
             transition: all 0.3s ease; 
         }
         .navbar a:hover {
@@ -219,39 +247,52 @@ $crediti_approvati = array_reduce(
             padding: 5px; 
             border-radius: 5px; 
         }
+        select {
+            border-radius: 5px;
+            padding: 8px;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="navbar">
         <ul>
-            <li><a href="admin_dashboard.php">Dashboard</li>
-            <li><a href="gestione_utenti.php">Modifica Utente</a></li>
-            <li><a href="gestione_utenti.php">Ban utenti</a></li>
+            <li><a href="admin_dashboard.php">Dashboard</a></li>
+            <li><a href="gestione_utenti.php">Modifica utenti</a></li>
             <li><a href="gestione_faq.php">Gestisci FAQ</a></li>
+            <li><a href="gestione_richiestaGestore.php">Gestisci richieste</a></li>
         </ul>
     </div>
-
+    
+    <div style="text-align: right; margin-right: 2%; margin-top: 20px;">
+        <a href="logout.php" class="logout-link" style="display: inline-block; padding: 12px 25px; background-color: #ff4d4d; color: white; border-radius: 5px; text-decoration: none; font-size: 1.2em;">Logout</a>
+    </div>
+    
     <div class="container">
         <h1 style="font-size: 200%; color: red; text-align: center;">Gestione richieste di crediti</h1>
         <h3 style="font-size: 160%; color: red; text-align: center;">Accetta o rifiuta le richieste di crediti provenienti dagli utenti</h3>
         
         <div class="statistiche">
             <div class="stat-card">
-                <h2>Statistiche</h2>
-                <p>Totale richieste: <?php echo $totale_richieste; ?></p>
-                <p>Richieste in attesa: <?php echo $richieste_in_attesa; ?></p>
-                <p>Crediti approvati: €<?php echo number_format($crediti_approvati, 2); ?></p>
+                <h2 style="margin-top: 1ex;"><?php echo $titolo_statistiche; ?></h2>
+                <?php if ($mostra_richieste_in_attesa): ?>
+                    <p style="font-size: 130%; font-weight: bold;">Richieste in attesa: <?php echo $richieste_in_attesa; ?></p>
+                <?php endif; ?>
+                <?php if ($mostra_crediti_approvati): ?>
+                    <p style="font-size: 130%; font-weight: bold;">Crediti approvati: €<?php echo number_format($crediti_approvati, 2); ?></p>
+                <?php endif; ?>
             </div>
         </div>
         
         <div class="filtri">
-            <h2>Filtri</h2>
+            <h2>Filtra le richieste</h2>
             <form method="GET">
                 <select name="filtro_stato" onchange="this.form.submit()">
-                    <option value="tutti">Tutte</option>
-                    <option value="in attesa">In attesa</option>
-                    <option value="approvata">Approvata</option>
-                    <option value="rifiutata">Rifiutata</option>
+                    <option value="tutti" <?php echo $filtro_stato === 'tutti' ? 'selected' : ''; ?>>Tutte</option>
+                    <option value="in attesa" <?php echo $filtro_stato === 'in attesa' ? 'selected' : ''; ?>>In attesa</option>
+                    <option value="approvata" <?php echo $filtro_stato === 'approvata' ? 'selected' : ''; ?>>Approvate</option>
+                    <option value="rifiutata" <?php echo $filtro_stato === 'rifiutata' ? 'selected' : ''; ?>>Rifiutate</option>
                 </select>
                 <!--
                 <select name="filtro_data" onchange="this.form.submit()">
@@ -270,7 +311,7 @@ $crediti_approvati = array_reduce(
         <?php foreach ($richieste as $richiesta): ?>
             <div class="richiesta-card">
                 <div class="richiesta-info">
-                    <h3>Richiesta di <?php echo htmlspecialchars($richiesta['username']); ?></h3>
+                    <h3>Richiesta di <span style="color: blue;"><?php echo htmlspecialchars($richiesta['username']); ?></span></h3>
                     <p>
                         <strong>Crediti richiesti:</strong> 
                         €<?php echo number_format($richiesta['crediti'], 2); ?>

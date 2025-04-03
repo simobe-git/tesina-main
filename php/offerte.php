@@ -1,10 +1,24 @@
 <?php
 
 session_start();
+require_once('connessione.php'); 
+
 // non viene eseguito il controllo sullo stato login poiché un utente 
 // può accedere al catalogo in modo anonimo ma per effettuare acquisti 
 // dovrà necessariamente identificarsi
 
+// recuperiamo il numero di crediti dell'utente per mostrarlo a schermo
+$numCrediti = 0; // Inizializza la variabile
+if (isset($_SESSION['username'])) {
+    $query = "SELECT crediti FROM utenti WHERE username = ?";
+    $stmt = $connessione->prepare($query);
+    $stmt->bind_param("s", $_SESSION['username']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $numCrediti = $row['crediti'];
+    }
+}
 
 if(isset($_SESSION['statoLogin']) === false) { //se l'utente non è loggato
 
@@ -81,7 +95,7 @@ if ($editore) {
     });
 }
 
-// Genera gli editori disponibili in base ai giochi filtrati
+// editori disponibili in base ai giochi filtrati
 $editoriDisponibili = array_unique(array_column($giochiInOfferta, 'nome_editore'));
 
 // ordinamento dei giochi in offerta
@@ -106,13 +120,19 @@ usort($giochiInOfferta, function($a, $b) use ($ordinamento, $direzione) {
     <title>Tutti gli Articoli del Negozio</title>
     <link rel="stylesheet" href="../css/giochi.css">
     <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">  <!-- per icona crediti -->
     <script src="../js/filtri.js"></script>
 </head>
 <body>
     <?php include('menu.php'); ?>
-
+    
+    <div class="crediti-virtuali" style="position: absolute; top: 80px; right: 20px; background: rgba(0, 0, 0, 0.8); padding: 10px; border-radius: 5px; display: flex; align-items: center;">
+        <i class="fas fa-coins" style="color: #ffd700; font-size: 24px; margin-right: 5px; margin-left: 1ex;"></i>
+        <span style="color: white; margin-left: 1ex; margin-right: 2ex; font-size: 1.2em;"><?php echo number_format($numCrediti, 0); ?></span>
+    </div>
+    
     <header class="shop-header">
-    <h1 style="margin-top: 6ex;">Tutti i Giochi da Tavolo in offerta</h1>
+        <h1 style="margin-top: 6ex;">Tutti i Giochi da Tavolo in offerta</h1>
     </header>
 
     <div class="filtri-sezione" style="margin-top: 2em;">
