@@ -42,20 +42,29 @@ foreach ($xml->acquisto as $acquisto) {
     <title>Visualizzazione Acquisti e Profilo</title>
     <style>
         .container {
-            max-width: 800px;
+            max-width: 800px; 
             margin: 0 auto;
             padding: 20px;
             text-align: center;
         }
+        .acquisti-container {
+            display: flex;
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 15px; /* Spaziatura tra le card */
+        }
         .acquisto-card {
-            background: #f8f9fa;
+            background: #fff; 
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 10px;
+            width: 200px; 
+            text-align: left; 
+            border: 2px solid tomato; 
         }
         .navbar {
-            background-color: #000; 
+            background-color: tomato; 
             color: #fff; 
             padding: 20px 0; 
             text-align: center; 
@@ -99,25 +108,21 @@ foreach ($xml->acquisto as $acquisto) {
         <h1>Acquisti di <?php echo htmlspecialchars($username); ?></h1>
 
         <?php if (!empty($acquisti)): ?>
-            <?php foreach ($acquisti as $acquisto): ?>
-                <div class="acquisto-card">
-                    <p><strong>Codice Gioco:</strong> <?php echo htmlspecialchars($acquisto->codice_gioco); ?></p>
-                    <p><strong>Prezzo Originale:</strong> <?php echo htmlspecialchars($acquisto->prezzo_originale); ?> Crediti</p>
-                    <p><strong>Prezzo Pagato:</strong> <?php echo htmlspecialchars($acquisto->prezzo_pagato); ?> Crediti</p>
-                    <p><strong>Sconto Applicato:</strong> <?php echo htmlspecialchars($acquisto->sconto_applicato); ?></p>
-                    <p><strong>Bonus Ottenuti:</strong> <?php echo htmlspecialchars($acquisto->bonus_ottenuti); ?></p>
-                    <p><strong>Data:</strong> <?php echo htmlspecialchars($acquisto->data); ?></p>
-                </div>
-            <?php endforeach; ?>
+            <div class="acquisti-container">
+                <?php foreach ($acquisti as $acquisto): ?>
+                    <div class="acquisto-card">
+                        <p><strong>Codice Gioco:</strong> <?php echo htmlspecialchars($acquisto->codice_gioco); ?></p>
+                        <p><strong>Prezzo Originale:</strong> <?php echo htmlspecialchars($acquisto->prezzo_originale); ?> Crediti</p>
+                        <p><strong>Prezzo Pagato:</strong> <?php echo htmlspecialchars($acquisto->prezzo_pagato); ?> Crediti</p>
+                        <p><strong>Sconto Applicato:</strong> <?php echo htmlspecialchars($acquisto->sconto_applicato); ?></p>
+                        <p><strong>Bonus Ottenuti:</strong> <?php echo htmlspecialchars($acquisto->bonus_ottenuti); ?></p>
+                        <p><strong>Data:</strong> <?php echo htmlspecialchars($acquisto->data); ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         <?php else: ?>
             <p>Nessun acquisto trovato per l'utente <?php echo htmlspecialchars($username); ?>.</p>
         <?php endif; ?>
     </div>
-    
-    <div class="container">
-        <h1>Profilo di <?php echo htmlspecialchars($username); ?></h1>
-
-    </div>
-
 </body>
 </html>

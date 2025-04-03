@@ -23,6 +23,27 @@ if ($risultato && $risultato->num_rows > 0) {
 } else {
     $utenti = null; // Nessun utente trovato
 }
+
+// Gestione caricamento immagine
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar'])) {
+    $targetDir = "../isset/"; // Cartella di destinazione
+    $fileName = basename($_FILES['avatar']['name']);
+    $targetFilePath = $targetDir . $fileName;
+    $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION); //estraiamo il tipo di file
+
+    // Controlla il tipo di file
+    $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+    if (in_array(strtolower($fileType), $allowedTypes)) {
+        // Carica il file
+        if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFilePath)) {
+            $uploadMessage = "Immagine caricata con successo nella cartella isset.";
+        } else {
+            $uploadMessage = "Errore durante il caricamento del file.";
+        }
+    } else {
+        $uploadMessage = "Formato file non supportato. Sono ammessi solo JPG, JPEG, PNG e GIF.";
+    }
+}
 ?>
 
 
@@ -52,7 +73,7 @@ if ($risultato && $risultato->num_rows > 0) {
             max-width: 300px; 
         }
         .navbar {
-            background-color: #000; 
+            background-color: tomato; 
             color: #fff; 
             padding: 20px 0; 
             text-align: center; 
@@ -92,6 +113,44 @@ if ($risultato && $risultato->num_rows > 0) {
         }
         .btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; }
         .btn-primary { background: #007bff; color: white; }
+
+        /*STILE FORM CAARICAMENTO IMMAGINI*/
+        .upload-form {
+            background: #f8f9fa; /* Colore di sfondo chiaro */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombreggiatura */
+            max-width: 400px;
+            margin: 20px auto; /* Centra il form */
+            text-align: center;
+        }
+        .upload-form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .upload-form input[type="file"] {
+            display: block;
+            margin: 10px auto 20px auto;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+        .upload-form button {
+            background: tomato;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+        .upload-form button:hover {
+            background: #e04c2f; /* Colore più scuro al passaggio del mouse */
+        }
     </style>
 </head>
 <body>
@@ -124,7 +183,7 @@ if ($risultato && $risultato->num_rows > 0) {
                         <h3>Ban: <?php echo $utente['ban'] == 1 ? 'Sì' : 'No'; ?></h3>
                         <form action="visualizza_profilo.php" method="POST">
                             <input type="hidden" name="username" value="<?php echo htmlspecialchars($utente['username']); ?>">
-                            <button type="submit" class="btn btn-primary">Invia</button>
+                            <button type="submit" class="btn btn-primary">Mostra Acquisti</button>
                         </form>
                     </div>
                 <?php endforeach; ?>
@@ -134,5 +193,20 @@ if ($risultato && $risultato->num_rows > 0) {
         </div>
     </div>
 
+
+    <div class="container">
+        <div class="title-container">
+            <h1 style="font-size: 200%;">Aggiungi Avatar</h1>
+        </div>
+
+        <?php if (isset($uploadMessage)): ?>
+            <p style="color: green; font-weight: bold;"><?php echo $uploadMessage; ?></p>
+        <?php endif; ?>
+
+        <form action="" method="POST" enctype="multipart/form-data" class="upload-form">
+            <input type="file" id="avatar" name="avatar" accept="image/*" required>
+            <button type="submit" >Carica Avatar</button>
+        </form>
+    </div>
 </body>
 </html>
