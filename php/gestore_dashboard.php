@@ -35,23 +35,23 @@ if (!isset($_SESSION['statoLogin'])) {
     <div class="row">
         <section class="users-management">
             <h2>Modifica Giochi e Offerte nel Catalogo</h2>
-            <button onclick="location.href='gestione_catalogo.php'" class="modify-user-button">Gestione Giochi</button>
+            <button onclick="location.href='gestione_catalogo.php'" class="bottone">Gestione Giochi</button>
         </section>
 
         <section class="faq-management">
             <h2>Modifica Sconti e Bonus</h2>
-            <button onclick="location.href='gestione_sconti_admin.php'" class="create-faq-button">Gestione Sconti o Bonus</button>
+            <button onclick="location.href='gestione_sconti_admin.php'" class="bottone">Gestione Sconti o Bonus</button>
         </section>
     </div>
     <div class="row">
         <section class="credits-management">
-            <h2>Visualizza Utenti</h2>
-            <button onclick="location.href='visualizza_utenti.php'" class="add-credits-button">Visualizza Utenti</button>
+            <h2>Visualizza Utenti o Aggiungi Avatar</h2>
+            <button onclick="location.href='visualizza_utenti.php'" class="bottone">Visualizza Utenti</button>
         </section>
 
         <section class="ban-management">
             <h2>Gestione Forum</h2>
-            <button onclick="location.href=''" class="ban-user-button">Gestione dei Forum</button>
+            <button onclick="location.href=''" class="bottone">Gestione dei Forum</button>
         </section>
     </div>
     
