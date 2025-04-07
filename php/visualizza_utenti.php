@@ -26,7 +26,7 @@ if ($risultato && $risultato->num_rows > 0) {
 
 // Gestione caricamento immagine
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar'])) {
-    $targetDir = "../isset/"; // Cartella di destinazione
+    $targetDir = "../isset/avatar/"; // Cartella di destinazione
     $fileName = basename($_FILES['avatar']['name']);
     $targetFilePath = $targetDir . $fileName;
     $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION); //estraiamo il tipo di file
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar'])) {
     if (in_array(strtolower($fileType), $allowedTypes)) {
         // Carica il file
         if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFilePath)) {
-            $uploadMessage = "Immagine caricata con successo nella cartella isset.";
+            $uploadMessage = "Immagine caricata con successo nella cartella isset/avatar.";
         } else {
             $uploadMessage = "Errore durante il caricamento del file.";
         }

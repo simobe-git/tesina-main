@@ -405,12 +405,12 @@ if (isset($_POST['storico_acquisti'])) {
         <div class="profilo-header">
             <div class="avatar-nome">
                 <?php if ($avatar_attuale): ?>
-                    <img src="../isset/<?php echo htmlspecialchars($avatar_attuale); ?>" 
+                    <img src="../isset/avatar/<?php echo htmlspecialchars($avatar_attuale); ?>" 
                          alt="Avatar" 
                          class="header-avatar"
-                         onerror="this.src='../isset/default_avatar.jpg';">
+                         onerror="this.src='../isset/avatar/default_avatar.jpg';">
                 <?php else: ?>
-                    <img src="../isset/default_avatar.jpg" 
+                    <img src="../isset/avatar/default_avatar.jpg" 
                          alt="Avatar default" 
                          class="header-avatar">
                 <?php endif; ?>
