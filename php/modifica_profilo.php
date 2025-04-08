@@ -22,7 +22,7 @@ $dati_utente = $stmt->get_result()->fetch_assoc();
 
 // funzione per ottenere l'avatar attuale
 function getAvatarUtente($username) {
-    $xml_file = '../xml/utenti.xml';
+    $xml_file = '../xml/avatar.xml';
     if (file_exists($xml_file)) {
         $xml = simplexml_load_file($xml_file);
         foreach ($xml->utente as $utente) {
@@ -36,17 +36,29 @@ function getAvatarUtente($username) {
 
 // funzione per ottenere tutti gli avatar disponibili
 function getAvatarDisponibili() {
-    return [
-        'avatar1.jpg',
-        'avatar2.jpg',
-        'avatar3.jpg'
-    ];
+    $avatar_dir = '../isset/avatar/';
+    $avatars = [];
+
+    // Controlla se la directory esiste
+    if (is_dir($avatar_dir)) {
+        // Scansiona la directory per ottenere i file
+        $files = scandir($avatar_dir);
+
+        // Filtra solo i file immagine (es. jpg, png, gif)
+        foreach ($files as $file) {
+            if (in_array(pathinfo($file, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif'])) {
+                $avatars[] = $file; // Restituisce solo il nome del file
+            }
+        }
+    }
+
+    return $avatars;
 }
 
 // funzione per aggiornare l'avatar nel file XML
 function updateAvatarXML($username, $nuovo_avatar) {
-    $xml_file = '../xml/utenti.xml';
-    
+    $xml_file = '../xml/avatar.xml';
+
     // verifica se l'utente esiste nel file XML
     $xml = simplexml_load_file($xml_file);
     if ($xml === false) {
@@ -286,11 +298,11 @@ $avatars_disponibili = getAvatarDisponibili();
                 <div class="avatar-attuale">
                     <h3>Avatar Attuale</h3>
                     <?php if ($avatar_attuale): ?>
-                        <img src="../isset/<?php echo htmlspecialchars($avatar_attuale); ?>" 
+                        <img src="../isset/avatar/<?php echo htmlspecialchars($avatar_attuale); ?>" 
                              alt="Avatar attuale"
-                             onerror="this.src='../isset/default_avatar.jpg';">
+                             onerror="this.src='../isset/avatar/default_avatar.jpg';">
                     <?php else: ?>
-                        <img src="../isset/default_avatar.jpg" 
+                        <img src="../isset/avatar/default_avatar.jpg" 
                              alt="Avatar default">
                     <?php endif; ?>
                 </div>
@@ -302,9 +314,9 @@ $avatars_disponibili = getAvatarDisponibili();
                             <label class="avatar-option">
                                 <input type="radio" name="nuovo_avatar" value="<?php echo htmlspecialchars($avatar); ?>"
                                        <?php echo ($avatar === $avatar_attuale) ? 'checked' : ''; ?>>
-                                <img src="../isset/<?php echo htmlspecialchars($avatar); ?>" 
+                                <img src="../isset/avatar/<?php echo htmlspecialchars($avatar); ?>" 
                                      alt="Avatar opzione"
-                                     onerror="this.onerror=null; this.src='../isset/default_avatar.jpg';">
+                                     onerror="this.onerror=null; this.src='../isset/avatar/default_avatar.jpg';">
                             </label>
                         <?php endforeach; ?>
                     </div>
