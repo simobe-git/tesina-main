@@ -43,15 +43,35 @@ $sconto = calcolaSconto($_SESSION['username'] ?? null, $gioco['prezzo_originale'
 $recensioniXml = simplexml_load_file('../xml/recensioni.xml'); // carichiamo il file XML delle recensioni
 $recensioni = []; // è un array per memorizzare le recensioni filtrate
 
+$maxId = 0;  // inizializziamo la vatiabile
 foreach ($recensioniXml->recensione as $rec) {
-    if ((int)$rec->codice_gioco === $id_gioco) {
-        $recensioni[] = [
-            'username' => (string)$rec->username,
-            'testo' => (string)$rec->testo,
-            'data' => (string)$rec->data,
-            'giudizi' => $rec->giudizi->giudizio // per gestire i giudizi (PIU AVANTI)
-        ];
+    $currentId = (int)$rec['id'];
+    if ($currentId > $maxId) {
+        $maxId = $currentId;
     }
+}
+
+// caricamento delle valutazioni dal file XML
+$valutazioniXml = simplexml_load_file('../xml/valuta_recensioni.xml');
+$valutazioni = []; // array per memorizzare le valutazioni
+
+foreach ($valutazioniXml->valutazione as $valutazione) {
+    $id_recensione = (int)$valutazione->id_recensione;
+    $stelle = (int)$valutazione->stelle;
+
+    // raggruppiamoo le valutazioni per ID recensione
+    if (!isset($valutazioni[$id_recensione])) {
+        $valutazioni[$id_recensione] = [];
+    }
+    $valutazioni[$id_recensione][] = $stelle;
+}
+
+// funzione per calcolare la media delle valutazioni
+function calcolaMedia($stelle) {
+    if (empty($stelle)) {
+        return 0.0;     // restituiamo 0.0 se non ci sono valutazioni
+    }
+    return round(array_sum($stelle) / count($stelle), 1); // calcolo media e restituiamo come float
 }
 
 // caricamento delle discussioni dal file XML
@@ -60,24 +80,67 @@ $discussioni = [];   // è un array per memorizzare le discussioni filtrate
 
 foreach ($domandeXml->domanda as $dom) {
     if ((int)$dom->codice_gioco === $id_gioco) {
-        $risposte = [];
+        $risposte = []; // Inizializza un array per memorizzare le risposte
         foreach ($dom->risposta as $risposta) {
+            // Estrai l'ID della risposta dall'attributo
+            $id_risposta = (string)$risposta['id'];
             $risposte[] = [
                 'contenuto' => (string)$risposta->contenuto,
                 'autore' => (string)$risposta->autore,
                 'data' => (string)$risposta->data,
+                'id' => $id_risposta // id della risposta all'array
             ];
         }
 
+        // aggiungiamo la domanda e le risposte all'array delle discussioni
         $discussioni[] = [
             'titolo' => (string)$dom->titolo,
             'contenuto' => (string)$dom->contenuto,
             'autore' => (string)$dom->autore,
             'data' => (string)$dom->data,
-            'risposte' => $risposte // aggiungiamo le risposte caricate nell'xmll
+            'risposte' => $risposte // e aggiungiamo le risposte raccolte nell'xml
         ];
     }
 }
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // riceviamo i dati iviati tramite il modulo e inviamo i dati al server in formaot json, salvandoli in due array
+    $data = json_decode(file_get_contents('php://input'), true); 
+    $autore = $data['autore'];
+    $stelle = $data['stelle'];
+    $id_risposta = $data['id_risposta']; // id dells risposta nelle discussioni
+
+    // caricamento file XML
+    $xmlFile = '../xml/valuta_discussioni.xml'; 
+    $dom = new DOMDocument('1.0', 'UTF-8');
+    $dom->preserveWhiteSpace = false;
+    $dom->formatOutput = true;
+
+    // carichiamo il file XML esistente
+    if (file_exists($xmlFile)) {
+        $dom->load($xmlFile);
+    } else {
+        // se il file non esiste, creiamo la struttura di base
+        $root = $dom->createElement('valutazioni');
+        $dom->appendChild($root);
+    }
+
+    // aggiungiamo la nuova valutazione
+    $valutazione = $dom->createElement('valutazione');
+    $valutazione->appendChild($dom->createElement('username', htmlspecialchars($autore)));
+    $valutazione->appendChild($dom->createElement('id_risposta', htmlspecialchars($id_risposta))); // ID della risposta
+    $valutazione->appendChild($dom->createElement('stelle', htmlspecialchars($stelle)));
+
+    // aggiungiamo la valutazione al nodo radice
+    $dom->documentElement->appendChild($valutazione);
+
+    // salvataggio file XML
+    $dom->save($xmlFile);
+
+    echo json_encode(['success' => true]);
+}
+    
 
 ?>
 
@@ -268,6 +331,62 @@ foreach ($domandeXml->domanda as $dom) {
             font-weight: bold;
         }
 
+        .btn-valuta {
+            background-color: #2196F3; 
+            color: white;
+            border: none;
+            padding: 10px 20px; 
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-valuta:hover {
+            background-color: #1976D2; 
+        }
+
+        .stelle-valutazione {
+            display: inline-block;
+        }
+
+        .star {
+            cursor: pointer;
+            font-size: 24px;
+            color: yellow;  /* stelle bianche di default */
+            transition: color 0.3s ease;
+        }
+
+        .star.selected {
+            color: gold; /* stelle colorate di giallo quando selezionate */
+        }
+
+        .valuta-testo {
+            margin-right: 10px; 
+            font-weight: bold; 
+        }
+
+        .media-valutazione {
+            margin-left: 10px; 
+            font-weight: bold; 
+        }
+
+        .btn-segnala,
+        .btn-valuta {
+            background-color: #FF9800; 
+            color: white; 
+            border: none; 
+            padding: 5px 10px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-right: 5px; 
+            height: 35px; 
+        }
+
+        .btn-valuta {
+            background-color: #2196F3; 
+        }
+
     </style>
 </head>
 <body>
@@ -286,8 +405,8 @@ foreach ($domandeXml->domanda as $dom) {
                     <div class="dettagli">
                         <p><strong>Categoria:</strong> <?php echo htmlspecialchars($gioco['categoria']); ?></p>
                         <p><strong>Giocatori:</strong> <?php echo htmlspecialchars($gioco['min_num_giocatori']); ?> - <?php echo htmlspecialchars($gioco['max_num_giocatori']); ?></p>
-                        <p><strong>Età Minima:</strong> <?php echo htmlspecialchars($gioco['min_eta']); ?></p>
-                        <p><strong>Durata Partita:</strong> <?php echo htmlspecialchars($gioco['avg_partita']); ?> min</p>
+                        <p><strong>Età minima:</strong> <?php echo htmlspecialchars($gioco['min_eta']); ?></p>
+                        <p><strong>Durata media partita:</strong> <?php echo htmlspecialchars($gioco['avg_partita']); ?> min</p>
                         <p><strong>Pubblicazione:</strong> <?php
                                                             $date = new DateTime($gioco['data_rilascio']);  
                                                             $anno = $date->format('Y');
@@ -361,48 +480,33 @@ foreach ($domandeXml->domanda as $dom) {
                 
                 <div class="recensioni-container">
                     <?php
-                    if (empty($recensioni)){ // facciamo controllo che non ci siano recensioni
+                    if (empty($recensioniXml->recensione)) {
                         echo "<p>Non ci sono ancora recensioni per questo gioco.</p>";
                     } else {
-                        $count = 0;
-                        foreach ($recensioni as $recensione): 
-                            if ($count < 2): // mostriamo solo le prime 2 recensioni
+                        foreach ($recensioniXml->recensione as $recensione): 
+                            $id_recensione = (int)$recensione['id'];
+                            $media = calcolaMedia($valutazioni[$id_recensione] ?? []);
                     ?>
                         <div class="recensione">
                             <div class="recensione-header">
-                                <span class="recensione-autore"><?php echo htmlspecialchars($recensione['username']); ?></span>
-                                <span class="recensione-data"><?php echo date('d/m/Y', strtotime($recensione['data'])); ?></span>
-                                <button class="btn-valuta" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Valuta</button>
+                                <span class="recensione-autore"><?php echo htmlspecialchars($recensione->username); ?></span>
+                                <span class="recensione-data"><?php echo date('d/m/Y', strtotime($recensione->data)); ?></span>
+                                <span class="valuta-testo">Valuta recensione:</span>
+                                <div class="stelle-valutazione" data-id="<?php echo $recensione['id']; ?>">
+                                    <span class="star" data-value="1">★</span>
+                                    <span class="star" data-value="2">★</span>
+                                    <span class="star" data-value="3">★</span>
+                                    <span class="star" data-value="4">★</span>
+                                    <span class="star" data-value="5">★</span>
+                                </div>
+                                <span class="media-valutazione"><?php echo number_format($media, 1); ?></span> 
                             </div>
-                            <p class="recensione-testo"><?php echo htmlspecialchars($recensione['testo']); ?></p>
+                            <p class="recensione-testo"><?php echo htmlspecialchars($recensione->testo); ?></p>
                         </div>
                     <?php 
-                            endif;
-                            $count++;
                         endforeach; 
-                        if ($count > 2):   // mostriamo il pulsante di ampliamento solo se ci sono più di 2 recensioni
+                    }
                     ?>
-                        <button class="btn-mostra-altro" onclick="mostraAltreRecensioni()">Mostra altre recensioni</button>
-                        <div class="recensioni-nascoste" style="display: none;">
-                            <?php 
-                            foreach ($recensioni as $index => $recensione): 
-                                if ($index >= 2):   // mostriamo solo le recensioni nascoste (dalla terza in poi)
-                            ?>
-                                <div class="recensione">
-                                    <div class="recensione-header">
-                                        <span class="recensione-autore"><?php echo htmlspecialchars($recensione['username']); ?></span>
-                                        <span class="recensione-data"><?php echo date('d/m/Y', strtotime($recensione['data'])); ?></span>
-                                        <button class="btn-valuta" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Valuta</button>
-                                    </div>
-                                    <p class="recensione-testo"><?php echo htmlspecialchars($recensione['testo']); ?></p>
-                                </div>
-                            <?php 
-                                endif;
-                            endforeach; 
-                            ?>
-                        </div>
-                    <?php endif; ?>
-                    <?php } ?>
                 </div>
             </div>
 
@@ -424,7 +528,7 @@ foreach ($domandeXml->domanda as $dom) {
                                         <span class="discussione-autore" style="color: red;"><?php echo htmlspecialchars($discussione['autore']); ?></span>, 
                                         <span class="discussione-data"><?php echo date('d/m/Y', strtotime($discussione['data'])); ?></span>
                                     </div>
-                                    <button class="btn-segnala" style="background-color: #FF9800; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Segnala</button>
+                                    <button class="btn-segnala">Segnala</button>
                                 </div>
                                 <p class="discussione-testo"><?php echo htmlspecialchars($discussione['contenuto']); ?></p>
                                 
@@ -442,7 +546,8 @@ foreach ($domandeXml->domanda as $dom) {
                                                         <strong><?php echo htmlspecialchars($risposta['autore']); ?></strong>
                                                         <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
                                                     </div>
-                                                    <button class="btn-valuta" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Valuta</button>
+                                                    <button class="btn-segnala">Segnala</button>
+                                                    <button class="btn-valuta" onclick="apriFinestraValutazione('<?php echo htmlspecialchars($risposta['autore']); ?>', '<?php echo htmlspecialchars($risposta['id']); ?>')">Valuta</button>
                                                 </div>
                                                 <p class="risposta-testo"><?php echo htmlspecialchars($risposta['contenuto']); ?></p>
                                             </div>
@@ -466,7 +571,8 @@ foreach ($domandeXml->domanda as $dom) {
                                                                 <strong><?php echo htmlspecialchars($risposta['autore']); ?></strong>
                                                                 <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
                                                             </div>
-                                                            <button class="btn-valuta" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Valuta</button>
+                                                            <button class="btn-segnala">Segnala</button>
+                                                            <button class="btn-valuta" onclick="apriFinestraValutazione('<?php echo htmlspecialchars($risposta['autore']); ?>', '<?php echo htmlspecialchars($risposta['id']); ?>')">Valuta</button>
                                                         </div>
                                                         <p class="risposta-testo"><?php echo htmlspecialchars($risposta['contenuto']); ?></p>
                                                     </div>
@@ -514,7 +620,8 @@ foreach ($domandeXml->domanda as $dom) {
                                                                 <strong><?php echo htmlspecialchars($risposta['autore']); ?></strong>
                                                                 <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
                                                             </div>
-                                                            <button class="btn-valuta" style="background-color: #2196F3; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Valuta</button>
+                                                            <button class="btn-segnala">Segnala</button>
+                                                            <button class="btn-valuta" onclick="apriFinestraValutazione('<?php echo htmlspecialchars($risposta['autore']); ?>', '<?php echo htmlspecialchars($risposta['id']); ?>')">Valuta</button>
                                                         </div>
                                                         <p class="risposta-testo"><?php echo htmlspecialchars($risposta['contenuto']); ?></p>
                                                     </div>
@@ -535,6 +642,17 @@ foreach ($domandeXml->domanda as $dom) {
             </div>
         </div>
     </div>
+    <!-- finestra modale per la valutazione delle risposte nelle discussioni -->
+    <div id="finestraValutazione" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background-color:white; border:1px solid #ccc; padding:20px; z-index:1000; width: 25%; height: 20%;">
+        <h3>Valuta Risposta</h3>
+        <p id="autoreRisposta" style="color: red; margin-top: 1em;"></p>
+        <div class="stelle-valutazione" data-id="" style="display: inline; margin-left: 10px;">
+            <span class="star" data-value="1" style="cursor: pointer;">★</span>
+            <span class="star" data-value="2" style="cursor: pointer;">★</span>
+            <span class="star" data-value="3" style="cursor: pointer;">★</span>
+        </div>
+        <button style="margin-left: 1em; border-radius: 8px; height: 2em; width: 20%;" onclick="chiudiFinestra()">Chiudi</button>
+    </div>  
 
     <script>
         function mostraAltreRecensioni() {
@@ -575,7 +693,45 @@ foreach ($domandeXml->domanda as $dom) {
                 button.innerHTML = "Mostra altre domande"; // ripristiniamo il testo iniziale del pulsante
             }
         }
-// implementare funzioni che gestiscono la segnalazione degli utenti e la valutazione di recensioni e risposte nelle discussioni
+
+        document.querySelectorAll('.stelle-valutazione .star').forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = this.getAttribute('data-value');
+                const autore = document.getElementById('autoreRisposta').innerText.split(": ")[1]; // prendiamo il nome dell'autore
+                const id_risposta = this.parentElement.getAttribute('data-id'); 
+
+                // inviare la valutazione al server
+                fetch('dettaglio_gioco.php', { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ autore: autore, stelle: rating, id_risposta: id_risposta })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Risposta valutata correttamente!"); // messaggio di conferma
+                        chiudiFinestra(); // x chiudere la finestra
+                    } else {
+                        alert("Errore nell'invio della valutazione.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore:', error);
+                });
+            });
+        });
+
+        function apriFinestraValutazione(autore, id_risposta) {
+            document.getElementById('autoreRisposta').innerText = "Risposta di: " + autore;
+            document.querySelector('.stelle-valutazione').setAttribute('data-id', id_risposta); // impostiamo l'ID della risposta
+            document.getElementById('finestraValutazione').style.display = 'block';
+        }
+
+        function chiudiFinestra() {
+            document.getElementById('finestraValutazione').style.display = 'none';
+        }
     </script>
 </body>
 </html>

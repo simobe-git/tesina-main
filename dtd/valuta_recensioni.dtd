@@ -1,0 +1,5 @@
+<!ELEMENT valutazioni (valutazione*)>
+<!ELEMENT valutazione (username, id_recensione, stelle)>
+<!ELEMENT username (#PCDATA)>
+<!ELEMENT id_recensione (#PCDATA)>
+<!ELEMENT stelle (#PCDATA)>

@@ -1,0 +1,4 @@
+<!ELEMENT valutazioni (valutazione*)>
+<!ELEMENT valutazione (autore, stelle)>
+<!ELEMENT autore (#PCDATA)>
+<!ELEMENT stelle (#PCDATA)>

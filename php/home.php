@@ -2,12 +2,47 @@
 require_once("connessione.php");
 
 session_start();
-if(isset($_SESSION['tipo_utente'])){
-    if($_SESSION['tipo_utente'] == 'gestore' || $_SESSION['tipo_utente'] == 'admin' ){
-        header("Location: login.php");
-        exit;
+
+// impostiamo il tempo di scadenza in secondi (5 secondi per i test, poi mettere 600 secondi cioè 10 min)
+$timeout = 5; 
+
+// controlliamo se l'utente è loggato
+if (isset($_SESSION['username'])) {
+    // controlliamo se l'utente è un gestore o un admin
+    if (isset($_SESSION['tipo_utente'])) {
+        if ($_SESSION['tipo_utente'] == 'gestore' || $_SESSION['tipo_utente'] == 'admin') {
+            header("Location: login.php");
+        }
     }
 }
+
+    /* controlliamo se il cookie esiste
+    if (isset($_COOKIE['last_activity'])) {
+        // calcoliamo il tempo trascorso dall'ultima attività
+        $lastActivity = $_COOKIE['last_activity'];
+        echo "Ultima attività: " . date('Y-m-d H:i:s', $lastActivity) . "<br>";
+        echo "Tempo trascorso: " . (time() - $lastActivity) . " secondi<br>";
+
+        if (time() - $lastActivity > $timeout) {
+            // se il tempo trascorso supera il timeout, disconnettiamo l'utente
+            session_unset();
+            session_destroy();
+            setcookie('last_activity', '', time() - 3600, "/"); // eliminazone cookie
+            echo "<p style='color: red;'>La tua sessione è scaduta. Effettua nuovamente il login per continuare.</p>";
+        } else {
+            // aggiorniamo il cookie con il timestamp dell'ultima attività
+            setcookie('last_activity', time()); // scade dopo 5 secondi
+        }
+    } else {
+        echo "<p style='color: red;'>Cookie non impostato. Imposto il cookie ora.</p>";
+        // impostiamo il cookie se non esiste
+        setcookie('last_activity', time()); // scade dopo 5 secondi
+    }
+} else {
+    // se l'utente non è loggato, reindirizziamo alla pagina di login
+    header("Location: login.php");
+    exit;
+} */
 
 $numCrediti = 0;
 if (isset($_SESSION['username'])) {
@@ -39,7 +74,6 @@ if (isset($giochi['gioco'])) {
     exit; 
 }
 
-
 // selezioniamo 3 giochi casuali
 if (count($giochi) < 3) {
     $giochiCasuali = $giochi;
@@ -50,7 +84,6 @@ if (count($giochi) < 3) {
         $giochiCasuali[] = $giochi[$indice]; // accediamo ai dati associati agli indici
     }
 }
-
 ?>
 
 <!DOCTYPE html>

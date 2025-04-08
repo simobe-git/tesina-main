@@ -6,7 +6,7 @@
         <contenuto>Consigliereste di giocare ad un ragazzo di 13 anni?</contenuto>
         <autore>mario123</autore>
         <data>2024-03-20</data>
-        <risposta>
+        <risposta id="1">
             <contenuto>Nell'età minima viene consigliato almeno 14 anni, per cui direi di aspettare!</contenuto>
             <autore>luigi99</autore>
             <data>2024-03-22</data>
@@ -15,7 +15,7 @@
                 <risposta>12</risposta>
             </punteggio>
         </risposta>
-        <risposta>
+        <risposta id="2">
             <contenuto>Anche se l'età minima è 14, ci si può tranquillamente giocare prima secondo me.</contenuto>
             <autore>anna22</autore>
             <data>2024-03-23</data>
@@ -24,7 +24,7 @@
                 <risposta>5</risposta>
             </punteggio>
         </risposta>
-        <risposta>
+        <risposta id="3">
             <contenuto>No, bisogna rispettare l'età!</contenuto>
             <autore>giuseppeee</autore>
             <data>2024-03-29</data>
@@ -40,7 +40,7 @@
         <contenuto>Sono indeciso se comprarlo o no: vi è piaciuto? cosa vi ha soddisfatto e cosa non? voglio chiarirmi le idee per decidere se acquistarlo</contenuto>
         <autore>peppe01</autore>
         <data>2024-03-19</data>
-        <risposta>
+        <risposta id="4">
             <contenuto>Secondo me non vale i soldi spesi, vai su altro!</contenuto>
             <autore>luigi99</autore>
             <data>2024-03-21</data>
@@ -56,7 +56,7 @@
         <contenuto>Sono indeciso se comprarlo o no: vi è piaciuto? cosa vi ha soddisfatto e cosa non? voglio chiarirmi le idee per decidere se acquistarlo</contenuto>
         <autore>peppe01</autore>
         <data>2024-03-19</data>
-        <risposta>
+        <risposta id="5">
             <contenuto>Secondo me non vale i soldi spesi, vai su altro!</contenuto>
             <autore>luigi99</autore>
             <data>2024-03-21</data>
@@ -73,7 +73,7 @@
         <contenuto>Cosa accade se siamo più di 6 giocatori?</contenuto>
         <autore>paolo456</autore>
         <data>2024-03-19</data>
-        <risposta>
+        <risposta id="6">
             <contenuto>Probabilmente i soldi da distribuire a tutti i giocatori non basteranno e, quasi sicuramente, qualche giocatore si troverà pochissime proprietà in suo possesso.</contenuto>
             <autore>anna22</autore>
             <data>2024-03-27</data>

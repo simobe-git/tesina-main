@@ -6,6 +6,7 @@
 <!ELEMENT autore (#PCDATA)>
 <!ELEMENT data (#PCDATA)>
 <!ELEMENT risposta (contenuto, autore, data, punteggio)>
+<!ATTLIST risposta id CDATA #REQUIRED>
 <!ELEMENT punteggio (utilita, supporto)>
 <!ELEMENT utilita (#PCDATA)>
 <!ELEMENT supporto (#PCDATA)>

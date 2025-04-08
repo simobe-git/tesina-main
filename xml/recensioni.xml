@@ -13,7 +13,7 @@
             </giudizio>
         </giudizi>
     </recensione>
-    <recensione id="1">
+    <recensione id="2">
         <username>cliente22</username>
         <codice_gioco>1</codice_gioco>
         <testo>Bello, ma non lo consiglierei</testo>
