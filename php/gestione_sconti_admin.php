@@ -159,7 +159,7 @@ if (file_exists('../xml/sconti_bonus.xml')) {
             border-radius: 4px;
         }
         .navbar {
-            background-color: #000; 
+            background-color: tomato; 
             color: #fff; 
             padding: 20px 0; 
             text-align: center; 

@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <style>
-        .container {
+.container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
@@ -100,14 +100,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .utente-card {
             background: #f8f9fa;
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             text-align: center; 
             margin-bottom: 20px; 
             width: 100%; 
-            max-width: 300px; 
+            max-width: 350px;
+            transition: transform 0.2s;
         }
-        .btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; }
+        .utente-card:hover {
+            transform: scale(1.02);
+        }
+        .stato-bannato { color: #dc3545; }
+        .stato-attivo { color: #28a745; font-weight: bold; }
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; }
         .btn-danger { background: #dc3545; color: white; }
         .btn-success { background: #28a745; color: white; }
         .btn-primary { background: #007bff; color: white; }
@@ -122,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .navbar {
-            background-color: #000; 
+            background-color: tomato; 
             color: #fff; 
             padding: 20px 0; 
             text-align: center; 
@@ -132,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             margin: 0;
             padding: 0;
             display: inline-flex; 
-            list-style-type: disc; /* aggiungiamo un pallino di finco le voci del menù */
+            list-style-type: disc;
         }
         .navbar li {
             margin: 0 30px; 
@@ -141,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             color: #fff; 
             text-decoration: none; 
             font-weight: bold; 
-            font-size: 18px; 
+            font-size: 20px; 
             transition: all 0.3s ease; 
         }
         .navbar a:hover {
@@ -151,6 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border-radius: 5px; 
         }
 
+        
         .title-container {
             text-align: center; 
             margin-bottom: 20px; 
@@ -158,9 +165,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .utente-grid {
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 20px; 
             width: 100%; 
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-top: 5px;
+        }
+        
+        .username {
+            color: red;
+            font-size: 1.2em;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .stato-label {
+            font-weight: bold;
+            font-size: 1.1em;
         }
     </style>
 </head>
