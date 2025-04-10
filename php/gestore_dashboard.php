@@ -51,7 +51,7 @@ if (!isset($_SESSION['statoLogin'])) {
 
         <section class="ban-management">
             <h2>Gestione Forum</h2>
-            <button onclick="location.href=''" class="bottone">Gestione dei Forum</button>
+            <button onclick="location.href='gestione_forum.php'" class="bottone">Gestione dei Forum</button>
         </section>
     </div>
     
