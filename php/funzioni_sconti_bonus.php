@@ -1,20 +1,6 @@
 <?php
-/*
-Riepilogo degli sconti:
-    - Ultimi 3 mesi:
-        - 5% per 50+ crediti spesi
-        10% per 100+ crediti spesi
-    - Ultimi 6 mesi:
-        - 8% per 100+ crediti spesi
-        - 15% per 200+ crediti spesi
-    - Ultimo anno:
-        - 12% per 200+ crediti spesi
-        - 20% per 500+ crediti spesi
-    - Ultimi 3 anni:
-        - 15% per 500+ crediti spesi
-        - 25% per 1000+ crediti spesi
-*/ 
 require_once('funzioni_reputazioni.php');
+require_once('calcola_reputazione.php');
 
 // funzione per verificare se una data è nel range valido
 function dataValida($data_inizio, $data_fine) {
@@ -85,45 +71,47 @@ function calcolaSconto($username, $prezzo_originale) {
         'prezzo_finale' => $prezzo_originale - $importo_sconto,
         'motivo' => $motivo_sconto ?: 'Nessuno sconto applicabile'
     ];
-}
+} 
 
-// funzioni utili (di supporto)
+// prendiamo i crediti totali spesi da un utente per applicare (eventualmente) la prima tipologia di sconti
 function getCreditiSpesiTotali($username) {
-    global $connessione;
-
-    // query per ottenere il totale dei crediti spesi dall'utente
-    $query = "SELECT SUM(prezzo_attuale) as totale FROM acquisti WHERE username = ?";
-    $stmt = $connessione->prepare($query);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_assoc()['totale'] ?? 0;
-}
-
-function getCreditiSpesiPeriodo($username, $mesi) {
-    global $connessione;
-    
-    // prendiamo i dati dal file XML degli acquisti
-    $totale_crediti = 0;
-    $data_limite = date('Y-m-d', strtotime("-$mesi months"));
-    
-    $xml_file = '../xml/acquisti.xml';
+    $totaleCrediti = 0;
+    $xml_file = '../xml/acquisti.xml'; 
     if (file_exists($xml_file)) {
         $xml = simplexml_load_file($xml_file);
         foreach ($xml->acquisto as $acquisto) {
             if ((string)$acquisto->username === $username) {
-                $data_acquisto = (string)$acquisto->data;
-                if ($data_acquisto >= $data_limite) {
-                    $totale_crediti += (float)$acquisto->prezzo;
+                $totaleCrediti += (float)$acquisto->prezzo_pagato; // sommiamo i crediti spesi
+            }
+        }
+    }
+
+    return $totaleCrediti; // restituisce il totale dei crediti spesi
+}
+
+// funzione per ottenere i crediti spesi in un determinato periodo
+function getCreditiSpesiPeriodo($username, $mesi) {
+    $totaleCrediti = 0;
+    $xml_file = '../xml/acquisti.xml'; 
+    $oggi = new DateTime();
+    $dataLimite = (clone $oggi)->modify("-$mesi months"); // calcola la data limite
+
+    if (file_exists($xml_file)) {
+        $xml = simplexml_load_file($xml_file); 
+        foreach ($xml->acquisto as $acquisto) {
+            if ((string)$acquisto->username === $username) {
+                $dataAcquisto = new DateTime((string)$acquisto->data);
+                if ($dataAcquisto >= $dataLimite) {
+                    $totaleCrediti += (float)$acquisto->prezzo_pagato; // sommiamo i crediti spesi
                 }
             }
         }
     }
-    
-    return $totale_crediti;
+
+    return $totaleCrediti; // restituiamo il totale dei crediti spesi nel periodo
 }
 
-function getAnzianitaMesi($username) {
+/*function getAnzianitaMesi($username) {
     global $connessione;
     $query = "SELECT TIMESTAMPDIFF(MONTH, data_registrazione, NOW()) as mesi 
               FROM utenti WHERE username = ?";
@@ -134,46 +122,6 @@ function getAnzianitaMesi($username) {
     return $result->fetch_assoc()['mesi'] ?? 0;
 }
 
-// funzione per ottenere i bonus disponibili
-function getBonusDisponibili($codice_gioco) {
-    global $connessione;
-    $bonus = [];
-    
-    $query = "SELECT * FROM bonus 
-              WHERE codice_gioco = ? 
-              AND data_inizio <= CURRENT_DATE 
-              AND data_fine >= CURRENT_DATE";
-
-    if ($stmt = $connessione->prepare($query)) {
-
-        $stmt->bind_param("i", $codice_gioco);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        while ($row = $result->fetch_assoc()) {
-            $bonus[] = $row;
-        }
-
-        $stmt->close();
-    } else {
-        die("Errore nella preparazione della query: " . $connessione->error);
-    }
-
-    return $bonus;
-}
-
-// funzione per applicare il bonus all'utente
-function applicaBonus($username, $codice_gioco) {
-    $bonus = getBonusDisponibili($codice_gioco);
-    if (!empty($bonus)) {
-
-        // IMPLEMENTARE LA LOGICA PER AGGIUNGERE I CREDITI ALL'UTENTE
-
-        // per ora restituiamo solo l'ammontare del bonus
-        return $bonus[0]['ammontare'];
-    }
-    return 0;
-}
 
 // funzione per ottenere gli acquisti dell'utente
 function getAcquistiUtente($username) {
@@ -188,7 +136,7 @@ function getAcquistiUtente($username) {
         }
     }
     return $acquisti;
-}
+}*/
 
 function getStoricoAcquisti($username) {
     $acquisti = [];
@@ -225,7 +173,7 @@ function calcolaSpesaPeriodo($storico_acquisti, $mesi) {
 }
 
 // esempio di utilizzo tramite questa funzione  (AD ORA NON E' STATA ANCORA UTILIZZATA)
-function mostraDettagliSconti($username) {
+/* function mostraDettagliSconti($username) {
     $storico = getStoricoAcquisti($username);
     if (empty($storico)) {
         return "Non hai ancora effettuato acquisti.";
@@ -242,5 +190,136 @@ function mostraDettagliSconti($username) {
     }
 
     return implode("\n", $dettagli);
+} */
+
+// funzione per caricare gli sconti dal file XML
+function caricaScontiDaXml() {
+    $sconti = [];
+    $xml = simplexml_load_file('../xml/sconti_bonus.xml');
+
+    if ($xml === false) {
+        error_log("Errore nel caricamento del file XML.");
+        return $sconti; // restituiamo un array vuoto in caso di errore
+    }
+
+    foreach ($xml->sconti->sconto as $sconto) {
+        $tipo = (string)$sconto->tipo;
+
+        // inizializziamo l'array per il tipo se non esiste
+        if (!isset($sconti[$tipo])) {
+            $sconti[$tipo] = [];
+        }
+
+        // carichiamo i requisiti e le percentuali
+        if (isset($sconto->livelli) && isset($sconto->livelli->livello)) {
+            foreach ($sconto->livelli->livello as $livello) {
+                $sconti[$tipo][] = [
+                    'requisito_mesi' => (int)$livello->requisito_mesi,
+                    'percentuale' => (float)$livello->percentuale,
+                    'descrizione' => (string)$livello->descrizione
+                ];
+            }
+        }
+    }
+
+    return $sconti;
 }
-?>
+
+// tipologia 1 di sconti
+// funzione per calcolare lo sconto in base ai crediti spesi fino a questo momento
+function calcolaScontoCreditiSpesi($username) {
+    $sconti = caricaScontiDaXml(); // Carica gli sconti dal file XML
+    $sconto = 0;
+
+    // otteniamo i crediti spesi totali
+    $creditiSpesi = getCreditiSpesiTotali($username); // Funzione che restituisce i crediti spesi
+
+    if ($creditiSpesi >= 500) {
+        $sconto = 15; // sconto del 15% per chi ha speso 500 crediti
+    } elseif ($creditiSpesi >= 200) {
+        $sconto = 10; // sconto del 10% per chi ha speso 200 crediti
+    } elseif ($creditiSpesi >= 100) {
+        $sconto = 5; // sconto del 5% per chi ha speso 100 crediti
+    }
+
+    return $sconto; 
+}
+
+// tipologia 2 di sconti
+// funzione per calcolare lo sconto in base ai crediti spesi in un determinato periodo
+function calcolaScontoPeriodo($username) {
+    $sconti = caricaScontiDaXml(); 
+    $sconto = 0;
+
+    // controlliamo i crediti spesi negli ultimi 3 mesi
+    $spesaUltimi3Mesi = getCreditiSpesiPeriodo($username, 3);
+    if ($spesaUltimi3Mesi >= 100) {
+        $sconto = max($sconto, 10); // sconto del 10% per 100 crediti
+    } elseif ($spesaUltimi3Mesi >= 50) {
+        $sconto = max($sconto, 5); // sconto del 5% per 50 crediti
+    }
+
+    // controlliamo i crediti spesi negli ultimi 6 mesi
+    $spesaUltimi6Mesi = getCreditiSpesiPeriodo($username, 6);
+    if ($spesaUltimi6Mesi >= 200) {
+        $sconto = max($sconto, 15); // sconto del 15% per 200 crediti
+    } elseif ($spesaUltimi6Mesi >= 100) {
+        $sconto = max($sconto, 8); // sconto dell'8% per 100 crediti
+    }
+
+    // controlliamo i crediti spesi negli ultimi 12 mesi
+    $spesaUltimi12Mesi = getCreditiSpesiPeriodo($username, 12);
+    if ($spesaUltimi12Mesi >= 1000) {
+        $sconto = max($sconto, 20); // sconto del 20% per 1000 crediti
+    } elseif ($spesaUltimi12Mesi >= 500) {
+        $sconto = max($sconto, 15); // sconto del 15% per 500 crediti
+    } elseif ($spesaUltimi12Mesi >= 200) {
+        $sconto = max($sconto, 12); // sconto del 12% per 200 crediti
+    }
+
+    return $sconto; // restituiamo la percentuale di sconto
+}
+
+// tipologia 3 di sconti
+// funzione per calcolare lo sconto in base alla reputazione
+function calcolaScontoReputazione($username) {
+    $sconti = caricaScontiDaXml();
+    $reputazione = calcolaReputazione($username); 
+    $sconto = 0;
+
+    // controlliamo la reputazione
+    if ($reputazione >= 9) {
+        $sconto = 15; // sconto del 15% per reputazione tra 9 e 10
+    } elseif ($reputazione >= 7) {
+        $sconto = 10; // sconto del 10% per reputazione tra 7 e 8.99
+    } elseif ($reputazione >= 6) {
+        $sconto = 5; // sconto del 5% per reputazione tra 6 e 6.99
+    }
+
+    return $sconto;
+}
+
+// tipologia 4 di sconti
+// funzione per calcolare lo sconto in base all'anzianità
+function calcolaScontoAnzianita($username) {
+    global $connessione; // assicuriamoci di avere accesso alla connessione al database
+    $sconti = caricaScontiDaXml(); 
+
+    // query per ottenere la data di registrazione dell'utente
+    $query = "SELECT TIMESTAMPDIFF(MONTH, data_registrazione, NOW()) as mesi 
+              FROM utenti WHERE username = ?";
+    $stmt = $connessione->prepare($query);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $mesi = $result->fetch_assoc()['mesi'] ?? 0;
+
+    // calcolo dello sconto in base all'anzianità
+    if ($mesi >= 24) {
+        return 20; // sconto del 20% per registrazione di almeno 24 mesi
+    } elseif ($mesi >= 12) {
+        return 8; // sconto dell'8% per registrazione di almeno 12 mesi
+    }
+
+    return 0;
+}

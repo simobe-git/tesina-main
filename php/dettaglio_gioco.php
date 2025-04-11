@@ -35,9 +35,21 @@ if (!$gioco) {
     exit();
 }
 
-// calcola sconto e bonus
-$sconto = calcolaSconto($_SESSION['username'] ?? null, $gioco['prezzo_originale']);
-//PER ORA NO     $bonus = getBonusDisponibili($id_gioco); 
+// calcoliamo gli sconti
+$scontoCreditiSpesi = calcolaScontoCreditiSpesi($_SESSION['username']);   // sconto per crediti totali spesi fino ad ora
+$scontoPeriodo = calcolaScontoPeriodo($_SESSION['username']); // sconto per crediti spesi in un determinato periodo
+$scontoReputazione = calcolaScontoReputazione($_SESSION['username']);  // sconto in base alla reputazione dell'utente
+$scontoAnzianita = calcolaScontoAnzianita($_SESSION['username']);  // sconto in base a quanto tempo l'utente è registrato
+
+$scontoPercentuale = $scontoCreditiSpesi + $scontoPeriodo + $scontoReputazione + $scontoAnzianita; // sommiamo i quattro sconti
+
+$prezzoAttuale = $gioco['prezzo_attuale'];
+$prezzoFinale = $prezzoAttuale; // inizialmente il prezzo finale è uguale al prezzo attuale
+
+if ($scontoPercentuale > 0) {
+    $importoSconto = ($prezzoAttuale * $scontoPercentuale) / 100;
+    $prezzoFinale -= $importoSconto; // applicazione sconto al prezzo finale
+}
 
 // caricamento delle recensioni dal file XML
 $recensioniXml = simplexml_load_file('../xml/recensioni.xml'); // carichiamo il file XML delle recensioni
@@ -80,9 +92,8 @@ $discussioni = [];   // è un array per memorizzare le discussioni filtrate
 
 foreach ($domandeXml->domanda as $dom) {
     if ((int)$dom->codice_gioco === $id_gioco) {
-        $risposte = []; // Inizializza un array per memorizzare le risposte
+        $risposte = []; // inizializziao array per memorizzare le risposte
         foreach ($dom->risposta as $risposta) {
-            // Estrai l'ID della risposta dall'attributo
             $id_risposta = (string)$risposta['id'];
             $risposte[] = [
                 'contenuto' => (string)$risposta->contenuto,
@@ -387,6 +398,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #2196F3; 
         }
 
+        .pulsanti-azione { /* css per i pulsanti 'segnala' e 'valuta' */
+            display: flex; 
+            justify-content: center; 
+            gap: 10px; 
+            margin-top: 10px; 
+        }
+
+        .btn-invia, .btn-chiudi {
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-invia:hover, .btn-chiudi:hover {
+            background-color: #1976D2;
+        }
+
+        .contenuto-domanda-risposta {
+            color: blue; 
+        }
+
     </style>
 </head>
 <body>
@@ -420,17 +456,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     <!-- variazione di prezzo con sconto -->
                     <div class="prezzi-acquisto">
-                        <?php if ($sconto['percentuale'] > 0): ?>
+                        <?php if ($scontoPercentuale > 0): ?>
                             <div class="prezzo-originale" style="text-decoration: line-through; color: gray; font-size: 1.5rem;">
-                                <?php echo htmlspecialchars($gioco['prezzo_originale']); ?> crediti
+                                <?php echo htmlspecialchars($prezzoAttuale); ?> crediti
                             </div>
                             <div class="prezzo-scontato" style="color: green; font-size: 1.8rem; font-weight: bold;">
-                                <?php echo $sconto['prezzo_finale']; ?> crediti
-                                <span class="sconto-info">(-<?php echo $sconto['percentuale']; ?>%)</span>
+                                <?php echo htmlspecialchars($prezzoFinale); ?> crediti
+                                <span class="sconto-info">(-<?php echo $scontoPercentuale; ?>%)</span>
                             </div>
-                            <div class="sconto-motivo"><?php echo $sconto['motivo']; ?></div>
-
-                        <!-- gioco in offerta (mostriamo la variazione di prezzo)-->
                         <?php elseif($gioco['prezzo_originale'] != $gioco['prezzo_attuale']): ?>
                             <div class="prezzo-originale" style="text-decoration: line-through; color: gray; font-size: 1.2rem;">
                                 <?php echo htmlspecialchars($gioco['prezzo_originale']); ?> crediti
@@ -458,6 +491,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php if (isset($_SESSION['username'])): ?>
                             <form method="POST" action="carrello.php">
                                 <input type="hidden" name="codice_gioco" value="<?php echo $gioco['codice']; ?>">
+                                <input type="hidden" name="prezzo_scontato" value="<?php echo number_format($prezzoFinale, 2); ?>">
                                 <button type="submit" name="aggiungi" class="btn-primary btn-carrello">Aggiungi al Carrello</button>
                             </form>
                         <?php else: ?>
@@ -474,7 +508,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="POST" action="aggiungi_recensione.php" class="form-recensione">
                         <input type="hidden" name="codice_gioco" value="<?php echo $id_gioco; ?>">
                         <textarea name="testo" required placeholder="Scrivi la tua recensione..."></textarea>
-                        <button type="submit" class="btn-primary">Pubblica recensione</button>
+                        <button type="submit" class="btn-primary" style="margin-left: 60%;">Pubblica recensione</button>
                     </form>
                 <?php endif; ?>
                 
@@ -509,8 +543,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ?>
                 </div>
             </div>
-
-            <!-- sezione forum -->
             <div class="forum-section">
                 <h2>Discussioni</h2>
                 <?php if (empty($discussioni)): ?>
@@ -528,7 +560,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <span class="discussione-autore" style="color: red;"><?php echo htmlspecialchars($discussione['autore']); ?></span>, 
                                         <span class="discussione-data"><?php echo date('d/m/Y', strtotime($discussione['data'])); ?></span>
                                     </div>
-                                    <button class="btn-segnala">Segnala</button>
+                                    <button class="btn-segnala" onclick="apriFinestraSegnalazione('<?php echo htmlspecialchars($discussione['autore']); ?>', 'domanda', '<?php echo htmlspecialchars($discussione['contenuto']); ?>')">Segnala</button>
                                 </div>
                                 <p class="discussione-testo"><?php echo htmlspecialchars($discussione['contenuto']); ?></p>
                                 
@@ -541,15 +573,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             if ($hiddenCount < 2): // mostriamo solo le prime 2 risposte
                                         ?>
                                             <div class="risposta">
-                                                <div class="risposta-header" style="display: flex; justify-content: space-between; align-items: center;">
-                                                    <div>
-                                                        <strong><?php echo htmlspecialchars($risposta['autore']); ?></strong>
-                                                        <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
-                                                    </div>
-                                                    <button class="btn-segnala">Segnala</button>
-                                                    <button class="btn-valuta" onclick="apriFinestraValutazione('<?php echo htmlspecialchars($risposta['autore']); ?>', '<?php echo htmlspecialchars($risposta['id']); ?>')">Valuta</button>
+                                                <div class="risposta-header">
+                                                    <strong><?php echo htmlspecialchars($risposta['autore']); ?></strong>
+                                                    <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
                                                 </div>
                                                 <p class="risposta-testo"><?php echo htmlspecialchars($risposta['contenuto']); ?></p>
+                                                <div class="pulsanti-azione">
+                                                    <button class="btn-valuta" onclick="apriFinestraValutazione('<?php echo htmlspecialchars($risposta['autore']); ?>', '<?php echo htmlspecialchars($risposta['id']); ?>')">Valuta</button>
+                                                    <button class="btn-segnala" onclick="apriFinestraSegnalazione('<?php echo htmlspecialchars($risposta['autore']); ?>', 'risposta', '<?php echo htmlspecialchars($risposta['contenuto']); ?>')">Segnala</button>
+                                                </div>
                                             </div>
                                         <?php 
                                             endif;
@@ -566,15 +598,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     if ($hiddenCount >= 2): // mostriamo solo le risposte nascoste
                                                 ?>
                                                     <div class="risposta">
-                                                        <div class="risposta-header" style="display: flex; justify-content: space-between; align-items: center;">
-                                                            <div>
-                                                                <strong><?php echo htmlspecialchars($risposta['autore']); ?></strong>
-                                                                <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
-                                                            </div>
-                                                            <button class="btn-segnala">Segnala</button>
-                                                            <button class="btn-valuta" onclick="apriFinestraValutazione('<?php echo htmlspecialchars($risposta['autore']); ?>', '<?php echo htmlspecialchars($risposta['id']); ?>')">Valuta</button>
+                                                        <div class="risposta-header">
+                                                            <strong><?php echo htmlspecialchars($risposta['autore']); ?></strong>
+                                                            <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
                                                         </div>
                                                         <p class="risposta-testo"><?php echo htmlspecialchars($risposta['contenuto']); ?></p>
+                                                        <div class="pulsanti-azione">
+                                                            <button class="btn-valuta" onclick="apriFinestraValutazione('<?php echo htmlspecialchars($risposta['autore']); ?>', '<?php echo htmlspecialchars($risposta['id']); ?>')">Valuta</button>
+                                                            <button class="btn-segnala" onclick="apriFinestraSegnalazione('<?php echo htmlspecialchars($risposta['autore']); ?>', 'risposta', '<?php echo htmlspecialchars($risposta['contenuto']); ?>')">Segnala</button>
+                                                        </div>
                                                     </div>
                                                 <?php 
                                                     endif;
@@ -604,7 +636,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <span class="discussione-autore" style="color: red;"><?php echo htmlspecialchars($discussione['autore']); ?></span>, 
                                                 <span class="discussione-data"><?php echo date('d/m/Y', strtotime($discussione['data'])); ?></span>
                                             </div>
-                                            <button class="btn-segnala" style="background-color: #FF9800; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Segnala</button>
+                                            <button class="btn-segnala" onclick="apriFinestraSegnalazione('<?php echo htmlspecialchars($discussione['autore']); ?>', 'domanda', '<?php echo htmlspecialchars($discussione['contenuto']); ?>')">Segnala</button>
                                         </div>
                                         <p class="discussione-testo"><?php echo htmlspecialchars($discussione['contenuto']); ?></p>
                                         
@@ -615,15 +647,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 foreach ($discussione['risposte'] as $risposta): 
                                                 ?>
                                                     <div class="risposta">
-                                                        <div class="risposta-header" style="display: flex; justify-content: space-between; align-items: center;">
-                                                            <div>
-                                                                <strong><?php echo htmlspecialchars($risposta['autore']); ?></strong>
-                                                                <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
-                                                            </div>
-                                                            <button class="btn-segnala">Segnala</button>
-                                                            <button class="btn-valuta" onclick="apriFinestraValutazione('<?php echo htmlspecialchars($risposta['autore']); ?>', '<?php echo htmlspecialchars($risposta['id']); ?>')">Valuta</button>
+                                                        <div class="risposta-header">
+                                                            <strong><?php echo htmlspecialchars($risposta['autore']); ?></strong>
+                                                            <span class="risposta-data"><?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
                                                         </div>
                                                         <p class="risposta-testo"><?php echo htmlspecialchars($risposta['contenuto']); ?></p>
+                                                        <div class="pulsanti-azione">
+                                                            <button class="btn-valuta" onclick="apriFinestraValutazione('<?php echo htmlspecialchars($risposta['autore']); ?>', '<?php echo htmlspecialchars($risposta['id']); ?>')">Valuta</button>
+                                                            <button class="btn-segnala" onclick="apriFinestraSegnalazione('<?php echo htmlspecialchars($risposta['autore']); ?>', 'risposta', '<?php echo htmlspecialchars($risposta['contenuto']); ?>')">Segnala</button>
+                                                        </div>
                                                     </div>
                                                 <?php 
                                                 endforeach; 
@@ -639,6 +671,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
+            <button type="submit" class="btn-primary" style="background: red; margin-left: 70%; margin-top: 3em;">Apri discussione</button>
             </div>
         </div>
     </div>
@@ -653,6 +686,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <button style="margin-left: 1em; border-radius: 8px; height: 2em; width: 20%;" onclick="chiudiFinestra()">Chiudi</button>
     </div>  
+
+    <!-- finestra per la segnalazione -->
+    <div id="finestraSegnalazione" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background-color:white; border:1px solid #ccc; padding:20px; z-index:1000; width: 300px;">
+        <h3>Segnala</h3>
+        <p>
+            Segnala <span id="autoreSegnalato" style="color: red;"></span>
+        </p>
+        <p id="tipoSegnalazione"></p>
+        <p id="contenutoSegnalazione" class="contenuto-domanda-risposta"></p>
+        <textarea id="motivoSegnalazione" placeholder="Motivo della segnalazione..." rows="4" style="width: 100%;"></textarea>
+        <div class="pulsanti-azione">
+            <button class="btn-invia" onclick="inviaSegnalazione()">Invia Segnalazione</button>
+            <button class="btn-chiudi" onclick="chiudiFinestraSegnalazione()">Chiudi</button>
+        </div>
+    </div>
 
     <script>
         function mostraAltreRecensioni() {
@@ -700,7 +748,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 const autore = document.getElementById('autoreRisposta').innerText.split(": ")[1]; // prendiamo il nome dell'autore
                 const id_risposta = this.parentElement.getAttribute('data-id'); 
 
-                // inviare la valutazione al server
+                // inviamo la valutazione al server
                 fetch('dettaglio_gioco.php', { 
                     method: 'POST',
                     headers: {
@@ -724,14 +772,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
 
         function apriFinestraValutazione(autore, id_risposta) {
+            console.log("Finestra di valutazione aperta per:", autore, id_risposta);
             document.getElementById('autoreRisposta').innerText = "Risposta di: " + autore;
-            document.querySelector('.stelle-valutazione').setAttribute('data-id', id_risposta); // impostiamo l'ID della risposta
+            document.querySelector('.stelle-valutazione').setAttribute('data-id', id_risposta);     
             document.getElementById('finestraValutazione').style.display = 'block';
         }
 
         function chiudiFinestra() {
             document.getElementById('finestraValutazione').style.display = 'none';
         }
+
+        function apriFinestraSegnalazione(autore, tipo, contenuto) {
+            document.getElementById('autoreSegnalato').innerText = autore; // vogliamo username in rosso
+            document.getElementById('tipoSegnalazione').innerText = tipo + ":"; // tipo di segnalazione (domanda o risposta) con due punti
+            document.getElementById('contenutoSegnalazione').innerText = contenuto; // contenuto della domanda/risposta
+            document.getElementById('finestraSegnalazione').style.display = 'block';
+        }
+
+        function chiudiFinestraSegnalazione() {
+            document.getElementById('finestraSegnalazione').style.display = 'none';
+        }
+
+        function inviaSegnalazione() {
+        const motivo = document.getElementById('motivoSegnalazione').value;
+        const autoreSegnalante = '<?php echo $_SESSION['username']; ?>'; // username dell'utente che segnala
+        const autoreSegnalato = document.getElementById('autoreSegnalato').innerText; // username dell'utente segnalato
+
+        // invia la segnalazione tramite AJAX
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "invia_segnalazione.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                alert("Segnalazione inviata con successo!");
+                chiudiFinestraSegnalazione();
+            }
+        };
+    xhr.send("autore_segnalante=" + encodeURIComponent(autoreSegnalante) + "&autore_segnalato=" + encodeURIComponent(autoreSegnalato) + "&motivo=" + encodeURIComponent(motivo));
+}
     </script>
 </body>
 </html>

@@ -1,0 +1,5 @@
+<!ELEMENT segnalazioni (segnalazione*)>
+<!ELEMENT segnalazione (username_segnalante, username_segnalato, motivo)>
+<!ELEMENT username_segnalante (#PCDATA)>
+<!ELEMENT username_segnalato (#PCDATA)>
+<!ELEMENT motivo (#PCDATA)>

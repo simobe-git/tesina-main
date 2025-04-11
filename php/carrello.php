@@ -313,7 +313,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <p class="genere"><?php echo htmlspecialchars($gioco->categoria); ?></p>
                                 <div class="prezzo-originale">€<?php echo number_format((float)$gioco->prezzo_attuale, 2); ?></div>
                                 <div class="prezzo-scontato">
-                                    Crediti: <?php echo number_format((float)$gioco->prezzo_attuale, 2); ?>
+                                    Crediti: <?php echo number_format($_POST['prezzo_scontato'], 2); ?>
                                 </div>
                             </div>
                             <form method="POST">

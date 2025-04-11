@@ -51,29 +51,16 @@
                     <percentuale>15</percentuale>
                     <descrizione>15% di sconto per chi ha speso almeno 500 crediti negli ultimi 12 mesi</descrizione>
                 </livello>
+                <livello>
+                    <requisito_crediti>1000</requisito_crediti>
+                    <percentuale>20</percentuale>
+                    <descrizione>20% di sconto per chi ha speso almeno 1000 crediti negli ultimi 12 mesi</descrizione>
+                </livello>
             </livelli>
             <data_inizio>2024-01-01</data_inizio>
             <data_fine>2024-12-31</data_fine>
         </sconto>
         <sconto id="4">
-            <tipo>crediti_spesi_periodo</tipo>
-            <percentuale>15</percentuale>
-            <requisito_crediti>500</requisito_crediti>
-            <periodo_mesi>12</periodo_mesi>
-            <descrizione>15% di sconto per chi ha speso almeno 500 crediti nell'ultimo anno</descrizione>
-            <data_inizio>2024-01-01</data_inizio>
-            <data_fine>2024-12-31</data_fine>
-        </sconto>
-        <sconto id="5">
-            <tipo>crediti_spesi_periodo</tipo>
-            <percentuale>20</percentuale>
-            <requisito_crediti>1000</requisito_crediti>
-            <periodo_mesi>36</periodo_mesi>
-            <descrizione>20% di sconto per chi ha speso almeno 1000 crediti negli ultimi 3 anni</descrizione>
-            <data_inizio>2024-01-01</data_inizio>
-            <data_fine>2024-12-31</data_fine>
-        </sconto>
-        <sconto id="6">
             <tipo>reputazione</tipo>
             <percentuale>15</percentuale>
             <requisito_min>9</requisito_min>
@@ -81,7 +68,7 @@
             <data_inizio>2024-01-01</data_inizio>
             <data_fine>2024-12-31</data_fine>
         </sconto>
-        <sconto id="7">
+        <sconto id="5">
             <tipo>reputazione</tipo>
             <percentuale>10</percentuale>
             <requisito_min>7</requisito_min>
@@ -89,21 +76,21 @@
             <data_inizio>2024-01-01</data_inizio>
             <data_fine>2024-12-31</data_fine>
         </sconto>
-        <sconto id="8">
+        <sconto id="6">
             <tipo>anzianita</tipo>
             <percentuale>8</percentuale>
             <requisito_mesi>12</requisito_mesi>
             <data_inizio>2024-01-01</data_inizio>
             <data_fine>2024-12-31</data_fine>
         </sconto>
-        <sconto id="9">
+        <sconto id="7">
             <tipo>acquisto_specifico</tipo>
             <percentuale>12</percentuale>
             <codice_gioco_richiesto>10001</codice_gioco_richiesto>
             <data_inizio>2024-01-01</data_inizio>
             <data_fine>2024-12-31</data_fine>
         </sconto>
-        <sconto id="10">
+        <sconto id="8">
             <tipo>anzianita_anni</tipo>
             <percentuale>20</percentuale>
             <requisito_anni>2</requisito_anni>
@@ -113,7 +100,7 @@
     </sconti>
     
     <bonus>
-        <bonus_crediti id="1">
+        <bonus_crediti id="9">
             <ammontare>10</ammontare>
             <codice_gioco>11111</codice_gioco>
             <data_inizio>2024-03-01</data_inizio>

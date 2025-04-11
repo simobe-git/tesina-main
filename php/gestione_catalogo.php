@@ -265,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
 
                         <div class="form-group">
-                            <label>Minima Et&acute;:</label>
+                            <label>Età minima:</label>
                             <input type="text" name="min_eta" value="<?php echo htmlspecialchars($game->min_eta); ?>">
                         </div>
 
