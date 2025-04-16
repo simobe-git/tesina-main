@@ -34,11 +34,14 @@ if (isset($_SESSION['statoLogin'])) {
             <form action="login-form.php" method="POST">
                 
                 <!-- Messaggi di errore -->
-                <?php if(isset($_GET['error']) && ($_GET['error'] == '1')){ ?>
+                <?php if(isset($_GET['error']) && ($_GET['error'] == '1')): ?>
                     <div class="error-message">Email o password non validi</div>
-                <?php } elseif(isset($_GET['error']) && ($_GET['error'] == '2')){ ?>
+                <?php elseif(isset($_GET['error']) && ($_GET['error'] == '2')): ?>
                     <div class="error-message" style="font-size: 130%;">Il tuo account è stato bannato, non puoi più accedere. Crea un nuovo account cliccando <a  style="text-decoration: none;" href="registration.php">qui</a></div>
-                <?php } ?>
+                <!--Cookie terminato-->
+                <?php elseif(isset($_GET['error']) && ($_GET['error'] == '3')):?>
+                    <div class="error-message">Sessione Scaduta, effettuare login</div>
+                <?php endif; ?>
 
                 <div class="form-group">
                     <input type="email" id="email" name="email" placeholder="Email" required>

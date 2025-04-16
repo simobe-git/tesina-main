@@ -2,12 +2,6 @@
 session_start();
 require_once("connessione.php");
 
-/*
-function carica_utenti() {
-    return simplexml_load_file('../xml/utenti.xml');
-}
-*/
-
 if(isset($_POST['login']) && $_SERVER["REQUEST_METHOD"] === "POST"){ 
     $email = mysqli_real_escape_string($connessione, $_POST['email']);     // previene SQL injection (problemi)
     $password = mysqli_real_escape_string($connessione, $_POST['password']);
@@ -30,16 +24,15 @@ if(isset($_POST['login']) && $_SERVER["REQUEST_METHOD"] === "POST"){
 
         $_SESSION['username'] = $username;
         $_SESSION['tipo_utente'] = $tipo_utente;
-
         $_SESSION['statoLogin'] = true;
 
+        // Imposta un cookie valido per 30 secondi
+        setcookie("login_time", time(), time() + 30, "/");
+
         if($tipo_utente === 'admin' && $ban != 1) { //verifico che sia un admin e che non sia bannato
-            
             header("Location: admin_dashboard.php");
             exit();
-
         } elseif($tipo_utente === 'gestore' && $ban != 1) { //verifico che sia un gestore e che non sia bannato
-            
             header("Location: gestore_dashboard.php");
         } elseif ($tipo_utente === 'cliente') {
             header("Location: home.php");
