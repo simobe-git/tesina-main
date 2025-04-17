@@ -26,9 +26,6 @@ if(isset($_POST['login']) && $_SERVER["REQUEST_METHOD"] === "POST"){
         $_SESSION['tipo_utente'] = $tipo_utente;
         $_SESSION['statoLogin'] = true;
 
-        // Imposta un cookie valido per 30 secondi
-        setcookie("login_time", time(), time() + 30, "/");
-
         if($tipo_utente === 'admin' && $ban != 1) { //verifico che sia un admin e che non sia bannato
             header("Location: admin_dashboard.php");
             exit();
