@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <richiesteGestore>
-  
+  <richiesta>
+    <username>cliente1</username>
+    <data>2025-04-17 16:32:03</data>
+    <status>rifiutata</status>
+  </richiesta>
+  <richiesta>
+    <username>cliente1</username>
+    <data>2025-04-18 09:17:22</data>
+    <status>rifiutata</status>
+  </richiesta>
 </richiesteGestore>

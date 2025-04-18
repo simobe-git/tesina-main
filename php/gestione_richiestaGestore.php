@@ -20,10 +20,33 @@ if (file_exists($xml_file)) {
         $richieste[] = [
             'username' => (string)$richiesta->username,
             'data' => (string)$richiesta->data,
-            'status' => 'in attesa', // imposta lo stato come "in attesa"
+            'status' => (string) $richiesta->status //valore aggiunto dalla pagina profilo.php
         ];
     }
 }
+
+/**
+ * Quando la richiesta per diventare gestore viene rifutata modifichiamo nel file xml il campo 
+ * status inserendo il valore "rifiutata" per poi mostrare un messaggio di modifica avvenuta e salvare il file xml.
+*/
+if (isset($_POST['action']) && $_POST['action'] === 'rimuovi') {
+    
+    $username = $_POST['username'];
+    $xml = simplexml_load_file($xml_file);
+
+    foreach ($xml->richiesta as $key => $richiesta) { 
+        if ($richiesta->username == $username && $richiesta->status == 'attesa') { //ricerca per username e status
+            $richiesta->status = 'rifiutata';   //modifica status
+            $xml->asXML($xml_file); 
+            break;
+        }
+    }
+    // Mostra un messaggio di successo
+    echo "<script>alert('Richiesta rifiutata con successo');</script>";
+    echo "<script>setTimeout(function(){ window.location.href= 'gestione_richiestaGestore.php'; }, 2000);</script>";
+    exit();
+}
+
 
 // gestione della risposta alla richiesta
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -37,9 +60,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("s", $username);
         $stmt->execute();
 
-        // rimuoviamo la richiesta dal file XML
-        unset($xml->richiesta[$key]);
-        $xml->asXML($xml_file); // Salva le modifiche nel file XML
+        // aggiornamento status richiesta file xml (utile per mostrare che la richiesta è stata accettata)
+        $xml = simplexml_load_file($xml_file);
+
+        foreach ($xml->richiesta as $richiesta) {
+            if ($richiesta->username == $username) {
+                $richiesta->status = 'accettata'; //modifica status
+                break;
+            }
+        }
+        
 
         // e mostriamo un messaggio di successo
         echo "<script>alert('Promozione a gestore avvenuta con successo');</script>";
@@ -144,14 +174,16 @@ while ($row = $result_gestori->fetch_assoc()) {
             </thead>
             <tbody>
                 <?php foreach ($richieste as $richiesta): ?>
+                    <?php if ($richiesta['status'] === 'rifiutata') continue; // Salta le richieste rifiutate ?>
                     <tr>
                         <td style="padding: 8px; text-align: center; font-size: 1.3em; color: blue;"><?php echo htmlspecialchars($richiesta['username']); ?></td>
                         <td style="padding: 8px; text-align: center; font-size: 1.1em;"><?php echo htmlspecialchars($richiesta['data']); ?></td>
-                        <td style="padding: 8px; text-align: center; font-size: 1.1em;"><?php echo htmlspecialchars($ruoli[$richiesta['username']] ?? 'cliente'); ?></td>
+                        <td style="padding: 8px; text-align: center; font-size: 1.1em;"><?php echo htmlspecialchars('cliente'); ?></td>
                         <td style="padding: 8px; text-align: center; font-size: 1.1em;">
                             <form method="POST" style="display:inline;">
                                 <input type="hidden" name="username" value="<?php echo htmlspecialchars($richiesta['username']); ?>">
                                 <button type="submit" name="action" value="promuovi">Promuovi a Gestore</button>
+                                <button type="submit" name="action" value="rimuovi" style="background-color: red; color: white;">Rifiuta richiesta</button>
                             </form>
                         </td>
                     </tr>
