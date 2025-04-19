@@ -3,27 +3,6 @@ require_once("connessione.php");
 
 session_start();
 
-/**
- * Se utente si è loggato in precedenza avrà settato il cookie allora andiamo a controllare 
- * se è valido(aggiornandolo con il tempo attuale) altrimenti distuggiamo il cookie, la sessione e
- * reindirizzando l'utente alla pagina di login per mostrare un messaggio di errore che spiega il motivo della disconnessione
-*/
-if(isset($_COOKIE['login_time'])){
-
-    $time = time(); 
-    $login_time = $_COOKIE['login_time'];
-
-    if(($time - $login_time) > 30){ //calcola se il tempo del cookie è ancora valido 
-        session_unset(); 
-        session_destroy(); 
-        setcookie("login_time", "", time() - 3600, "/"); 
-        header("Location: login.php?error=3"); 
-        exit();
-    } else {
-        setcookie("login_time", $login_time, time() + 30, "/"); 
-    }
-}
-
 // controlliamo se l'utente è loggato
 if (isset($_SESSION['username'])) {
     // controlliamo se l'utente è un gestore o un admin

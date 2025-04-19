@@ -38,9 +38,6 @@ if (isset($_SESSION['statoLogin'])) {
                     <div class="error-message">Email o password non validi</div>
                 <?php elseif(isset($_GET['error']) && ($_GET['error'] == '2')): ?>
                     <div class="error-message" style="font-size: 130%;">Il tuo account è stato bannato, non puoi più accedere. Crea un nuovo account cliccando <a  style="text-decoration: none;" href="registration.php">qui</a></div>
-                <!--Cookie terminato-->
-                <?php elseif(isset($_GET['error']) && ($_GET['error'] == '3')):?>
-                    <div class="error-message">Sessione Scaduta, effettuare login</div>
                 <?php endif; ?>
 
                 <div class="form-group">
