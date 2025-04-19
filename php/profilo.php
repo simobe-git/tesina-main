@@ -142,6 +142,7 @@ $avatar_attuale = getAvatarUtente($_SESSION['username']);
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['richesta_admin'])) {
     $username = $_SESSION['username'];
     $data_richiesta = date('Y-m-d H:i:s');
+    $status = 'attesa'; 
 
     // caricamento file XML delle richieste gestore
     $xml_file_gestore = '../xml/richieste_gestore.xml';
@@ -155,6 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['richesta_admin'])) {
     $richiesta = $xml_gestore->addChild('richiesta');
     $richiesta->addChild('username', $username);
     $richiesta->addChild('data', $data_richiesta);
+    $richiesta->addChild('status', $status); // stato iniziale
 
     // salva il file XML
     $dom = new DOMDocument('1.0');
@@ -169,10 +171,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['richesta_admin'])) {
     }
 }
 
-// visualizza storico acquisti
-if (isset($_POST['storico_acquisti'])) {
-    header('Location: storico_acquisti.php');
-    exit();
+/**
+ * Dopo il caricamento del file richieste mediante indentificativo (username) possiamo mostrare tutte le 
+ * richieste effettuate dall'utente, incluso lo stato di ognuna di esse.
+ * Se l'utente ha effettuato più di 3 richieste, le ultime 3 verranno mostrate inizialmente e le altre saranno nascoste. 
+ * Le richieste sono ordinate per data, dalla più recente alla più vecchia. 
+*/
+$richieste_gestore = '../xml/richieste_gestore.xml';
+$richieste_gestore_array = [];
+
+if (file_exists($richieste_gestore)) {
+    $xml_gestore = simplexml_load_file($richieste_gestore);
+    
+    foreach ($xml_gestore->richiesta as $richiesta) {
+        if ((string)$richiesta->username === $_SESSION['username']) {
+            if (count($richieste_gestore_array) >= 3) { // Limita a 3 richieste
+                break;
+            }
+            $richieste_gestore_array[] = [
+                'data_richiesta' => (string)$richiesta->data,
+                'stato' => (string)$richiesta->status
+            ];
+        }
+    }
+
+    // Ordina le richieste per data (dalla più recente alla più vecchia)
+    usort($richieste_gestore_array, function($a, $b) {
+        return strtotime($b['data_richiesta']) - strtotime($a['data_richiesta']);
+    });
 }
 ?>
 
@@ -396,6 +422,20 @@ if (isset($_POST['storico_acquisti'])) {
             font-size: 0.9em;
             margin-top: 5px;
         }
+        .richieste-tabella {
+            margin: 20px auto;
+            width: 80%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        .richieste-tabella th,
+        .richieste-tabella td {
+            padding: 12px;
+            text-align: center;
+        }
+        .richieste-tabella th {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -529,11 +569,42 @@ if (isset($_POST['storico_acquisti'])) {
 
                     <!-- Pulsante per richiesta diventare admin con minimo 9 di reputazione base e pesata-->
                     <div class="reputazione-item">
-                        <?php if($reputazione['base'] >= 6 && $reputazione['pesata'] >= 6){ //modificare i valori e mettere a 9?>
+                        <?php if($reputazione['base'] >= 9 && $reputazione['pesata'] >= 9){ ?>
                             <h3>Richiesta per diventare un Gestore</h3>
+                            <p>Hai diritto a richiedere di diventare un gestore, 
+                                <strong>Attenzione se la richiesta verrà accettata non potrai accedere più come un utente</strong>
+                            </p><br>
                             <form method="post" action="profilo.php">
                                 <button type="submit" name="richesta_admin" class="btn-richiedi">Invia richiesta</button>
                             </form>
+                            <br>
+                            <br>
+
+                            <!-- Mostriamo le solo le ultime richieste per diventare gestore -->
+                            <h3>Visualizza richieste per diventare gestore</h3>
+                            <?php if(!empty($richieste_gestore_array)): ?>
+                                <?php foreach ($richieste_gestore_array as $richieste): ?>
+                                    <table class="richieste-tabella">
+                                        <thead>
+                                            <tr>
+                                                <th>Data Richiesta</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><?php echo htmlspecialchars($richieste['data_richiesta']); ?></td>
+                                                <td><?php echo htmlspecialchars($richieste['stato']); ?></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <h2>Non hai effettuato richieste</h2>
+                                <p>Non sono ancora state inviate richieste per diventare gestore</p>
+                            <?php endif; ?>
+
+                            <!--Punteggi insufficienti per la richiesta-->
                         <?php } else{ ?>
                             <h3>Richiesta per diventare un Gestore</h3>
                             <p>Non puoi richiedere di diventare un Gestore perchè il punteggio di reputazione base e pesata deve essere minimo 9</p>
@@ -541,10 +612,11 @@ if (isset($_POST['storico_acquisti'])) {
                     </div>
                 </div>
                 <h2><br>Storico Acquisti</h2>
-                <form method="POST" action="profilo.php">
-                    <button type="submit" name="storico_acquisti" class="btn-richiedi">
-                        Visualizza
-                    </button>
+                <br>
+                <p>Visualizza lo storico dei giochi acquistati</p>
+                <br>
+                <form method="POST" action="storico_acquisti.php">
+                    <button type="submit" name="storico_acquisti" class="btn-richiedi">Visualizza acquisti</button>
                 </form>
             </div>
 
