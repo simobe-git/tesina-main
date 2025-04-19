@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT recensioni (recensione*)>
 <!ELEMENT recensione (username, codice_gioco, testo, data, giudizi)>
 <!ELEMENT username (#PCDATA)>
@@ -9,3 +10,4 @@
 <!ELEMENT username_votante (#PCDATA)>
 <!ELEMENT supporto (#PCDATA)>
 <!ELEMENT utilita (#PCDATA)>
+<!ATTLIST recensione id CDATA #REQUIRED>

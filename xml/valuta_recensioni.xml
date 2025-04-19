@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE valutazioni SYSTEM "../dtd/valuta_recensioni.dtd">
+
 <valutazioni>
   <valutazione>
     <username>cliente1</username>

@@ -1,12 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT domande (domanda*)>
-<!ELEMENT domanda (codice_gioco, titolo, contenuto, autore, data, risposta+)>
+<!ELEMENT domanda (codice_gioco, titolo, contenuto, autore, data, risposta*)>
 <!ELEMENT codice_gioco (#PCDATA)>
 <!ELEMENT titolo (#PCDATA)>
 <!ELEMENT contenuto (#PCDATA)>
 <!ELEMENT autore (#PCDATA)>
 <!ELEMENT data (#PCDATA)>
-<!ELEMENT risposta (contenuto, autore, data, punteggio)>
+<!ELEMENT risposta (contenuto, autore, data)>
 <!ATTLIST risposta id CDATA #REQUIRED>
-<!ELEMENT punteggio (utilita, supporto)>
+<!-- <!ELEMENT punteggio (utilita, supporto)>
 <!ELEMENT utilita (#PCDATA)>
 <!ELEMENT supporto (#PCDATA)>

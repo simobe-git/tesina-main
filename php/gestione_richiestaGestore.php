@@ -2,6 +2,10 @@
 session_start();
 include('connessione.php');
 
+// Attiva l'errore reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // verifica se l'utente è loggato e se è un admin
 if (!isset($_SESSION['statoLogin'])) {
     header("Location: login.php");
@@ -24,13 +28,16 @@ if (file_exists($xml_file)) {
         ];
     }
 }
+echo "ciao";
 
 // gestione della risposta alla richiesta
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
+if ($action) {
+    echo "Richiesta POST ricevuta<br>"; // Messaggio di debug
+    $username = trim($_POST['username']);
     $action = $_POST['action'];
 
-    // gestiamo l'azione di accettazione della richiesta
+    echo "Username: $username, Action: $action<br>"; // Messaggio di debug
+
     if ($action === 'promuovi') {
         // aggiornamento del tipo utente nel database
         $stmt = $connessione->prepare("UPDATE utenti SET tipo_utente = 'gestore' WHERE username = ?");
@@ -38,19 +45,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute();
 
         // rimuoviamo la richiesta dal file XML
-        unset($xml->richiesta[$key]);
+        foreach ($xml->richiesta as $key => $richiesta) {
+            echo "Controllo richiesta: " . (string)$richiesta->username . "<br>"; // Messaggio di debug
+            if ((string)$richiesta->username === $username) {
+                unset($xml->richiesta[$key]);
+                echo "Richiesta di $username rimossa.<br>"; // Messaggio di debug
+                break; // Esci dal ciclo dopo aver trovato e rimosso la richiesta
+            }
+        }
         $xml->asXML($xml_file); // Salva le modifiche nel file XML
 
         // e mostriamo un messaggio di successo
         echo "<script>alert('Promozione a gestore avvenuta con successo');</script>";
         echo "<script>setTimeout(function(){ window.location.reload(); }, 2000);</script>";
+    } elseif ($action === 'rifiuta') {
+        // Rimuoviamo la richiesta dal file XML
+        foreach ($xml->richiesta as $key => $richiesta) {
+            echo "Controllo richiesta: " . (string)$richiesta->username . "<br>"; // Messaggio di debug
+            if ((string)$richiesta->username === $username) {
+                unset($xml->richiesta[$key]);
+                echo "Richiesta di $username rifiutata.<br>"; // Messaggio di debug
+                break; // Esci dal ciclo dopo aver trovato e rimosso la richiesta
+            }
+        }
+        $xml->asXML($xml_file); // Salva le modifiche nel file XML
+
+        // e mostriamo un messaggio di successo
+        echo "<script>alert('Richiesta rifiutata con successo');</script>";
+        echo "<script>setTimeout(function(){ window.location.reload(); }, 2000);</script>";
     } elseif ($action === 'declassa') {
-        // Aggiorna il tipo utente nel database per declassare a cliente
+        // Logica per declassare a cliente
         $stmt = $connessione->prepare("UPDATE utenti SET tipo_utente = 'cliente' WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
-
-        // mostriamo un messaggio di successo
         echo "<script>alert('Declassamento a cliente avvenuto con successo');</script>";
         echo "<script>setTimeout(function(){ window.location.reload(); }, 2000);</script>";
     }
@@ -58,7 +85,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ricaricamento pagina per vedere le modifiche
     header("Location: gestione_richiestaGestore.php");
     exit();
+}else{
+    echo "</br>here";
 }
+
+echo "</br>";
+echo "ciao3";
 
 // carichiamo i ruoli degli utenti dal db
 $ruoli = [];
@@ -147,11 +179,12 @@ while ($row = $result_gestori->fetch_assoc()) {
                     <tr>
                         <td style="padding: 8px; text-align: center; font-size: 1.3em; color: blue;"><?php echo htmlspecialchars($richiesta['username']); ?></td>
                         <td style="padding: 8px; text-align: center; font-size: 1.1em;"><?php echo htmlspecialchars($richiesta['data']); ?></td>
-                        <td style="padding: 8px; text-align: center; font-size: 1.1em;"><?php echo htmlspecialchars($ruoli[$richiesta['username']] ?? 'cliente'); ?></td>
+                        <td style="padding: 8px; text-align: center; font-size: 1.1em;">cliente</td>
                         <td style="padding: 8px; text-align: center; font-size: 1.1em;">
                             <form method="POST" style="display:inline;">
                                 <input type="hidden" name="username" value="<?php echo htmlspecialchars($richiesta['username']); ?>">
                                 <button type="submit" name="action" value="promuovi">Promuovi a Gestore</button>
+                                <button type="submit" name="action" value="rifiuta" style="background-color: red; color: white;">Rifiuta Richiesta</button>
                             </form>
                         </td>
                     </tr>

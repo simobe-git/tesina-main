@@ -1,4 +1,6 @@
 <?xml version="1.0"?>
+<!DOCTYPE utenti SYSTEM "../dtd/avatar.dtd">
+
 <utenti>
   <utente>
     <username>admin1</username>

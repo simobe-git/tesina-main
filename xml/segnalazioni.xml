@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE segnalazioni SYSTEM "../dtd/segnalazioni.dtd">
+
 <segnalazioni>
 <segnalazione><username_segnalante>cliente1</username_segnalante><username_segnalato>undefined</username_segnalato><motivo>secondo me luigi99 dice una bugia</motivo></segnalazione></segnalazioni>

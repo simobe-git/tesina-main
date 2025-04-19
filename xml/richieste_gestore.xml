@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE richiesteGestore SYSTEM "../dtd/richieste_gestore.dtd">
 <richiesteGestore>
-  
+  <richiesta>
+    <username>cliente1</username>
+    <data>2025-04-12 22:51:41</data>
+  </richiesta>
+  <richiesta>
+    <username>cliente1</username>
+    <data>2025-04-12 23:02:11</data>
+  </richiesta>
 </richiesteGestore>

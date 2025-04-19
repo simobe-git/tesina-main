@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT acquisti (acquisto+)>
 <!ELEMENT acquisto (username, codice_gioco, prezzo_originale, prezzo_pagato, sconto_applicato, bonus_ottenuti, data)>
 <!ELEMENT username (#PCDATA)>

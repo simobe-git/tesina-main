@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE acquisti SYSTEM "../dtd/acquisti.dtd">
+
 <acquisti>
   <acquisto id="67b5c26370e65">
     <username>cliente1</username>
@@ -96,6 +98,7 @@
     <prezzo_originale>30</prezzo_originale>
     <prezzo_pagato>20</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-21</data>
   </acquisto>
   <acquisto id="67dd5935d933b">
@@ -104,6 +107,7 @@
     <prezzo_originale>35</prezzo_originale>
     <prezzo_pagato>25</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-21</data>
   </acquisto>
   <acquisto id="67dd5949b4792">
@@ -112,6 +116,7 @@
     <prezzo_originale>45</prezzo_originale>
     <prezzo_pagato>45</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-21</data>
   </acquisto>
   <acquisto id="67e13b6c3d832">
@@ -120,6 +125,7 @@
     <prezzo_originale>40</prezzo_originale>
     <prezzo_pagato>40</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-24</data>
   </acquisto>
   <acquisto id="67e13bd26c216">
@@ -128,6 +134,7 @@
     <prezzo_originale>40</prezzo_originale>
     <prezzo_pagato>40</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-24</data>
   </acquisto>
   <acquisto id="67e13c208eb82">
@@ -136,6 +143,7 @@
     <prezzo_originale>30</prezzo_originale>
     <prezzo_pagato>22</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-24</data>
   </acquisto>
   <acquisto id="67e13c208eb9b">
@@ -144,6 +152,7 @@
     <prezzo_originale>30</prezzo_originale>
     <prezzo_pagato>22</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-24</data>
   </acquisto>
   <acquisto id="67e13c439721f">
@@ -152,6 +161,7 @@
     <prezzo_originale>30</prezzo_originale>
     <prezzo_pagato>20</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-24</data>
   </acquisto>
   <acquisto id="67e13c4397234">
@@ -160,6 +170,7 @@
     <prezzo_originale>30</prezzo_originale>
     <prezzo_pagato>20</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-24</data>
   </acquisto>
   <acquisto id="67e13c8dd355b">
@@ -168,6 +179,7 @@
     <prezzo_originale>50</prezzo_originale>
     <prezzo_pagato>50</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-24</data>
   </acquisto>
   <acquisto id="67e13cc8d7248">
@@ -176,6 +188,7 @@
     <prezzo_originale>105</prezzo_originale>
     <prezzo_pagato>40</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-24</data>
   </acquisto>
   <acquisto id="67e1424c86754">
@@ -184,6 +197,7 @@
     <prezzo_originale>35</prezzo_originale>
     <prezzo_pagato>25</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-24 12:30:20</data>
   </acquisto>
   <acquisto id="67e142f14252e">
@@ -192,6 +206,7 @@
     <prezzo_originale>45</prezzo_originale>
     <prezzo_pagato>45</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-24 12:33:05</data>
   </acquisto>
   <acquisto id="67e142f9c301a">
@@ -200,6 +215,7 @@
     <prezzo_originale>50</prezzo_originale>
     <prezzo_pagato>50</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-24 12:33:13</data>
   </acquisto>
   <acquisto id="67e6925ded6b4">
@@ -208,6 +224,7 @@
     <prezzo_originale>50</prezzo_originale>
     <prezzo_pagato>50</prezzo_pagato>
     <sconto_applicato>0</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-28 13:13:17</data>
   </acquisto>
 </acquisti>

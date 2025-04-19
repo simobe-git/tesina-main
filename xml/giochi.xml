@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<giochi>
+<giochi xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="../xsd/giochi.xsd">
+
   <gioco>
     <codice>1</codice>
     <titolo>Brass Birmingham</titolo>
@@ -52,7 +54,7 @@
     <data_rilascio>1980-01-01</data_rilascio>
     <nome_editore>Hasbro/Milton Bradley</nome_editore>
     <autore>Theo e Ora Coster</autore>
-    <descrizione>Volete diventare grandi investigatori? La deduzione è il vostro pane? <strong>Indovina chi?</strong> è il gioco che fa per voi! Sulla vostra griglia avete decine di personaggi, ognuno con proprie caratteristiche ben distinte. Dovete indovinare il personaggio della carta pescata dal vostro avversario, prima che lui indovini il vostro!</descrizione>
+    <descrizione>Volete diventare grandi investigatori? La deduzione è il vostro pane? Indovina chi? è il gioco che fa per voi! Sulla vostra griglia avete decine di personaggi, ognuno con proprie caratteristiche ben distinte. Dovete indovinare il personaggio della carta pescata dal vostro avversario, prima che lui indovini il vostro!</descrizione>
     <meccaniche>Scelte strategiche</meccaniche>
     <ambientazione>Storico</ambientazione>
     <immagine>https://media.toys.prenatal-services.com/2023/10/822961fe-hdg_136987601_1.png</immagine>

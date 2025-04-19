@@ -61,10 +61,13 @@ function calcolaSconto($username, $prezzo_originale) {
         }
     }
 
-    // assicuriamoci di nuovo che entrambi gli operandi siano numeri
-    $sconto_massimo = floatval($sconto_massimo);
-    $importo_sconto = ($prezzo_originale * $sconto_massimo) / 100;
-    
+    // Assicurati che il sconto massimo sia calcolato correttamente
+    if ($sconto_massimo > 0) {
+        $importo_sconto = ($prezzo_originale * $sconto_massimo) / 100;
+    } else {
+        $importo_sconto = 0;
+    }
+
     return [
         'percentuale' => $sconto_massimo,
         'importo' => $importo_sconto,

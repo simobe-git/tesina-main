@@ -49,6 +49,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['aggiungi']) && isset($_POST['codice_gioco'])) {
         $_SESSION['carrello'][] = $_POST['codice_gioco'];
         $_SESSION['carrello'] = array_unique($_SESSION['carrello']); // evitiamo duplicati
+
+        // controlliamo se 'prezzo_scontato' è impostato
+        if (isset($_POST['prezzo_scontato'])) {
+            $prezzo_scontato = floatval($_POST['prezzo_scontato']);
+        } else {
+            $prezzo_scontato = 0.00; // valore di default se non è impostato
+        }
+
+        // Salva il prezzo scontato nella sessione se necessario
+        $_SESSION['prezzi_scontati'][$_POST['codice_gioco']] = $prezzo_scontato;
     } elseif (isset($_POST['rimuovi']) && isset($_POST['codice_gioco'])) {
         // rimozione dal carrello nella sessione in corso
         $key = array_search($_POST['codice_gioco'], $_SESSION['carrello']);
@@ -88,20 +98,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute();
         $crediti_disponibili = $stmt->get_result()->fetch_assoc()['crediti'];
 
-        $totale = 0;
-
         // calcolo del totale
+        $totale = 0; // Inizializza il totale
         foreach ($_SESSION['carrello'] as $codice_gioco) {
             $found = false; // variabile per controllare se il gioco è stato trovato
             foreach ($xml->gioco as $gioco) {
                 if ((int)$gioco->codice === (int)$codice_gioco) {
                     $found = true; // gioco trovato
+                    
+                    // Calcola lo sconto
                     $sconto = calcolaSconto($_SESSION['username'], (float)$gioco->prezzo_attuale);
                     $prezzo_scontato = (float)$gioco->prezzo_attuale * (1 - $sconto['percentuale'] / 100);
-                    $totale += $prezzo_scontato;
+                    
+                    // Salva il prezzo scontato nella sessione
+                    $_SESSION['prezzi_scontati'][$codice_gioco] = $prezzo_scontato;
+
+                    // Aggiungi il prezzo scontato al totale
+                    $totale += $prezzo_scontato; // aggiorna il totale con il prezzo scontato
+                    
+                    // Debug: Stampa i valori per il controllo
+                    echo "</br></br></br></br></br></br></br>Prezzo attuale: " . (float)$gioco->prezzo_attuale . "<br>";
+                    echo "Sconto: " . $sconto['percentuale'] . "<br>";
+                    echo "Prezzo scontato: " . $prezzo_scontato . "<br>";
                 }
             }
         }
+
+        // Debug: Stampa il totale calcolato
+        echo "Totale dei prezzi scontati: " . $totale . "<br>";
 
         // controlliamo se l'utente ha abbastanza crediti
         if ($totale > $crediti_disponibili) {
@@ -117,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $acquisto->addChild('username', $_SESSION['username']);
                         $acquisto->addChild('codice_gioco', $codice_gioco);
                         $acquisto->addChild('prezzo_originale', (float)$gioco->prezzo_originale);
-                        $acquisto->addChild('prezzo_pagato', $prezzo_scontato);
+                        $acquisto->addChild('prezzo_pagato', $_SESSION['prezzi_scontati'][$codice_gioco]); // Usa il prezzo scontato
                         $acquisto->addChild('sconto_applicato', $sconto['percentuale']);
                         $acquisto->addChild('data', date('Y-m-d H:i:s'));
                     }
@@ -126,6 +150,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // andiamo a sottrarre i crediti usati per l'acquisto
             $nuovi_crediti = $crediti_disponibili - $totale;
+
+            // controlliamo se il totale supera i 50 crediti per accreditare bonus di 5 crediti
+            if ($totale > 50) {
+                $nuovi_crediti += 5; // accreditiamo 5 crediti bonus
+                //msg che mostriamo appena si viene reindirizzati in storico acquisti dopo aver completato l'acquisto
+                $_SESSION['bonus_message'] = "Complimenti, hai ricevuto 5 crediti bonus per aver completato un acquisto da più di 50 crediti."; 
+            }
+
             $update_crediti = "UPDATE utenti SET crediti = ? WHERE username = ?";
             $stmt = $connessione->prepare($update_crediti);
             $stmt->bind_param("is", $nuovi_crediti, $_SESSION['username']);
@@ -302,7 +334,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 foreach ($xml->gioco as $gioco):
                     if ((int)$gioco->codice === (int)$codice_gioco) {
                         $found = true; // gioco trovato
-                        $totale += (float)$gioco->prezzo_attuale; // aggiornamento del totale
+                        //  usiamo il prezzo scontato
+                        if (isset($_SESSION['prezzi_scontati'][$codice_gioco])) {
+                            $prezzo_scontato = $_SESSION['prezzi_scontati'][$codice_gioco];
+                        } else {
+                            $prezzo_scontato = (float)$gioco->prezzo_attuale; // valore di default se non trovato
+                        }
+                        $totale += $prezzo_scontato; // aggiorna il totale con il prezzo scontato
                         ?>
                         <div class="gioco-carrello">
                             <img src="<?php echo htmlspecialchars($gioco->immagine); ?>" 
@@ -313,7 +351,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <p class="genere"><?php echo htmlspecialchars($gioco->categoria); ?></p>
                                 <div class="prezzo-originale">€<?php echo number_format((float)$gioco->prezzo_attuale, 2); ?></div>
                                 <div class="prezzo-scontato">
-                                    Crediti: <?php echo number_format($_POST['prezzo_scontato'], 2); ?>
+                                    Crediti: <?php echo number_format($prezzo_scontato, 2); ?>
                                 </div>
                             </div>
                             <form method="POST">

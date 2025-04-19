@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sconti_bonus>
+<sconti_bonus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="../xsd/sconti_bonus.xsd">
+
     <sconti>
         <sconto id="1">
             <tipo>crediti_spesi_periodo</tipo>
@@ -93,7 +95,6 @@
         <sconto id="8">
             <tipo>anzianita_anni</tipo>
             <percentuale>20</percentuale>
-            <requisito_anni>2</requisito_anni>
             <data_inizio>2024-01-01</data_inizio>
             <data_fine>2024-12-31</data_fine>
         </sconto>

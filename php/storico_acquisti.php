@@ -2,6 +2,12 @@
 session_start();
 require_once('connessione.php');
 
+// codice per mostrare il messaggio dell'accredito del bonus
+if (isset($_SESSION['bonus_message'])) {
+    echo "<script>alert('" . $_SESSION['bonus_message'] . "');</script>";
+    unset($_SESSION['bonus_message']); // rimozione messaggio dopo averlo mostrato
+}
+
 // verifica se l'utente è loggato e se è un cliente
 if (!isset($_SESSION['statoLogin'])) {
     header("Location: login.php");
