@@ -63,9 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // aggiornamento status richiesta file xml (utile per mostrare che la richiesta è stata accettata)
         $xml = simplexml_load_file($xml_file);
 
-        foreach ($xml->richiesta as $richiesta) {
-            if ($richiesta->username == $username) {
+        foreach ($xml->richiesta as $key => $richiesta) {
+            if ($richiesta->username == $username && $richiesta->status == 'attesa') {
                 $richiesta->status = 'accettata'; //modifica status
+                $xml->asXML($xml_file); 
                 break;
             }
         }
@@ -80,6 +81,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("s", $username);
         $stmt->execute();
 
+        // aggiornamento status richiesta file xml
+        $xml = simplexml_load_file($xml_file);
+
+        foreach ($xml->richiesta as $key => $richiesta) {
+            if ($richiesta->username == $username && $richiesta->status == 'accettata') {
+                $richiesta->status = 'rifiutata'; //modifica status
+                $xml->asXML($xml_file); 
+                break;
+            }
+        }
         // mostriamo un messaggio di successo
         echo "<script>alert('Declassamento a cliente avvenuto con successo');</script>";
         echo "<script>setTimeout(function(){ window.location.reload(); }, 2000);</script>";
@@ -174,7 +185,7 @@ while ($row = $result_gestori->fetch_assoc()) {
             </thead>
             <tbody>
                 <?php foreach ($richieste as $richiesta): ?>
-                    <?php if ($richiesta['status'] === 'rifiutata') continue; // Salta le richieste rifiutate ?>
+                    <?php if ($richiesta['status'] === 'rifiutata' || $richiesta['status'] === 'accettata') continue; // Salta le richieste rifiutate o accettate ?>
                     <tr>
                         <td style="padding: 8px; text-align: center; font-size: 1.3em; color: blue;"><?php echo htmlspecialchars($richiesta['username']); ?></td>
                         <td style="padding: 8px; text-align: center; font-size: 1.1em;"><?php echo htmlspecialchars($richiesta['data']); ?></td>
