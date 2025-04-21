@@ -2,10 +2,6 @@
 session_start();
 include('connessione.php');
 
-// Attiva l'errore reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 // verifica se l'utente è loggato e se è un admin
 if (!isset($_SESSION['statoLogin'])) {
     header("Location: login.php");
@@ -28,7 +24,6 @@ if (file_exists($xml_file)) {
         ];
     }
 }
-echo "ciao";
 
 /**
  * Quando la richiesta per diventare gestore viene rifutata modifichiamo nel file xml il campo 
@@ -46,7 +41,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'rimuovi') {
             break;
         }
     }
-    // Mostra un messaggio di successo
+    // mostriamo un messaggio di successo
     echo "<script>alert('Richiesta rifiutata con successo');</script>";
     echo "<script>setTimeout(function(){ window.location.href= 'gestione_richiestaGestore.php'; }, 2000);</script>";
     exit();
@@ -54,53 +49,38 @@ if (isset($_POST['action']) && $_POST['action'] === 'rimuovi') {
 
 
 // gestione della risposta alla richiesta
-if ($action) {
-    echo "Richiesta POST ricevuta<br>"; // Messaggio di debug
-    $username = trim($_POST['username']);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
     $action = $_POST['action'];
 
-    echo "Username: $username, Action: $action<br>"; // Messaggio di debug
-
+    // gestiamo l'azione di accettazione della richiesta
     if ($action === 'promuovi') {
         // aggiornamento del tipo utente nel database
         $stmt = $connessione->prepare("UPDATE utenti SET tipo_utente = 'gestore' WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
 
-        // rimuoviamo la richiesta dal file XML
-        foreach ($xml->richiesta as $key => $richiesta) {
-            echo "Controllo richiesta: " . (string)$richiesta->username . "<br>"; // Messaggio di debug
-            if ((string)$richiesta->username === $username) {
-                unset($xml->richiesta[$key]);
-                echo "Richiesta di $username rimossa.<br>"; // messaggio di debug
-                break; 
+        // aggiornamento status richiesta file xml (utile per mostrare che la richiesta è stata accettata)
+        $xml = simplexml_load_file($xml_file);
+
+        foreach ($xml->richiesta as $richiesta) {
+            if ($richiesta->username == $username) {
+                $richiesta->status = 'accettata'; //modifica status
+                break;
             }
         }
-        $xml->asXML($xml_file); // salviamo le modifiche nel file XML
+        
 
         // e mostriamo un messaggio di successo
         echo "<script>alert('Promozione a gestore avvenuta con successo');</script>";
         echo "<script>setTimeout(function(){ window.location.reload(); }, 2000);</script>";
-    } elseif ($action === 'rifiuta') {
-        // Rimuoviamo la richiesta dal file XML
-        foreach ($xml->richiesta as $key => $richiesta) {
-            echo "Controllo richiesta: " . (string)$richiesta->username . "<br>"; // Messaggio di debug
-            if ((string)$richiesta->username === $username) {
-                unset($xml->richiesta[$key]);
-                echo "Richiesta di $username rifiutata.<br>"; // Messaggio di debug
-                break; // Esci dal ciclo dopo aver trovato e rimosso la richiesta
-            }
-        }
-        $xml->asXML($xml_file); // Salva le modifiche nel file XML
-
-        // e mostriamo un messaggio di successo
-        echo "<script>alert('Richiesta rifiutata con successo');</script>";
-        echo "<script>setTimeout(function(){ window.location.reload(); }, 2000);</script>";
     } elseif ($action === 'declassa') {
-        // Logica per declassare a cliente
+        // Aggiorna il tipo utente nel database per declassare a cliente
         $stmt = $connessione->prepare("UPDATE utenti SET tipo_utente = 'cliente' WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
+
+        // mostriamo un messaggio di successo
         echo "<script>alert('Declassamento a cliente avvenuto con successo');</script>";
         echo "<script>setTimeout(function(){ window.location.reload(); }, 2000);</script>";
     }
@@ -108,12 +88,7 @@ if ($action) {
     // ricaricamento pagina per vedere le modifiche
     header("Location: gestione_richiestaGestore.php");
     exit();
-}else{
-    echo "</br>here";
 }
-
-echo "</br>";
-echo "ciao3";
 
 // carichiamo i ruoli degli utenti dal db
 $ruoli = [];
@@ -199,16 +174,16 @@ while ($row = $result_gestori->fetch_assoc()) {
             </thead>
             <tbody>
                 <?php foreach ($richieste as $richiesta): ?>
-                    <?php if ($richiesta['status'] === 'rifiutata') continue; // Salta le richieste rifiutate ?>
+                    <?php if ($richiesta['status'] === 'rifiutata') continue; // saltiamo le richieste rifiutate ?>
                     <tr>
                         <td style="padding: 8px; text-align: center; font-size: 1.3em; color: blue;"><?php echo htmlspecialchars($richiesta['username']); ?></td>
                         <td style="padding: 8px; text-align: center; font-size: 1.1em;"><?php echo htmlspecialchars($richiesta['data']); ?></td>
-                        <td style="padding: 8px; text-align: center; font-size: 1.1em;">cliente</td>
+                        <td style="padding: 8px; text-align: center; font-size: 1.1em;"><?php echo htmlspecialchars('cliente'); ?></td>
                         <td style="padding: 8px; text-align: center; font-size: 1.1em;">
                             <form method="POST" style="display:inline;">
                                 <input type="hidden" name="username" value="<?php echo htmlspecialchars($richiesta['username']); ?>">
                                 <button type="submit" name="action" value="promuovi">Promuovi a Gestore</button>
-                                <button type="submit" name="action" value="rifiuta" style="background-color: red; color: white;">Rifiuta Richiesta</button>
+                                <button type="submit" name="action" value="rimuovi" style="background-color: red; color: white;">Rifiuta richiesta</button>
                             </form>
                         </td>
                     </tr>
