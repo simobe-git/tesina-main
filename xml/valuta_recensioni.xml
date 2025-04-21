@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE valutazioni SYSTEM "../dtd/valuta_recensioni.dtd">
-
 <valutazioni>
   <valutazione>
     <username>cliente1</username>
@@ -9,7 +8,22 @@
   </valutazione>
   <valutazione>
     <username>cliente1</username>
+    <id_recensione/>
+    <stelle>5</stelle>
+  </valutazione>
+  <valutazione>
+    <username>cliente1</username>
+    <id_recensione>1</id_recensione>
+    <stelle>5</stelle>
+  </valutazione>
+  <valutazione>
+    <username>cliente1</username>
     <id_recensione>2</id_recensione>
-    <stelle>1</stelle>
+    <stelle>4</stelle>
+  </valutazione>
+  <valutazione>
+    <username>cliente1</username>
+    <id_recensione>2</id_recensione>
+    <stelle>2</stelle>
   </valutazione>
 </valutazioni>

@@ -34,20 +34,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $nextId = $maxId + 1; // incrementiamo l'ID
 
-    // troviamo la domanda corrispondente al codice del gioco
+    // troviamo la domanda corrispondente al titolo della domanda
     $domandaTrovata = false; // Aggiungi questa variabile per controllare se la domanda è stata trovata
     foreach ($dom->getElementsByTagName('domanda') as $domanda) {
-        if ($domanda->getElementsByTagName('codice_gioco')->item(0)->nodeValue == $codice_gioco) {
+        if ($domanda->getElementsByTagName('titolo')->item(0)->nodeValue == $data['titolo_domanda']) {
             // creazione della nuova risposta
             $risposta = $dom->createElement('risposta');
-            $risposta->setAttribute('id', $nextId); // Assegna l'ID incrementale
+            $risposta->setAttribute('id', $nextId); // ID incrementale
             $risposta->appendChild($dom->createElement('contenuto', htmlspecialchars($contenuto)));
             $risposta->appendChild($dom->createElement('autore', htmlspecialchars($autore)));
             $risposta->appendChild($dom->createElement('data', htmlspecialchars($data_pubblicazione)));
 
-            // Aggiungi la risposta alla domanda
+            // aggiungiamo la risposta alla domanda
             $domanda->appendChild($risposta);
-            $domandaTrovata = true; // Imposta a true se la domanda è stata trovata
+            $domandaTrovata = true; // imposta a true se domanda è stata trovata
             break; 
         }
     }

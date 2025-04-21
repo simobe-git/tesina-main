@@ -46,8 +46,21 @@
   </faq>
   <faq id="9">
     <domanda>Come funzionano i bonus?</domanda>
-    <risposta>I bonus sono crediti extra che ricevi in omaggio acquistando determinati giochi.</risposta>
+    <risposta>I bonus sono crediti extra che ricevi in omaggio acquistando giochi per un prezzo complessivo maggiore o uguale a 50 crediti. In tal caso, riceverai 5 crediti in omaggio</risposta>
     <data_creazione>2024-03-15</data_creazione>
+    <fonte>forum</fonte>
+  </faq>
+  <faq id="10">
+    <domanda>Cosa sono gli sconti?</domanda>
+    <risposta>Gli sconti vengono applicati in base a vari criteri, e sono calcolati automaticamente dal sistema mentre acquisti dei giochi</risposta>
+    <data_creazione>2024-04-12</data_creazione>
+    <fonte>forum</fonte>
+  </faq>
+  <faq id="11">
+    <domanda>Che tipi di sconti esistono?</domanda>
+    <risposta>Ci sono varie tipologie di sconti: sconti applicati dopo aver speso un determinato numero di crediti; sconti per aver speso crediti in un determinato periodo temporale; sconti per clienti che hanno una determinata reputazione; sconti che sono registrati nel sistema da un determinato numero di mesi
+    </risposta>
+    <data_creazione>2024-04-19</data_creazione>
     <fonte>forum</fonte>
   </faq>
 </faqs>

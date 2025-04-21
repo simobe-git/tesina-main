@@ -42,7 +42,7 @@ function getDettagliGioco($codice_gioco) {
             }
         }
     }
-    return null; // Se il gioco non viene trovato
+    return null; // se il gioco non viene trovato
 }
 
 // all'inizio del file, dopo session_start()
@@ -51,7 +51,7 @@ $acquisti = [];
 
 if (file_exists($xml_file)) {
     $xml = simplexml_load_file($xml_file);
-    foreach ($xml->acquisto as $index => $acquisto) { // Usa $index per mantenere l'ordine naturale
+    foreach ($xml->acquisto as $index => $acquisto) { // usiamo $index per mantenere l'ordine naturale
         if ((string)$acquisto->username === $_SESSION['username']) {
             $dettagli_gioco = getDettagliGioco((int)$acquisto->codice_gioco);
             if ($dettagli_gioco) {
@@ -225,7 +225,7 @@ $totale_bonus = array_sum(array_column($acquisti, 'bonus'));
                         <th>Editore</th>
                         <th>Prezzo Originale</th>
                         <th>Prezzo Pagato</th>
-                        <th>Sconto/Bonus</th>
+                        <th>Sconto</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -246,15 +246,7 @@ $totale_bonus = array_sum(array_column($acquisti, 'bonus'));
                                 <?php else: ?>
                                     <p>Nessuno sconto applicato</p>
                                 <?php endif; ?>
-
-                                <!-- mostriamo se si ha o meno un bonus -->
-                                <?php if ($acquisto['bonus'] > 0): ?>
-                                    <span class="bonus-badge">
-                                        +<?php echo $acquisto['bonus']; ?> crediti <!--per ogni bonus si ricevono dei credti-->
-                                    </span>
-                                <?php else: ?>
-                                    <p>Nessun bonus</p>
-                                <?php endif; ?>
+                               
                             </td>
                         </tr>
                     <?php endforeach; ?>

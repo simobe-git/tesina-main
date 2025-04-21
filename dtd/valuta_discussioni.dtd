@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT valutazioni (valutazione*)>
-<!ELEMENT valutazione (autore, stelle)>
+<!ELEMENT valutazione (autore, id_risposta, stelle)>
 <!ELEMENT autore (#PCDATA)>
+<!ELEMENT id_risposta (#PCDATA)>
 <!ELEMENT stelle (#PCDATA)>

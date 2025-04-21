@@ -125,10 +125,11 @@ usort($giochiInOfferta, function($a, $b) use ($ordinamento, $direzione) {
 </head>
 <body>
     <?php include('menu.php'); ?>
-    
+    <?php if (isset($_SESSION['username'])): // Ccntrolliamo se l'utente è loggato ?>
     <div class="crediti-virtuali" style="position: absolute; top: 80px; right: 20px; background: rgba(0, 0, 0, 0.8); padding: 10px; border-radius: 5px; display: flex; align-items: center;">
-        <i class="fas fa-coins" style="color: #ffd700; font-size: 24px; margin-right: 5px; margin-left: 1ex;"></i>
-        <span style="color: white; margin-left: 1ex; margin-right: 2ex; font-size: 1.2em;"><?php echo number_format($numCrediti, 0); ?></span>
+            <i class="fas fa-coins" style="color: #ffd700; font-size: 24px; margin-right: 5px; margin-left: 1ex;"></i>
+            <span style="color: white; margin-left: 1ex; margin-right: 2ex; font-size: 1.2em;"><?php echo number_format($numCrediti, 0); ?></span>
+        <?php endif; ?>
     </div>
     
     <header class="shop-header">

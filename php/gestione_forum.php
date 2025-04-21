@@ -11,7 +11,7 @@ if (!isset($_SESSION['statoLogin'])) {
     exit();
 }
 
-// Caricamento file domande
+// caricamento file domande
 $domandePath = '../xml/domande.xml';
 if (!file_exists($domandePath)) {
     die("Il file domande.xml non esiste.");
@@ -153,23 +153,18 @@ if (!file_exists($domandePath)) {
         <div class="utente-grid"> 
             <?php foreach ($domande->domanda as $domanda): ?>
                 <div class="utente-card">
-                    <h3><?php echo htmlspecialchars($domanda->titolo); ?></h3>
+                    <h3 style="color: red; font-size: 140%;"><?php echo htmlspecialchars($domanda->titolo); ?></h3>
                     <form method="POST">
                         <input type="hidden" name="codice" value="<?php echo $domanda->codice_gioco; ?>">
-
-                        <div class="form-group">
-                            <label>Titolo:</label>
-                            <p><?php echo htmlspecialchars($domanda->titolo); ?></p>
-                        </div>
                         
                         <div class="form-group">
-                            <label>Contenuto:</label>
+                            <label style="font-size:120%;">Contenuto:</label>
                             <p><?php echo htmlspecialchars($domanda->contenuto); ?></p>
                         </div>
                         
                         <div class="form-group">
-                            <label>Autore:</label>
-                            <p><?php echo htmlspecialchars($domanda->autore); ?></p>
+                            <label style="font-size:120%;">Autore:</label>
+                            <p style="color: red; font-size: 120%; font-style: bold;"><?php echo htmlspecialchars($domanda->autore); ?></p>
                         </div>
                         
                         <div class="form-group">
@@ -183,7 +178,7 @@ if (!file_exists($domandePath)) {
                         <h4>Risposte:</h4>
                         <?php foreach ($domanda->risposta as $risposta): ?>
                             <div class="form-group">
-                                <label>Risposta ID <?php echo htmlspecialchars($risposta['id']); ?></label>
+                                <label style="color: blue;">Risposta ID <?php echo htmlspecialchars($risposta['id']); ?></label>
                             </div>
                             <div class="form-group">
                                 <label>Contenuto:</label>
@@ -199,7 +194,7 @@ if (!file_exists($domandePath)) {
                             </div>
                                 
                                 
-                            <!-- Mostra tutti i punteggi -->
+                            <!-- Msotriamo tutti i punteggi -->
                             <?php if (isset($risposta->punteggio)): ?>
                                 <div class="form-group">
                                     <label>Punteggio:</label>

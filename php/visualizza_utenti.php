@@ -11,7 +11,6 @@ if (!isset($_SESSION['statoLogin'])) {
     exit();
 }
 
-// Mostra tutti gli utenti
 $sql = "SELECT * FROM utenti WHERE tipo_utente = 'cliente'";
 $risultato = $connessione->query($sql);
 
@@ -21,20 +20,20 @@ if ($risultato && $risultato->num_rows > 0) {
         $utenti[] = $row;
     }
 } else {
-    $utenti = null; // Nessun utente trovato
+    $utenti = null; // nessun utente trovato
 }
 
-// Gestione caricamento immagine
+// gestione caricamento immagine
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar'])) {
     $targetDir = "../isset/avatar/"; // Cartella di destinazione
     $fileName = basename($_FILES['avatar']['name']);
     $targetFilePath = $targetDir . $fileName;
     $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION); //estraiamo il tipo di file
 
-    // Controlla il tipo di file
+    // controllo tipo di file
     $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
     if (in_array(strtolower($fileType), $allowedTypes)) {
-        // Carica il file
+        // carichiami il file
         if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFilePath)) {
             $uploadMessage = "Immagine caricata con successo nella cartella isset/avatar.";
         } else {
@@ -116,12 +115,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar'])) {
 
         /*STILE FORM CAARICAMENTO IMMAGINI*/
         .upload-form {
-            background: #f8f9fa; /* Colore di sfondo chiaro */
+            background: #f8f9fa;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombreggiatura */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
             max-width: 400px;
-            margin: 20px auto; /* Centra il form */
+            margin: 20px auto; 
             text-align: center;
         }
         .upload-form label {
@@ -149,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar'])) {
             transition: background 0.3s ease;
         }
         .upload-form button:hover {
-            background: #e04c2f; /* Colore più scuro al passaggio del mouse */
+            background: #e04c2f; 
         }
     </style>
 </head>

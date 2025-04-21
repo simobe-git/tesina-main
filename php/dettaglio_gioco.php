@@ -323,7 +323,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .btn-rispondi:hover {
-            background-color: #45a049; /* colore al passaggio del mouse */
+            background-color: #45a049; 
         }
 
         .btn-mostra-altro {
@@ -374,12 +374,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .star {
             cursor: pointer;
             font-size: 24px;
-            color: yellow;  /* stelle bianche di default */
+            color: yellow;  
             transition: color 0.3s ease;
         }
 
         .star.selected {
-            color: gold; /* stelle colorate di giallo quando selezionate */
+            color: gold; 
         }
 
         .valuta-testo {
@@ -408,7 +408,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #2196F3; 
         }
 
-        .pulsanti-azione { /* css per i pulsanti 'segnala' e 'valuta' */
+        .pulsanti-azione { 
             display: flex; 
             justify-content: center; 
             gap: 10px; 
@@ -890,7 +890,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const autore = '<?php echo $_SESSION['username']; ?>'; // username dell'utente che pubblica
             const codiceGioco = <?php echo $id_gioco; ?>; // codice del gioco
 
-            // Creiamo un oggetto per i dati da inviare
+            // creiamo un oggetto per i dati da inviare
             const data = {
                 titolo: titolo,
                 contenuto: contenuto,
@@ -907,18 +907,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     alert("Discussione pubblicata con successo!");
                     chiudiFinestraDiscussione();
-                    // Potresti voler ricaricare la pagina o aggiornare la lista delle discussioni qui
                 }
             };
             xhr.send(JSON.stringify(data));
         }
 
         function apriFinestraRisposta(codiceGioco, autore) {
-            // Mostra l'autore della domanda
+            // mostriamo l'autore della domanda
             document.getElementById('autoreRisposta').innerText = autore; 
-            // Salva il codice del gioco per l'invio della risposta
+            // salviamo il codice del gioco per l'invio della risposta
             window.codiceGiocoRisposta = codiceGioco; 
-            // Mostra la finestra di risposta
+            // mostriamo la finestra di risposta
             document.getElementById('finestraRisposta').style.display = 'block'; 
         }
 
@@ -928,15 +927,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         function inviaRisposta() {
             const contenuto = document.getElementById('contenutoRisposta').value;
-            const codiceGioco = window.codiceGiocoRisposta; // Usa il codice del gioco salvato
-            const autore = '<?php echo $_SESSION['username']; ?>'; // Username dell'utente che risponde
-            const data = new Date().toISOString().split('T')[0]; // Data in formato YYYY-MM-DD
+            const codiceGioco = window.codiceGiocoRisposta; // questa riga usa il codice del gioco salvato
+            const autore = '<?php echo $_SESSION['username']; ?>'; // username dell'utente che risponde
+            const data = new Date().toISOString().split('T')[0]; // data in formato YYYY-MM-DD
 
             // Debug: Stampa il codice del gioco e il contenuto
-            console.log("Codice Gioco:", codiceGioco);
-            console.log("Contenuto Risposta:", contenuto);
+            // console.log("Codice Gioco:", codiceGioco);
+            // console.log("Contenuto Risposta:", contenuto);
 
-            // Invia i dati al server
+            // invia i dati al server
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "invia_risposta.php", true);
             xhr.setRequestHeader("Content-Type", "application/json");
@@ -944,7 +943,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     alert("Risposta inviata con successo!");
                     chiudiFinestraRisposta();
-                    // Potresti voler ricaricare la pagina o aggiornare la lista delle risposte qui
                 }
             };
             xhr.send(JSON.stringify({ codice_gioco: codiceGioco, contenuto: contenuto, autore: autore, data: data }));

@@ -105,7 +105,7 @@ $crediti_approvati = array_reduce(
     0
 );
 
-// Determina il titolo delle statistiche in base al filtro
+// determina il titolo delle statistiche in base al filtro
 if ($filtro_stato === 'in attesa') {
     $titolo_statistiche = "Totale richieste in attesa di risposta: $totale_richieste";
     $mostra_crediti_approvati = false; // non mostrariamo i crediti approvati perchè è inutili mostrarli nella sezione delle richieste in attesa
@@ -326,7 +326,7 @@ if ($filtro_stato === 'in attesa') {
                             <?php echo ucfirst($richiesta['status']); ?>
                         </span>
                     </p>
-                    <?php if ($richiesta['status'] == 'in attesa'): // Mostra solo richieste in attesa ?>
+                    <?php if ($richiesta['status'] == 'in attesa'): // mostriamo solo richieste in attesa ?>
                         <div class="richiesta-azioni">
                             <form method="POST">
                                 <input type="hidden" name="username" value="<?php echo $richiesta['username']; ?>">

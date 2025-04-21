@@ -61,7 +61,6 @@ function calcolaSconto($username, $prezzo_originale) {
         }
     }
 
-    // Assicurati che il sconto massimo sia calcolato correttamente
     if ($sconto_massimo > 0) {
         $importo_sconto = ($prezzo_originale * $sconto_massimo) / 100;
     } else {

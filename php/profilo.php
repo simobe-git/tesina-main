@@ -544,32 +544,17 @@ if (file_exists($richieste_gestore)) {
                 <h2>La tua Reputazione</h2>
                 <div class="reputazione-info">
                     <div class="reputazione-item">
-                        <h3>Reputazione Base</h3>
+                        <h3>Reputazione</h3>
                         <div class="reputazione-valore">
-                            <span class="punteggio"><?php echo $reputazione['base']; ?></span>
+                            <span class="punteggio"><?php echo $reputazione; ?></span>
                             <span class="max">/10</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: <?php echo ($reputazione['base'] * 10); ?>%"></div>
                         </div>
                         <p class="descrizione">Calcolata in base ai giudizi ricevuti</p>
                     </div>
 
+                    <!-- pulsante per richiesta diventare admin con minimo 9 di reputazione-->
                     <div class="reputazione-item">
-                        <h3>Reputazione Pesata</h3>
-                        <div class="reputazione-valore">
-                            <span class="punteggio"><?php echo $reputazione['pesata']; ?></span>
-                            <span class="max">/10</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: <?php echo ($reputazione['pesata'] * 10); ?>%"></div>
-                        </div>
-                        <p class="descrizione">Tiene conto del peso dei giudizi in base a chi li ha dati</p>
-                    </div>
-
-                    <!-- Pulsante per richiesta diventare admin con minimo 9 di reputazione base e pesata-->
-                    <div class="reputazione-item">
-                        <?php if($reputazione['base'] >= 9 && $reputazione['pesata'] >= 9){ ?>
+                        <?php if($reputazione >= 9){ ?>
                             <h3>Richiesta per diventare un Gestore</h3>
                             <p>Hai diritto a richiedere di diventare un gestore, 
                                 <strong>Attenzione se la richiesta verrà accettata non potrai accedere più come un utente</strong>
@@ -580,7 +565,7 @@ if (file_exists($richieste_gestore)) {
                             <br>
                             <br>
 
-                            <!-- Mostriamo le solo le ultime richieste per diventare gestore -->
+                            <!-- mostriamo le solo le ultime richieste per diventare gestore -->
                             <h3>Visualizza richieste per diventare gestore</h3>
                             <?php if(!empty($richieste_gestore_array)): ?>
                                 <?php foreach ($richieste_gestore_array as $richieste): ?>
@@ -604,10 +589,10 @@ if (file_exists($richieste_gestore)) {
                                 <p>Non sono ancora state inviate richieste per diventare gestore</p>
                             <?php endif; ?>
 
-                            <!--Punteggi insufficienti per la richiesta-->
+                            <!--punteggi insufficienti per la richiesta-->
                         <?php } else{ ?>
                             <h3>Richiesta per diventare un Gestore</h3>
-                            <p>Non puoi richiedere di diventare un Gestore perchè il punteggio di reputazione base e pesata deve essere minimo 9</p>
+                            <p>Non puoi richiedere di diventare un Gestore perchè il punteggio di reputazione deve essere minimo 9</p>
                         <?php } ?>
                     </div>
                 </div>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE acquisti SYSTEM "../dtd/acquisti.dtd">
-
 <acquisti>
   <acquisto id="67b5c26370e65">
     <username>cliente1</username>
@@ -226,5 +225,50 @@
     <sconto_applicato>0</sconto_applicato>
     <bonus_ottenuti>0</bonus_ottenuti>
     <data>2025-03-28 13:13:17</data>
+  </acquisto>
+  <acquisto id="68064f23a476b">
+    <username>cliente1</username>
+    <codice_gioco>5</codice_gioco>
+    <prezzo_originale>45</prezzo_originale>
+    <prezzo_pagato>22.5</prezzo_pagato>
+    <sconto_applicato>50</sconto_applicato>
+    <bonus_ottenuti>0</bonus_ottenuti>
+    <data>2025-04-21 15:58:59</data>
+  </acquisto>
+  <acquisto id="6806500047719">
+    <username>cliente1</username>
+    <codice_gioco>7</codice_gioco>
+    <prezzo_originale>35</prezzo_originale>
+    <prezzo_pagato>15.4</prezzo_pagato>
+    <sconto_applicato>45</sconto_applicato>
+    <bonus_ottenuti>5</bonus_ottenuti>
+    <data>2025-04-21 16:02:40</data>
+  </acquisto>
+  <acquisto id="6806500047771">
+    <username>cliente1</username>
+    <codice_gioco>3</codice_gioco>
+    <prezzo_originale>30</prezzo_originale>
+    <prezzo_pagato>11</prezzo_pagato>
+    <sconto_applicato>45</sconto_applicato>
+    <bonus_ottenuti>5</bonus_ottenuti>
+    <data>2025-04-21 16:02:40</data>
+  </acquisto>
+  <acquisto id="680650004779e">
+    <username>cliente1</username>
+    <codice_gioco>2</codice_gioco>
+    <prezzo_originale>30</prezzo_originale>
+    <prezzo_pagato>11</prezzo_pagato>
+    <sconto_applicato>45</sconto_applicato>
+    <bonus_ottenuti>5</bonus_ottenuti>
+    <data>2025-04-21 16:02:40</data>
+  </acquisto>
+  <acquisto id="68065000477b9">
+    <username>cliente1</username>
+    <codice_gioco>8</codice_gioco>
+    <prezzo_originale>50</prezzo_originale>
+    <prezzo_pagato>27.5</prezzo_pagato>
+    <sconto_applicato>45</sconto_applicato>
+    <bonus_ottenuti>5</bonus_ottenuti>
+    <data>2025-04-21 16:02:40</data>
   </acquisto>
 </acquisti>

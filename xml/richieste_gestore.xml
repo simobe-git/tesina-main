@@ -3,10 +3,12 @@
 <richiesteGestore>
   <richiesta>
     <username>cliente1</username>
-    <data>2025-04-12 22:51:41</data>
+    <data>2025-04-21 15:50:47</data>
+    <status>rifiutata</status>
   </richiesta>
   <richiesta>
     <username>cliente1</username>
-    <data>2025-04-12 23:02:11</data>
+    <data>2025-04-21 15:54:51</data>
+    <status>rifiutata</status>
   </richiesta>
 </richiesteGestore>

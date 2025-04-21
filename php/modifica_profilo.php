@@ -39,15 +39,15 @@ function getAvatarDisponibili() {
     $avatar_dir = '../isset/avatar/';
     $avatars = [];
 
-    // Controlla se la directory esiste
+    // controllo se directory esiste
     if (is_dir($avatar_dir)) {
-        // Scansiona la directory per ottenere i file
+        // scansiona la directory per ottenere i file
         $files = scandir($avatar_dir);
 
-        // Filtra solo i file immagine (es. jpg, png, gif)
+        // filtra solo i file immagine (es. jpg, png, gif)
         foreach ($files as $file) {
             if (in_array(pathinfo($file, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif'])) {
-                $avatars[] = $file; // Restituisce solo il nome del file
+                $avatars[] = $file; // restituisce solo il nome del file
             }
         }
     }

@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE valutazioni SYSTEM "../dtd/valuta_discussioni.dtd">
 <valutazioni>
-    
+  <valutazione>
+    <autore>cliente1</autore>
+    <id_risposta>15</id_risposta>
+    <stelle>4</stelle>
+  </valutazione>
+  <valutazione>
+    <autore>cliente1</autore>
+    <id_risposta>15</id_risposta>
+    <stelle>5</stelle>
+  </valutazione>
+  <valutazione>
+    <autore>cliente1</autore>
+    <id_risposta>15</id_risposta>
+    <stelle>3</stelle>
+  </valutazione>
+  <valutazione>
+    <autore>cliente1</autore>
+    <id_risposta>4</id_risposta>
+    <stelle>5</stelle>
+  </valutazione>
+  <valutazione>
+    <autore>cliente1</autore>
+    <id_risposta>2</id_risposta>
+    <stelle>1</stelle>
+  </valutazione>
+  <valutazione>
+    <autore>cliente1</autore>
+    <id_risposta>1</id_risposta>
+    <stelle>5</stelle>
+  </valutazione>
 </valutazioni>
