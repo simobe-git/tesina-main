@@ -1,15 +1,7 @@
 <?php
 session_start();
 include('connessione.php');
-/*
-Operazioni che un admin può fare nella dashboard:
-    - Vede/modifica i dati anagrafici, username e password degli utenti.
-    - (FATTA) Disattiva (banna) e riattiva utenti.
-    - (FATTA) Accetta richieste di crediti.
-    - Eleva una domanda (e la risposta migliore, o quella scelta dall'admin) nelle FAQ.
 
-La funzione per poter far diventare un utente un admin è stata rimossa, in quanto sembra non essere richiesta tale funzionalità.
-*/
 
 // verifica se l'utente è loggato e se è un admin
 if (!isset($_SESSION['statoLogin'])) {
