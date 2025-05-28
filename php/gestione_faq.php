@@ -1,25 +1,4 @@
 <?php 
-/* 
-QUESTA PAGINA VIENE APERTA QUANDO UN ADMIN, DALLA PROPRIA DASHBOARD, CLICCA SU 'GESTISCI FAQ'
-questo file fa le seguenti cose:
-1- aggiunge una nuova sezione "Domande dal Forum" sotto la gestione FAQ esistente
-2- mostra solo le domande che:
-    - non sono già state elevate a FAQ
-    - hanno almeno una risposta
-3- per ogni domanda mostra:
-    - il contenuto della domanda
-    - l'autore e la data
-    - tutte le risposte ricevute
-4- per ogni risposta:
-    - il contenuto
-    - l'autore e la data
-    - i punteggi di supporto e utilità
-    - un bottone per elevare quella specifica risposta a FAQ
-5- quando una risposta viene elevata a FAQ:
-    - viene creata una nuova FAQ
-    - viene mantenuto il riferimento al thread e alla risposta originale
-    - la domanda non apparirà più in questa lista */
-
 session_start();
 
 if(isset($_SESSION['tipo_utente']) && isset($_SESSION['statoLogin'])){ // se l'utente è già loggato

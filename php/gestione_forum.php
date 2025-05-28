@@ -19,6 +19,120 @@ if (!file_exists($domandePath)) {
     $domande = simplexml_load_file($domandePath);
 }
 
+//Caricamento file che riporta le valutazioni date dagli altri utenti alle domande fatte
+$valutazione_domanda = '../xml/valuta_discussioni.xml';
+if (!file_exists($valutazione_domanda)) {
+    die("Il file valutazione_domanda.xml non esiste.");
+} else {
+    $valutazione_domanda = simplexml_load_file($valutazione_domanda);
+}
+
+/** 
+ * Calcoliamo una media del punteggio assegnato dagli utenti alle domanda, in modo tale da mostrare
+ * al gestore il punteggio medio di ogni domanda, con il numero di valutazioni ricevute facilitando la 
+ * scelta di quale domanda elevare a FAQ. 
+*/
+foreach($domande->domanda as $domanda){
+    $punteggio = 0;
+    $numero_valutazioni = 0;
+
+     
+    foreach($domanda->risposta as $risposta){ //per ogni domanda
+        foreach($valutazione_domanda->valutazione as $valutazione){ //cerchiamo le valutazioni
+            if ((string)$valutazione->id_risposta === (string)$risposta['id']){
+                $punteggio += (int)$valutazione->stelle;
+                $numero_valutazioni++;
+            }
+        }
+    }
+
+    $media = $numero_valutazioni > 0 ? $punteggio / $numero_valutazioni : 0; // calcolo media
+}
+
+/**
+ * Quando viene premuto sul pulsante per elevare domanda e risposta come FAQ 
+ * salviamo tali informazioni nel file xml xml delle faq così che venga visualizzato nella pagina faq.
+ * Dom è usato per una corretta formattazione dei nuovi elementi nel file xml, inoltre dopo il salvataggio
+ * viene mostrato un messaggio di successo e dopo 3 secondi si viene reindirizzati alla pagina di gestione discussioni. 
+ */
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['elevaFaq'])) {
+
+    $faq_file = '../xml/faq.xml';
+    if(!file_exists($faq_file)){
+        die("Il file faq.xml non esiste.");
+    }
+
+    // Carica il file XML con DOMDocument
+    $dom = new DOMDocument();
+    $dom->preserveWhiteSpace = false;
+    $dom->formatOutput = true;
+    $dom->load($faq_file);
+
+    // Recupera i dati inviati dal form
+    $codiceDomanda = $_POST['codice'];
+    $idRisposta = $_POST['id_risposta'];
+    
+    // Verifica se la domanda è già presente nel file FAQ
+    $faqs = $dom->getElementsByTagName('faq');
+    foreach ($faqs as $faq) {
+        $domandaEsistente = $faq->getElementsByTagName('domanda')->item(0);
+        if ($domandaEsistente && $domandaEsistente->nodeValue === htmlspecialchars($domande->xpath("//domanda[codice_gioco='$codiceDomanda']/contenuto")[0])) {
+            die("Errore: La domanda è già presente nel file FAQ.");
+        }
+    }
+       
+    // Trova la domanda e la risposta corrispondenti
+    $domandaTrovata = false;
+    $rispostaTrovata = false;
+
+    foreach ($domande->domanda as $domanda){
+        $domandaTrovata = true;
+        if ((string)$domanda->codice_gioco === $codiceDomanda){
+            foreach ($domanda->risposta as $risposta){
+                if ((string)$risposta['id'] === $idRisposta){
+                    
+                    $rispostaTrovata = true;
+                    // Crea un nuovo elemento FAQ
+                    $faqs = $dom->getElementsByTagName('faqs')->item(0);
+                    $faq = $dom->createElement('faq');
+                    $faq->setAttribute('id', uniqid());
+                    $domandaElement = $dom->createElement('domanda', htmlspecialchars($domanda->contenuto));
+                    $rispostaElement = $dom->createElement('risposta', htmlspecialchars($risposta->contenuto));
+                    $dataCreazioneElement = $dom->createElement('data_creazione', date('Y-m-d'));
+                    $fonteElement = $dom->createElement('fonte', 'forum');
+
+                    $faq->appendChild($domandaElement);
+                    $faq->appendChild($rispostaElement);
+                    $faq->appendChild($dataCreazioneElement);
+                    $faq->appendChild($fonteElement);
+                    $faqs->appendChild($faq);
+
+                    // Salva il file XML aggiornato
+                    if ($dom->save($faq_file) === false) {
+                        die("Errore durante il salvataggio del file faq.xml.");
+                    } else {
+                        echo "<div class='messaggio'>FAQ elevata con successo!</div>";
+                        echo "<script>
+                                setTimeout(function() {
+                                    window.location.href = '" . $_SERVER['PHP_SELF'] . "';
+                                }, 3000);
+                              </script>";
+                        exit();
+                    }
+                    break 2; // Esci dai due cicli
+                }
+            }
+        }
+    }
+    
+    // Mostra messaggi di errore se la domanda o la risposta non sono state trovate
+    if (!$domandaTrovata) {
+        die("Errore: Domanda non trovata.");
+    }
+    if (!$rispostaTrovata) {
+        die("Errore: Risposta non trovata.");
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -154,7 +268,7 @@ if (!file_exists($domandePath)) {
             <?php foreach ($domande->domanda as $domanda): ?>
                 <div class="utente-card">
                     <h3 style="color: red; font-size: 140%;"><?php echo htmlspecialchars($domanda->titolo); ?></h3>
-                    <form method="POST">
+                    <form method="POST" action="">
                         <input type="hidden" name="codice" value="<?php echo $domanda->codice_gioco; ?>">
                         
                         <div class="form-group">
@@ -175,33 +289,47 @@ if (!file_exists($domandePath)) {
 
                     <!-- Visualizzazione delle risposte -->
                     <div class="risposte-container">
-                        <h4>Risposte:</h4>
+                        <h2>Risposte</h2>
                         <?php foreach ($domanda->risposta as $risposta): ?>
                             <div class="form-group">
                                 <label style="color: blue;">Risposta ID <?php echo htmlspecialchars($risposta['id']); ?></label>
                             </div>
                             <div class="form-group">
-                                <label>Contenuto:</label>
+                                <label>Contenuto</label>
                                 <p><?php echo htmlspecialchars($risposta->contenuto); ?></p>
                             </div>
                             <div class="form-group">
-                                <label>Autore:</label>
+                                <label>Autore</label>
                                 <p><?php echo htmlspecialchars($risposta->autore); ?></p>
                             </div>
                             <div class="form-group">
-                                <label>Data:</label>
+                                <label>Data</label>
                                 <p><?php echo htmlspecialchars($risposta->data); ?></p>
                             </div>
-                                
-                                
-                            <!-- Msotriamo tutti i punteggi -->
-                            <?php if (isset($risposta->punteggio)): ?>
+
+                            <!-- Mostriamo tutti i punteggi -->
+                            <?php foreach($valutazione_domanda->valutazione as $valutazione):?>
+                                <?php if ((string)$valutazione->id_risposta === (string)$risposta['id']): ?>
                                 <div class="form-group">
-                                    <label>Punteggio:</label>
-                                    <p><strong>Utilità:</strong> <?php echo htmlspecialchars($risposta->punteggio->utilita); ?></p>
-                                    <p><strong>Risposta:</strong> <?php echo htmlspecialchars($risposta->punteggio->risposta); ?></p>
+                                    <label>Punteggio Medio</label>
+                                    <p><?php echo htmlspecialchars(number_format($media, 2)); ?></p>
                                 </div>
-                            <?php endif; ?>
+
+                                <div class="form-group">
+                                    <label>Numero di Valutazioni</label>
+                                    <p><?php echo htmlspecialchars($numero_valutazioni); ?></p>
+                                </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                            
+                            <!--Pulsante per elevare a faq -->
+                            <form method="post" action="">
+                                <input type="hidden" name="codice" value="<?php echo $domanda->codice_gioco; ?>">
+                                <input type="hidden" name="id_risposta" value="<?php echo $risposta['id']; ?>">
+                                <button type="submit" name="elevaFaq" class="btn btn-primary">Eleva a FAQ</button>
+                            </form>
+                            
+                            <br><br>
                         <?php endforeach; ?>
                     </div>
                 </div>

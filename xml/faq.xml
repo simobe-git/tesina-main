@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE faqs SYSTEM "../dtd/faq.dtd">
-
 <faqs>
   <faq id="2">
     <domanda>Come funziona il sistema di sconti?</domanda>
@@ -61,6 +60,12 @@
     <risposta>Ci sono varie tipologie di sconti: sconti applicati dopo aver speso un determinato numero di crediti; sconti per aver speso crediti in un determinato periodo temporale; sconti per clienti che hanno una determinata reputazione; sconti che sono registrati nel sistema da un determinato numero di mesi
     </risposta>
     <data_creazione>2024-04-19</data_creazione>
+    <fonte>forum</fonte>
+  </faq>
+  <faq id="68077f72c9073">
+    <domanda>Consigliereste di giocare ad un ragazzo di 13 anni?</domanda>
+    <risposta>Nell'età minima viene consigliato almeno 14 anni, per cui direi di aspettare!</risposta>
+    <data_creazione>2025-04-22</data_creazione>
     <fonte>forum</fonte>
   </faq>
 </faqs>
