@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <!DOCTYPE utenti SYSTEM "../dtd/avatar.dtd">
-
 <utenti>
   <utente>
     <username>admin1</username>
@@ -12,7 +11,7 @@
   </utente>
   <utente>
     <username>cliente1</username>
-    <avatar>default_avatar.jpg</avatar>
+    <avatar>stack.png</avatar>
   </utente>
   <utente>
     <username>cliente2</username>

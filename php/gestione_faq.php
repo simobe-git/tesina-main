@@ -345,27 +345,7 @@ if (isset($messaggio)): ?>
             <p>Nessuna FAQ disponibile.</p>
         <?php endif; ?>
 
-        <h2>Domande dal Forum</h2>
-        <div class="forum-domande">
-            <?php if ($forum): foreach ($forum->thread as $thread): ?>
-                <div class="thread-item">
-                    <h3><?php echo $thread['id']; ?> - <?php echo $thread->titolo; ?></h3>
-                    <p><?php echo $thread->contenuto; ?></p>
-                    <div class="meta-info">
-                        <span class="stats">Voti: <?php echo $thread->voti; ?></span>
-                        <span class="stats">Risposte: <?php echo count($thread->risposte->risposta); ?></span>
-                        <span class="stats">Visite: <?php echo $thread->visite; ?></span>
-                    </div>
-                    <div class="risposta-item">
-                        <form method="POST">
-                            <input type="hidden" name="id_domanda" value="<?php echo $thread['id']; ?>">
-                            <input type="hidden" name="id_risposta" value="<?php echo $thread->risposte->risposta[0]['id']; ?>">
-                            <button type="submit" name="eleva_a_faq" class="btn btn-primary">Eleva a FAQ</button>
-                        </form>
-                    </div>
-                </div>
-            <?php endforeach; endif; ?>
-        </div>
+        
     </div>
 </body>
 </html>

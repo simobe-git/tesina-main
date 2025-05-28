@@ -112,7 +112,7 @@ foreach ($domandeXml->domanda as $dom) {
 
         // aggiungiamo la domanda e le risposte all'array delle discussioni
         $discussioni[] = [
-            'codice_gioco' => (int)$dom->codice_gioco, // Aggiungi questa riga
+            'codice_gioco' => (int)$dom->codice_gioco,
             'titolo' => (string)$dom->titolo,
             'contenuto' => (string)$dom->contenuto,
             'autore' => (string)$dom->autore,
