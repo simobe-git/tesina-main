@@ -11,10 +11,10 @@ if (!isset($_SESSION['statoLogin'])) {
     exit();
 }
 
-// Carica dati giochi da file xml
+// caricamento dati giochi da file xml
 $xml = simplexml_load_file('../xml/giochi.xml');
 
-// Si ipotizza di modificare i dati di un gioco alla volta 
+// si ipotizza di modificare i dati di un gioco alla volta 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     if(isset($_POST['modifica_dati'])){
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $gioco->ambientazione = $_POST['ambientazione'];
             $gioco->immagine = $_POST['immagine'];
 
-            // Salva il file XML aggiornato
+            // salviamo il file XML aggiornato
             $xml->asXML('../xml/giochi.xml');
     
             $messaggio = "Dati del gioco aggiornati con successo";
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!empty($giochi)) {
             $gioco = $giochi[0];
              
-            $dom = dom_import_simplexml($gioco); //dom_import_simplexml converte l'elemento SimpleXML upporta direttamente la rimozione di nodi
+            $dom = dom_import_simplexml($gioco); // dom_import_simplexml converte l'elemento SimpleXML upporta direttamente la rimozione di nodi
             $dom->parentNode->removeChild($dom); //rimuove il nodo figlio
             $xml->asXML('../xml/giochi.xml'); 
 
@@ -202,9 +202,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="navbar">
         <ul>
             <li><a href="gestore_dashboard.php">Dashboard</a></li>
-            <li><a href="gestione_utenti.php">Modifica Sconti e Bonus</a></li>
+            <li><a href="gestione_sconti_admin.php">Modifica Sconti e Bonus</a></li>
             <li><a href="visualizza_utenti.php">Visualizza Utenti</a></li>
-            <li><a href="#">Gestione Forum</a></li>
+            <li><a href="gestione_forum.php">Gestione Forum</a></li>
         </ul>
     </div>
 
@@ -221,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="messaggio"><?php echo $messaggio; ?></div>
         <?php endif; ?>
 
-        <div class="utente-grid"> <!-- Contenitore per le schede giochi -->
+        <div class="utente-grid"> <!-- contenitore per le schede giochi -->
             <?php foreach ($xml->gioco as $game): ?>
                 <div class="utente-card">
                     <h3><?php echo htmlspecialchars($game->titolo); ?></h3>

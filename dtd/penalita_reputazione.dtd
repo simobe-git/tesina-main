@@ -1,0 +1,4 @@
+<!ELEMENT penalitaReputazione (penalita*)>
+<!ELEMENT penalita (username, valore)>
+<!ELEMENT username (#PCDATA)>
+<!ELEMENT valore (#PCDATA)> 

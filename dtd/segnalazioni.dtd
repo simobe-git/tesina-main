@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT segnalazioni (segnalazione*)>
-<!ELEMENT segnalazione (username_segnalante, username_segnalato, motivo)>
+<!ELEMENT segnalazione (username_segnalante, username_segnalato, motivo, tipo, contenuto)>
 <!ELEMENT username_segnalante (#PCDATA)>
 <!ELEMENT username_segnalato (#PCDATA)>
 <!ELEMENT motivo (#PCDATA)>
+<!ELEMENT tipo (#PCDATA)>
+<!ELEMENT contenuto (#PCDATA)>

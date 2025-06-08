@@ -36,11 +36,17 @@ if (!$gioco) {
 }
 
 // calcoliamo gli sconti
-$scontoCreditiSpesi = calcolaScontoCreditiSpesi($_SESSION['username']);   // sconto per crediti totali spesi fino ad ora
-$scontoPeriodo = calcolaScontoPeriodo($_SESSION['username']); // sconto per crediti spesi in un determinato periodo
-$scontoReputazione = calcolaScontoReputazione($_SESSION['username']);  // sconto in base alla reputazione dell'utente
-$scontoAnzianita = calcolaScontoAnzianita($_SESSION['username']);  // sconto in base a quanto tempo l'utente è registrato
-
+if(isset($_SESSION['statoLogin']) === true){
+    $scontoCreditiSpesi = calcolaScontoCreditiSpesi($_SESSION['username']);   // sconto per crediti totali spesi fino ad ora
+    $scontoPeriodo = calcolaScontoPeriodo($_SESSION['username']); // sconto per crediti spesi in un determinato periodo
+    $scontoReputazione = calcolaScontoReputazione($_SESSION['username']);  // sconto in base alla reputazione dell'utente
+    $scontoAnzianita = calcolaScontoAnzianita($_SESSION['username']);  // sconto in base a quanto tempo l'utente è registrato
+}else{
+    $scontoCreditiSpesi = 0; // se l'utente non è loggato, non ha diritto a sconti
+    $scontoPeriodo = 0;
+    $scontoReputazione = 0;
+    $scontoAnzianita = 0;
+}
 /* debug per vedere gli sconti applicati
  echo "<h1 style=\"color: red; margin-top: 50px;\">" . $scontoCreditiSpesi . "</h1></br>";
 echo "<h1 style=\"color: red; margin-top: 50px;\">" . $scontoPeriodo . "</h1></br>";
@@ -662,7 +668,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </div>
                                         <p class="discussione-testo"><?php echo htmlspecialchars($discussione['contenuto']); ?></p>
                                         
-                                        <!-- Mostriamo le risposte alle domande dei forum -->
+                                        <!-- mostriamo le risposte alle domande dei forum -->
                                         <?php if (!empty($discussione['risposte'])): ?>
                                             <!-- <div class="risposte-container">
                                                 <
@@ -859,22 +865,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         function inviaSegnalazione() {
-        const motivo = document.getElementById('motivoSegnalazione').value;
-        const autoreSegnalante = '<?php echo $_SESSION['username']; ?>'; // username dell'utente che segnala
-        const autoreSegnalato = document.getElementById('autoreSegnalato').innerText; // username dell'utente segnalato
+            const motivo = document.getElementById('motivoSegnalazione').value;
+            const autoreSegnalante = '<?php echo $_SESSION['username']; ?>'; // username dell'utente che segnala
+            const autoreSegnalato = document.getElementById('autoreSegnalato').innerText; // username dell'utente segnalato
+            const tipoSegnalazione = document.getElementById('tipoSegnalazione').innerText.replace(':','').trim(); // tipo: domanda o risposta
+            const contenutoSegnalato = document.getElementById('contenutoSegnalazione').innerText;
 
-        // invia la segnalazione tramite AJAX
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "invia_segnalazione.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                alert("Segnalazione inviata con successo!");
-                chiudiFinestraSegnalazione();
-            }
-        };
-    xhr.send("autore_segnalante=" + encodeURIComponent(autoreSegnalante) + "&autore_segnalato=" + encodeURIComponent(autoreSegnalato) + "&motivo=" + encodeURIComponent(motivo));
-}
+            // invia la segnalazione tramite AJAX
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "invia_segnalazione.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert("Segnalazione inviata con successo!");
+                    chiudiFinestraSegnalazione();
+                }
+            };
+            xhr.send(
+                "autore_segnalante=" + encodeURIComponent(autoreSegnalante) +
+                "&autore_segnalato=" + encodeURIComponent(autoreSegnalato) +
+                "&motivo=" + encodeURIComponent(motivo) +
+                "&tipo=" + encodeURIComponent(tipoSegnalazione) +
+                "&contenuto=" + encodeURIComponent(contenutoSegnalato)
+            );
+        }
 
         function apriFinestraDiscussione() {
             document.getElementById('finestraDiscussione').style.display = 'block';
@@ -931,11 +945,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const autore = '<?php echo $_SESSION['username']; ?>'; // username dell'utente che risponde
             const data = new Date().toISOString().split('T')[0]; // data in formato YYYY-MM-DD
 
-            // Debug: Stampa il codice del gioco e il contenuto
+            // debug: stampa il codice del gioco e il contenuto
             // console.log("Codice Gioco:", codiceGioco);
             // console.log("Contenuto Risposta:", contenuto);
 
-            // invia i dati al server
+            // inviamo i dati al server
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "invia_risposta.php", true);
             xhr.setRequestHeader("Content-Type", "application/json");

@@ -7,7 +7,7 @@ function calcolaReputazione($username) {
         $xml_recensioni = simplexml_load_file($xml_file_recensioni);
         foreach ($xml_recensioni->valutazione as $valutazione) {
             if ((string)$valutazione->username === $username) {
-                $valutazioni_recensioni[] = (int)$valutazione->stelle; // Aggiungi le stelle
+                $valutazioni_recensioni[] = (int)$valutazione->stelle; // aggiungiamo le stelle
             }
         }
     }
@@ -19,7 +19,7 @@ function calcolaReputazione($username) {
         $xml_discussioni = simplexml_load_file($xml_file_discussioni);
         foreach ($xml_discussioni->valutazione as $valutazione) {
             if ((string)$valutazione->autore === $username) {
-                $valutazioni_discussioni[] = (int)$valutazione->stelle; // Aggiungi le stelle
+                $valutazioni_discussioni[] = (int)$valutazione->stelle; // aggiungimo le stelle
             }
         }
     }
@@ -31,6 +31,20 @@ function calcolaReputazione($username) {
 
     // calcolo della reputazione finale (da 1 a 10)
     $reputazione = $num_valutazioni > 0 ? min(10, ($totale_stelle / $num_valutazioni) * 2) : 0;
+
+    // sottraiamo eventuali penalità dovute a diminuzioni successive a qualche segnalazione ricevuta
+    $xml_file_penalita = '../xml/penalita_reputazione.xml';
+    $penalita_totale = 0;
+    if (file_exists($xml_file_penalita)) {
+        $xml_penalita = simplexml_load_file($xml_file_penalita);
+        foreach ($xml_penalita->penalita as $penalita) {
+            if ((string)$penalita->username === $username) {
+                $penalita_totale += (float)$penalita->valore;
+            }
+        }
+    }
+    $reputazione -= $penalita_totale;
+    if ($reputazione < 0) $reputazione = 0;
 
     return round($reputazione, 2);
 }

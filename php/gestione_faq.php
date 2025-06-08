@@ -1,5 +1,6 @@
 <?php 
 session_start();
+include('connessione.php');
 
 if(isset($_SESSION['tipo_utente']) && isset($_SESSION['statoLogin'])){ // se l'utente è già loggato
 
@@ -207,14 +208,6 @@ if (isset($messaggio)): ?>
             margin-bottom: 15px;
             border-radius: 8px;
             font-size: 1.1em;
-        }
-        
-        .risposta-item {
-            margin-left: 20px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-left: 3px solid #007bff;
-            margin-top: 10px;
         }
         
         .stats {

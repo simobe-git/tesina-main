@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE penalitaReputazione SYSTEM "../dtd/penalita_reputazione.dtd">
+<penalitaReputazione>
+  <penalita>
+    <username>cliente1</username>
+    <valore>1.6</valore>
+  </penalita>
+</penalitaReputazione>

@@ -111,4 +111,11 @@
       <data>2025-04-21</data>
     </risposta>
   </domanda>
+  <domanda>
+    <codice_gioco>9</codice_gioco>
+    <titolo>domanda per Cluedo</titolo>
+    <contenuto>questa è la domanda per Cluedo. Giusto?</contenuto>
+    <autore>cliente1</autore>
+    <data>2025-06-05</data>
+  </domanda>
 </domande>

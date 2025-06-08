@@ -157,9 +157,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar'])) {
     <div class="navbar">
         <ul>
             <li><a href="gestore_dashboard.php">Dashboard</a></li>
-            <li><a href="gestione_utenti.php">Modifica Sconti e Bonus</a></li>
-            <li><a href="visualizza_utenti.php">Visualizza Utenti</a></li>
-            <li><a href="#">Gestione Forum</a></li>
+            <li><a href="gestione_catalogo.php">Modifica giochi</a></li>
+            <li><a href="gestione_sconti_admin.php">Modifica Sconti e Bonus</a></li>
+            <li><a href="gestione_forum.php">Gestione Forum</a></li>
         </ul>
     </div>
     
@@ -168,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar'])) {
             <h1 style="font-size: 200%;">Visualizzazione Utenti</h1>
         </div>
         
-        <div class="utente-grid"> <!-- Contenitore per le schede giochi -->
+        <div class="utente-grid"> <!-- contenitore per le schede giochi -->
             <?php if ($utenti): ?>
                 <?php foreach ($utenti as $utente): ?>
                     <div class="utente-card">
