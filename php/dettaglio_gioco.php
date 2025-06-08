@@ -35,11 +35,19 @@ if (!$gioco) {
     exit();
 }
 
-// calcoliamo gli sconti
-$scontoCreditiSpesi = calcolaScontoCreditiSpesi($_SESSION['username']);   // sconto per crediti totali spesi fino ad ora
-$scontoPeriodo = calcolaScontoPeriodo($_SESSION['username']); // sconto per crediti spesi in un determinato periodo
-$scontoReputazione = calcolaScontoReputazione($_SESSION['username']);  // sconto in base alla reputazione dell'utente
-$scontoAnzianita = calcolaScontoAnzianita($_SESSION['username']);  // sconto in base a quanto tempo l'utente è registrato
+// calcoliamo gli sconti solo se l'utente è loggato
+if(isset($_SESSION['statoLogin']) === true){
+    $scontoCreditiSpesi = calcolaScontoCreditiSpesi($_SESSION['username']);   // sconto per crediti totali spesi fino ad ora
+    $scontoPeriodo = calcolaScontoPeriodo($_SESSION['username']); // sconto per crediti spesi in un determinato periodo
+    $scontoReputazione = calcolaScontoReputazione($_SESSION['username']);  // sconto in base alla reputazione dell'utente
+    $scontoAnzianita = calcolaScontoAnzianita($_SESSION['username']);  // sconto in base a quanto tempo l'utente è registrato
+}else{
+    $scontoCreditiSpesi = 0; // se l'utente non è loggato, non ha diritto a sconti
+    $scontoPeriodo = 0;
+    $scontoReputazione = 0;
+    $scontoAnzianita = 0;
+}
+
 
 /* debug per vedere gli sconti applicati
  echo "<h1 style=\"color: red; margin-top: 50px;\">" . $scontoCreditiSpesi . "</h1></br>";
