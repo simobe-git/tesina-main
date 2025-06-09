@@ -28,30 +28,31 @@ if (!file_exists($valutazione_domanda)) {
 }
 
 /** 
- * Calcoliamo una media del punteggio assegnato dagli utenti alle domanda, in modo tale da mostrare
- * al gestore il punteggio medio di ogni domanda, con il numero di valutazioni ricevute facilitando la 
- * scelta di quale domanda elevare a FAQ. 
+ * Calcoliamo la media del punteggio assegnato dagli utenti alle domanda, in modo tale da mostrare
+ * al gestore il punteggio medio di ogni domanda.
+ * Il punteggio e num valutazioni viene azzerato ad ogni iterazione così da riportare informazioni per le signole risposte.
 */
-foreach($domande->domanda as $domanda){
-    $punteggio = 0;
-    $numero_valutazioni = 0;
-
-     
-    foreach($domanda->risposta as $risposta){ //per ogni domanda
-        foreach($valutazione_domanda->valutazione as $valutazione){ //cerchiamo le valutazioni
+foreach($domande->domanda as $domanda){  
+    foreach($domanda->risposta as $risposta){ 
+        $punteggio = 0;
+        $numero_valutazioni = 0;
+        foreach($valutazione_domanda->valutazione as $valutazione){
             if ((string)$valutazione->id_risposta === (string)$risposta['id']){
                 $punteggio += (int)$valutazione->stelle;
                 $numero_valutazioni++;
             }
         }
+        $media = $numero_valutazioni > 0 ? $punteggio / $numero_valutazioni : 0;
+        $statisticheRisposte[(string)$risposta['id']] = [
+            'media' => $media,
+            'numero_valutazioni' => $numero_valutazioni
+        ];
     }
-
-    $media = $numero_valutazioni > 0 ? $punteggio / $numero_valutazioni : 0; // calcolo media
 }
 
 /**
  * Quando viene premuto sul pulsante per elevare domanda e risposta come FAQ 
- * salviamo tali informazioni nel file xml xml delle faq così che venga visualizzato nella pagina faq.
+ * salviamo tali informazioni nel file xml delle faq così che venga visualizzato nella pagina faq.
  * Dom è usato per una corretta formattazione dei nuovi elementi nel file xml, inoltre dopo il salvataggio
  * viene mostrato un messaggio di successo e dopo 3 secondi si viene reindirizzati alla pagina di gestione discussioni. 
  */
@@ -308,19 +309,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['elevaFaq'])) {
                             </div>
 
                             <!-- Mostriamo tutti i punteggi -->
-                            <?php foreach($valutazione_domanda->valutazione as $valutazione):?>
-                                <?php if ((string)$valutazione->id_risposta === (string)$risposta['id']): ?>
                                 <div class="form-group">
                                     <label>Punteggio Medio</label>
-                                    <p><?php echo htmlspecialchars(number_format($media, 2)); ?></p>
+                                    <p><?php echo htmlspecialchars(number_format($statisticheRisposte[(string)$risposta['id']]['media'], 2)); ?></p>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Numero di Valutazioni</label>
-                                    <p><?php echo htmlspecialchars($numero_valutazioni); ?></p>
+                                    <p><?php echo htmlspecialchars($statisticheRisposte[(string)$risposta['id']]['numero_valutazioni']); ?></p>
                                 </div>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
+
                             
                             <!--Pulsante per elevare a faq -->
                             <form method="post" action="">
