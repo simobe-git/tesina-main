@@ -61,11 +61,11 @@ if (!file_exists($valutazione_domanda)) {
     $valutazione_domanda = simplexml_load_file($valutazione_domanda);
 }
 
-/** 
- * Calcoliamo una media del punteggio assegnato dagli utenti alle domanda, in modo tale da mostrare
- * al gestore il punteggio medio di ogni domanda, con il numero di valutazioni ricevute facilitando la 
- * scelta di quale domanda elevare a FAQ. 
-*/
+/* 
+ Calcoliamo una media del punteggio assegnato dagli utenti alle domanda, in modo tale da mostrare
+ al gestore il punteggio medio di ogni domanda, con il numero di valutazioni ricevute facilitando la 
+ scelta di quale domanda elevare a FAQ. 
+
 foreach($domande->domanda as $domanda){
     $punteggio = 0;
     $numero_valutazioni = 0;
@@ -80,7 +80,7 @@ foreach($domande->domanda as $domanda){
     }
 
     $media = $numero_valutazioni > 0 ? $punteggio / $numero_valutazioni : 0; // calcolo media
-}
+}*/
 
 // filtraggio delle domande in base al gioco selezionato
 $domandeFiltrate = [];
