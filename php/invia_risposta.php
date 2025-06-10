@@ -37,7 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // troviamo la domanda corrispondente al titolo della domanda
     $domandaTrovata = false; // Aggiungi questa variabile per controllare se la domanda è stata trovata
     foreach ($dom->getElementsByTagName('domanda') as $domanda) {
-        if ($domanda->getElementsByTagName('titolo')->item(0)->nodeValue == $data['titolo_domanda']) {
+        $codiceDomanda = $domanda->getElementsByTagName('codice_gioco')->item(0)->nodeValue;
+        $titoloDomanda = $domanda->getElementsByTagName('titolo')->item(0)->nodeValue;
+
+        if ($codiceDomanda == $codice_gioco && $titoloDomanda == $data['titolo_domanda']) {
             // creazione della nuova risposta
             $risposta = $dom->createElement('risposta');
             $risposta->setAttribute('id', $nextId); // ID incrementale

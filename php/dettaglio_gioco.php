@@ -578,7 +578,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </div>
                                     <div>
                                         <button class="btn-segnala" onclick="apriFinestraSegnalazione('<?php echo htmlspecialchars($discussione['autore']); ?>', 'domanda', '<?php echo htmlspecialchars($discussione['contenuto']); ?>')">Segnala</button>
-                                        <button class="btn-rispondi" onclick="apriFinestraRisposta('<?php echo htmlspecialchars($discussione['codice_gioco']); ?>', '<?php echo htmlspecialchars($discussione['autore']); ?>')">Rispondi</button>
+                                        <button class="btn-rispondi" onclick="apriFinestraRisposta('<?php echo htmlspecialchars($discussione['codice_gioco']); ?>', '<?php echo htmlspecialchars($discussione['autore']); ?>', '<?php echo htmlspecialchars($discussione['titolo']); ?>')">Rispondi</button>
                                     </div>
                                 </div>
                                 <p class="discussione-testo"><?php echo htmlspecialchars($discussione['contenuto']); ?></p>
@@ -663,36 +663,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </div>
                                             <div>
                                                 <button class="btn-segnala" onclick="apriFinestraSegnalazione('<?php echo htmlspecialchars($discussione['autore']); ?>', 'domanda', '<?php echo htmlspecialchars($discussione['contenuto']); ?>')">Segnala</button>
-                                                <button class="btn-rispondi" onclick="apriFinestraRisposta('<?php echo htmlspecialchars($discussione['codice_gioco']); ?>', '<?php echo htmlspecialchars($discussione['autore']); ?>')">Rispondi</button>
+                                                <button class="btn-rispondi" onclick="apriFinestraRisposta('<?php echo htmlspecialchars($discussione['codice_gioco']); ?>', '<?php echo htmlspecialchars($discussione['autore']); ?>', '<?php echo htmlspecialchars($discussione['titolo']); ?>')">Rispondi</button>
                                             </div>
                                         </div>
                                         <p class="discussione-testo"><?php echo htmlspecialchars($discussione['contenuto']); ?></p>
                                         
                                         <!-- mostriamo le risposte alle domande dei forum -->
                                         <?php if (!empty($discussione['risposte'])): ?>
-                                            <!-- <div class="risposte-container">
-                                                <
+                                            <div class="risposte-container">
+                                                <?php
                                                 $hiddenCount = 0; // contatore per le risposte
                                                 foreach ($discussione['risposte'] as $risposta): 
                                                     if ($hiddenCount < 2): // mostriamo solo le prime 2 risposte
                                                 ?>
                                                     <div class="risposta">
                                                         <div class="risposta-header">
-                                                            <strong> echo htmlspecialchars($risposta['autore']); ?></strong>
-                                                            <span class="risposta-data"> echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
+                                                            <strong> <?php echo htmlspecialchars($risposta['autore']); ?></strong>
+                                                            <span class="risposta-data"> <?php echo date('d/m/Y', strtotime($risposta['data'])); ?></span>
                                                         </div>
-                                                        <p class="risposta-testo"> echo htmlspecialchars($risposta['contenuto']); ?></p>
+                                                        <p class="risposta-testo"><?php echo htmlspecialchars($risposta['contenuto']); ?></p>
                                                         <div class="pulsanti-azione">
                                                             <button class="btn-valuta" onclick="apriFinestraValutazione('<?php echo htmlspecialchars($risposta['autore']); ?>', '<?php echo htmlspecialchars($risposta['id']); ?>')">Valuta</button>
                                                             <button class="btn-segnala" onclick="apriFinestraSegnalazione('<?php echo htmlspecialchars($risposta['autore']); ?>', 'risposta', '<?php echo htmlspecialchars($risposta['contenuto']); ?>')">Segnala</button>
                                                         </div>
                                                     </div>
-                                                
+                                                <?php
                                                     $hiddenCount++;
                                                     endif; 
                                                 endforeach; 
                                                 ?>
-                                            </div> -->
+                                            </div> 
                                         <?php else: ?>
                                             <p style="font-weight: bold; color: blue; margin-top: 2ex; text-align: center; font-size: 115%;">Questa domanda non ha ancora alcuna risposta.</p>
                                         <?php endif; ?>
@@ -918,21 +918,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             xhr.open("POST", "pubblica_domanda.php", true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert("Discussione pubblicata con successo!");
-                    chiudiFinestraDiscussione();
+                if (xhr.readyState === 4) {
+                    try{
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success){
+                            alert("Discussione pubblicata con successo!");
+                            chiudiFinestraDiscussione();
+                        }else{
+                            alert(response.message || "Errore: domanda già presente!");
+                        }
+                    }catch (e) {
+                        alert("Errore nella risposta del server: " + e.message);
+                    }
                 }
             };
             xhr.send(JSON.stringify(data));
         }
 
-        function apriFinestraRisposta(codiceGioco, autore) {
-            // mostriamo l'autore della domanda
-            document.getElementById('autoreRisposta').innerText = autore; 
-            // salviamo il codice del gioco per l'invio della risposta
-            window.codiceGiocoRisposta = codiceGioco; 
-            // mostriamo la finestra di risposta
-            document.getElementById('finestraRisposta').style.display = 'block'; 
+        function apriFinestraRisposta(codiceGioco, autore, titolo) {
+            
+            document.getElementById('autoreRisposta').innerText = autore;// mostriamo l'autore della domanda 
+            window.codiceGiocoRisposta = codiceGioco; // salviamo il codice del gioco per l'invio della risposta
+            window.titoloDomandaRisposta = titolo; // salviamo il titolo della domanda per l'invio della risposta
+            document.getElementById('finestraRisposta').style.display = 'block';// mostriamo la finestra di risposta 
         }
 
         function chiudiFinestraRisposta() {
@@ -942,6 +950,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         function inviaRisposta() {
             const contenuto = document.getElementById('contenutoRisposta').value;
             const codiceGioco = window.codiceGiocoRisposta; // questa riga usa il codice del gioco salvato
+            const titoloDomanda = window.titoloDomandaRisposta;
             const autore = '<?php echo $_SESSION['username']; ?>'; // username dell'utente che risponde
             const data = new Date().toISOString().split('T')[0]; // data in formato YYYY-MM-DD
 
@@ -959,7 +968,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     chiudiFinestraRisposta();
                 }
             };
-            xhr.send(JSON.stringify({ codice_gioco: codiceGioco, contenuto: contenuto, autore: autore, data: data }));
+            xhr.send(JSON.stringify({ 
+                codice_gioco: codiceGioco, 
+                contenuto: contenuto, 
+                autore: autore, 
+                data: data,
+                titolo_domanda: titoloDomanda 
+            }));
         }
     </script>
 </body>

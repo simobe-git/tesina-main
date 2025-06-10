@@ -25,6 +25,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $dom->appendChild($root);
     }
 
+    //controllo per evitare duplicati
+    $duplicato = false;
+    foreach ($dom->getElementsByTagName('domanda') as $domanda) {
+        $codiceDomanda = $domanda->getElementsByTagName('codice_gioco')->item(0)->nodeValue;
+        $titoloDomanda = $domanda->getElementsByTagName('titolo')->item(0)->nodeValue;
+        if ($codiceDomanda == $codice_gioco && strtolower($titoloDomanda) == strtolower($titolo)){
+            $duplicato = true;
+            break;
+        }
+    }
+
+    if ($duplicato) {
+        echo json_encode(['success' => false, 'message' => 'Domanda già esistente']);
+        exit;
+    }
+    
     // creazione della nuova domanda
     $domanda = $dom->createElement('domanda');
     $domanda->appendChild($dom->createElement('codice_gioco', htmlspecialchars($codice_gioco)));
